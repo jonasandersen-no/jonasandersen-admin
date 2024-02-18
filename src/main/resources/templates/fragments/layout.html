@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link th:href="@{/main.css}" rel="stylesheet"/>
+  <script src="https://unpkg.com/htmx.org@1.9.10"
+          integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+
+  <style>
+    nav {
+      align-items: center;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      margin: auto;
+    }
+
+    nav ul li {
+      margin: 0 1rem;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    nav ul li a:hover {
+      color: #0056b3;
+    }
+
+    #content {
+      margin: auto;
+      width: 80%;
+      background: #f8f9fa;
+    }
+
+
+  </style>
+</head>
+<body>
+<div class="flex flex-col" style="min-height: 100vh">
+  <div>
+    <nav>
+      <div>
+        <ul>
+          <li><a th:href="@{/}">Home</a></li>
+          <li><a th:href="@{/linode}">Linode</a></li>
+          <li><a th:href="@{/test}">Test</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <main id="content" class="debug flex-grow" layout:fragment="content">MAIN</main>
+  <footer class="footer mt-auto debug">
+    <p class="text-muted">Place sticky footer content here.</p>
+  </footer>
+</div>
+
+</body>
+</html>

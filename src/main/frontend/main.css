@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-red {
+  @apply bg-red-200;
+}
+
+
+.debug {
+  @apply border-2;
+  @apply border-red-600;
+}
