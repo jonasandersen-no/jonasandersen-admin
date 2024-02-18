@@ -7,7 +7,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, self-hosted ]
+    runs-on: ${{ matrix.os }}
     permissions:
       contents: read
       packages: write
@@ -25,7 +28,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build with Maven
-        run: mvn spring-boot:build-image -Pnative,production
+        run: mvn spring-boot:build-image -Pnative
 
       - name: Push Images to Docker Registry
         run: docker push -a bjoggis/jonasandersen-admin
