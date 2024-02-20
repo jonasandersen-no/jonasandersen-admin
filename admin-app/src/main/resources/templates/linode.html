@@ -7,11 +7,24 @@
   <title>Linode</title>
   <meta charset=" UTF-8"/>
 
+  <style>
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
   <div>
     <h1>Linode</h1>
+  </div>
+  <div>
+    <h2 class="text-center sans-bold">Minecraft Server</h2>
+
+    <div class="" style="text-align: center;">
+      <p th:text="${status} ?: 'Server is running'"></p>
+      <p th:text="${ip} ?: '127.0.0.1'"></p>
+      <button class="btn">Refresh</button>
+      <button class="btn">Stop Server</button>
+    </div>
+
   </div>
 </div>
 </body>
