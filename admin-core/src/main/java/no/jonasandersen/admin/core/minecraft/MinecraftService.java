@@ -7,7 +7,8 @@ public class MinecraftService {
 
   public MinecraftInstance findMinecraftInstance() {
     return MinecraftInstanceBuilder.minecraftInstance()
-        .name("minecraft")
+        .name("minecraft-auto-config-1")
+        .ip("127.0.0.1")
         .build();
   }
 }
