@@ -17,7 +17,7 @@
   <modules>
     <module>admin-core</module>
     <module>admin-app</module>
+    <module>admin-details</module>
   </modules>
-
 
 </project>
