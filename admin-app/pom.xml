@@ -41,11 +41,11 @@
       <version>1.4.2</version>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>nz.net.ultraq.thymeleaf</groupId>-->
-<!--      <artifactId>thymeleaf-layout-dialect</artifactId>-->
-<!--      <version>3.3.0</version>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>nz.net.ultraq.thymeleaf</groupId>
+      <artifactId>thymeleaf-layout-dialect</artifactId>
+      <version>3.3.0</version>
+    </dependency>
 
 <!--    <dependency>-->
 <!--      <groupId>io.github.wimdebl  auwe</groupId>-->
@@ -98,6 +98,12 @@
       <plugin>
         <groupId>org.graalvm.buildtools</groupId>
         <artifactId>native-maven-plugin</artifactId>
+        <configuration>
+          <buildArgs>
+            <arg>--initialize-at-build-time=com.sun.beans</arg>
+            <arg>--initialize-at-build-time=java.beans.Introspector</arg>
+          </buildArgs>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
