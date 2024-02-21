@@ -4,22 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
-import org.instancio.Instancio;
-import org.instancio.Select;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TodoService {
 
-  private final List<TodoItem> items;
+  private final List<TodoItem> items  = new ArrayList<>();
 
   private final AtomicInteger idSequence = new AtomicInteger(0);
 
   public TodoService() {
-    items = new ArrayList<>(Instancio.ofList(TodoItem.class)
-        .size(5)
-        .supply(Select.field(TodoItem::id), (Supplier<Object>) idSequence::getAndIncrement)
-        .create());
+//    items = new ArrayList<>(Instancio.ofList(TodoItem.class)
+//        .size(5)
+//        .supply(Select.field(TodoItem::id), (Supplier<Object>) idSequence::getAndIncrement)
+//        .create());
   }
 
   public TodoItem createTodoItem(String title, String description) {
