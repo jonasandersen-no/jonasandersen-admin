@@ -1,6 +1,6 @@
 package no.jonasandersen.admin;
 
-import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
+//import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import java.util.List;
 import no.jonasandersen.admin.TodoService.TodoItem;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class TodoController {
   }
 
   @PostMapping()
-  @HxRequest
+//  @HxRequest
   public String create(TodoItem item) {
     logger.info("Received item: {}", item);
     TodoItem created = service.createTodoItem(item.title(), item.description());
@@ -51,7 +51,7 @@ public class TodoController {
   }
 
   @DeleteMapping("/{id}")
-  @HxRequest
+//  @HxRequest
   public String delete(@PathVariable Integer id) {
     logger.info("Received delete request for id: {}", id);
     service.deleteTodoItem(id);
@@ -59,7 +59,7 @@ public class TodoController {
   }
 
   @GetMapping
-  @HxRequest
+//  @HxRequest
   public String getTodoItems() {
     List<TodoItem> todoItems = service.getTodoItems();
 
