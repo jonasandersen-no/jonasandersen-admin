@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{fragments/layout}" lang="en">
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}"
+      lang="en">
 
 <head>
   <title>Linode</title>
@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-<div layout:fragment="content">
+<main>
   <div>
     <h1>Linode</h1>
   </div>
@@ -26,7 +26,7 @@
     </div>
 
   </div>
-</div>
+</main>>
 </body>
 
 </html>

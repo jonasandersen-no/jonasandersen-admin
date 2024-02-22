@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      th:fragment="layout(title, main)" lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,11 +8,14 @@
   <link th:href="@{/main.css}" rel="stylesheet"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet">
   <script src="https://unpkg.com/htmx.org@1.9.10"
           integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
           crossorigin="anonymous"></script>
   <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+  <title th:text="${title}">Title</title>
 
   <style>
     nav {
@@ -66,7 +69,7 @@
     </nav>
   </div>
 
-  <main id="content" class="debug flex-grow" layout:fragment="content">MAIN</main>
+  <main th:replace="${main}">MAIN</main>
   <footer class="footer mt-auto debug">
     <p class="text-muted">Place sticky footer content here.</p>
   </footer>

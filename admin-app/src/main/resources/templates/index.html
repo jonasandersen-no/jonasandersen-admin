@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{fragments/layout}" lang="en">
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}"
+    lang="en">
 
 <head>
   <title>Home</title>
@@ -10,14 +10,17 @@
 
 </head>
 <body>
-<div layout:fragment="content">
-  <div>
+<main>
+  <div >
     <div>
-      <h1>Admin panel</h1>
-      <p>More to come here soon...</p>
+      <div>
+        <h1>Admin panel</h1>
+        <p>More to come here soon...</p>
+      </div>
     </div>
   </div>
-</div>
+</main>
+
 </body>
 
 </html>
