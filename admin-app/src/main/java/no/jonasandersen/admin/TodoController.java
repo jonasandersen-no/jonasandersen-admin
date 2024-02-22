@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class TodoController {
 
   @PostMapping()
   @HxRequest
-  public String create(TodoItem item) {
+  public String create(@ModelAttribute TodoItem item) {
     logger.info("Received item: {}", item);
     TodoItem created = service.createTodoItem(item.title(), item.description());
 
