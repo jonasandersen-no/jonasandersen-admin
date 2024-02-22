@@ -75,6 +75,10 @@
       <version>24.1.0</version>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>no.jonasandersen</groupId>
+      <artifactId>admin-core</artifactId>
+    </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>
