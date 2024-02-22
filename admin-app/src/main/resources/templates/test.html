@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{fragments/layout}" lang="en">
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}"
+       lang="en">
 
 <head>
   <title>Test</title>
@@ -24,7 +24,7 @@
   </style>
 </head>
 <body>
-<div layout:fragment="content">
+<main>
   <div>
     <div class="flex">
       <h1>Start</h1>
@@ -79,7 +79,7 @@
       </div>
     </div>
   </div>
-</div>
+</main>
 </body>
 
 </html>
