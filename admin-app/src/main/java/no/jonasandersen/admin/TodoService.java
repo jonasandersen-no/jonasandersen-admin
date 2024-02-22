@@ -3,13 +3,15 @@ package no.jonasandersen.admin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TodoService {
 
-  private final List<TodoItem> items  = new ArrayList<>();
+  private static final Logger logger = LoggerFactory.getLogger(TodoService.class);
+  private final List<TodoItem> items = new ArrayList<>();
 
   private final AtomicInteger idSequence = new AtomicInteger(0);
 
@@ -27,6 +29,7 @@ public class TodoService {
   }
 
   public List<TodoItem> getTodoItems() {
+    logger.info("Returning items: {}", items);
     return items;
   }
 

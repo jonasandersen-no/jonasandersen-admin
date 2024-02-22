@@ -5,7 +5,6 @@ import java.util.List;
 import no.jonasandersen.admin.TodoService.TodoItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,13 +25,12 @@ public class TodoController {
     this.service = service;
   }
 
-  @PostMapping()
+  @PostMapping
   @HxRequest
   public String create(@ModelAttribute TodoItem item) {
     logger.info("Received item: {}", item);
     TodoItem created = service.createTodoItem(item.title(), item.description());
 
-//    model.addAttribute("item", created);
     return """
         <tr id="list-item-%s">
           <td>%s</td>
@@ -48,7 +46,7 @@ public class TodoController {
           </td>
         </tr>
         """.formatted(created.id(), created.title(), created.description(), created.id(),
-        created.id(),created.id());
+        created.id(), created.id());
   }
 
   @DeleteMapping("/{id}")
