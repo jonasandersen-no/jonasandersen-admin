@@ -18,6 +18,7 @@
     <module>admin-core</module>
     <module>admin-app</module>
     <module>admin-details</module>
+    <module>admin-test</module>
   </modules>
 
   <dependencyManagement>
@@ -25,6 +26,11 @@
       <dependency>
         <groupId>no.jonasandersen</groupId>
         <artifactId>admin-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>no.jonasandersen</groupId>
+        <artifactId>admin-test</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

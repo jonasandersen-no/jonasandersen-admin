@@ -1,12 +1,9 @@
 package no.jonasandersen.admin;
 
-import org.junit.jupiter.api.Tag;
+import no.jonasandersen.admin.config.IoBasedTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-@Tag("integration")
-class AdminApplicationTests {
+class AdminApplicationTests extends IoBasedTest {
 
 	@Test
 	void contextLoads() {

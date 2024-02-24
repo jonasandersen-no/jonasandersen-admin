@@ -79,6 +79,12 @@
       <groupId>no.jonasandersen</groupId>
       <artifactId>admin-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>no.jonasandersen</groupId>
+      <artifactId>admin-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>
