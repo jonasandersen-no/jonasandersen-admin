@@ -12,9 +12,6 @@ class MinecraftInstanceTest {
   void ipAddressIsValidFormat() {
     assertThatCode(() -> new MinecraftInstance("Test", "127.0.0.1"))
         .doesNotThrowAnyException();
-
-    assertThatCode(() -> new MinecraftInstance().setIp("127.0.0.1"))
-        .doesNotThrowAnyException();
   }
 
   @Test
@@ -22,7 +19,5 @@ class MinecraftInstanceTest {
     assertThatThrownBy(() -> new MinecraftInstance("Test", "127.0.0.1.1"))
         .isInstanceOf(IllegalArgumentException.class);
 
-    assertThatThrownBy(() -> new MinecraftInstance().setIp("127.0.0.1.1"))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 }

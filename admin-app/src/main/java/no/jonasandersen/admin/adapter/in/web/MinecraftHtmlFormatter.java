@@ -10,6 +10,6 @@ public class MinecraftHtmlFormatter {
     return """
         <p> Name: %s </p>
         <p> IP: %s </p>
-        """.formatted(minecraftInstance.getName(), minecraftInstance.getIp());
+        """.formatted(minecraftInstance.getName(), minecraftInstance.getIp().value());
   }
 }

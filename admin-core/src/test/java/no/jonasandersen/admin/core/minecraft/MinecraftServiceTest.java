@@ -17,10 +17,5 @@ public class MinecraftServiceTest {
       assertThat(service.findMinecraftInstance().getName()).startsWith("minecraft-auto-config-");
     }
 
-    @Test
-    void ipIsFormattedCorrectly() {
-      assertThat(service.findMinecraftInstance().getIp()).matches(
-          "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
-    }
   }
 }
