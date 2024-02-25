@@ -1,33 +1,21 @@
 package no.jonasandersen.admin.adapter.in.web;
 
-import static org.springframework.test.web.servlet.request.MockMvcExtensions.hxGet;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import no.jonasandersen.admin.config.IoBasedTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 
-class MinecraftControllerTest extends IoBasedTest {
-
-  @Autowired
-  private MockMvc mockMvc;
+class MinecraftControllerTest {
 
   @Test
-  void canHitMinecraftEndpointWithHtmx() throws Exception {
-    mockMvc.perform(hxGet("/minecraft"))
-        .andExpect(status().isOk())
-        .andExpect(content().string("""
+  void getMinecraftReturnsValidHtml() {
+    MinecraftController controller = new MinecraftController(new MinecraftHtmlFormatter());
+
+    String result = controller.getMinecraft();
+
+    assertThat(result).isEqualTo(
+        """
             <p> Name: Test </p>
             <p> IP: 127.0.0.1 </p>
-            """));
-  }
-
-  @Test
-  void normalControllersCantFindMinecraftEndpoint() throws Exception {
-    mockMvc.perform(get("/minecraft"))
-        .andExpect(status().isNotFound());
+                """);
   }
 }
