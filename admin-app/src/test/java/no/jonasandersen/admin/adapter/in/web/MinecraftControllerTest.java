@@ -33,6 +33,6 @@ class MinecraftControllerTest {
 
     String result = controller.postMinecraft();
 
-    assertThat(result).isEqualTo("Stop server");
+    assertThat(result).isEqualTo("Start server");
   }
 }
