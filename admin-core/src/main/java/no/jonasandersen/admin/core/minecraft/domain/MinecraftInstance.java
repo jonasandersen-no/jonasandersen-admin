@@ -1,10 +1,17 @@
 package no.jonasandersen.admin.core.minecraft.domain;
 
 
+import jakarta.validation.constraints.NotNull;
+
 public class MinecraftInstance {
 
+  @NotNull
   private String name;
+
+  @NotNull
   private Ip ip;
+
+  @NotNull
   private String status;
 
   public MinecraftInstance() {
