@@ -8,7 +8,7 @@ public class TestServerApi implements ServerApi {
 
   @Override
   public MinecraftInstance listServerInfo() {
-    return new MinecraftInstance("minecraft-auto-config-1", "127.0.0.1");
+    return new MinecraftInstance("minecraft-auto-config-1", "127.0.0.1", "running");
   }
 }
 

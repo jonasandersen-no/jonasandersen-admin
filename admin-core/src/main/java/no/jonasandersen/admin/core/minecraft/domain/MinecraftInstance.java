@@ -23,6 +23,12 @@ public class MinecraftInstance {
     this.ip = new Ip(ip);
   }
 
+  public MinecraftInstance(String name, String ip, String status) {
+    this.name = name;
+    this.ip = new Ip(ip);
+    this.status = status;
+  }
+
   public String getName() {
     return name;
   }

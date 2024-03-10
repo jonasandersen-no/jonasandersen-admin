@@ -24,24 +24,23 @@ public class MinecraftHtmlFormatter {
       return handleError(errors);
     }
 
-    return """
-        <p> Name: %s </p>
-        <p> IP: %s </p>
-        <p> Status: %s </p>
-        """.formatted(minecraftInstance.getName(), minecraftInstance.getIp().value(),
-        minecraftInstance.getStatus());
+    return STR."""
+        <p> Name: \{minecraftInstance.getName()} </p>
+        <p> IP: \{minecraftInstance.getIp().value()} </p>
+        <p> Status: \{minecraftInstance.getStatus()} </p>
+        """;
   }
 
   private static String handleError(Errors errors) {
     List<String> errorsHtml = new ArrayList<>();
     List<FieldError> fieldErrors = errors.getFieldErrors();
     for (FieldError error : fieldErrors) {
-      errorsHtml.add("<p>" + error.getField() + ": " + error.getDefaultMessage() + "</p>");
+      errorsHtml.add(STR."<p>\{error.getField()}: \{error.getDefaultMessage()}</p>");
     }
-    return """
-        <h2> Failed to validate %s </h2>
-        %s
-        """.formatted(fieldErrors.getFirst().getObjectName(), String.join("", errorsHtml));
+    return STR."""
+        <h2> Failed to validate \{fieldErrors.getFirst().getObjectName()} </h2>
+        \{String.join("", errorsHtml)}
+        """;
   }
 
 }

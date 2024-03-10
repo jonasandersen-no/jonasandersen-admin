@@ -21,6 +21,7 @@ class MinecraftControllerTest {
         """
             <p> Name: minecraft-auto-config-1 </p>
             <p> IP: 127.0.0.1 </p>
+            <p> Status: running </p>
                 """);
   }
 }
