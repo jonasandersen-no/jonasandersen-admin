@@ -13,4 +13,8 @@ private final ServerApi serverApi;
   public MinecraftInstance findMinecraftInstance() {
     return serverApi.listServerInfo();
   }
+
+  public void startMinecraftInstance() {
+
+  }
 }

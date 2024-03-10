@@ -4,6 +4,7 @@ import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import no.jonasandersen.admin.core.minecraft.MinecraftService;
 import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,4 +25,14 @@ public class MinecraftController {
   public String getMinecraft() {
     return formatter.format(service.findMinecraftInstance());
   }
+
+  @PostMapping
+  @HxRequest
+  public String postMinecraft() {
+    service.startMinecraftInstance();
+    return "Stop server";
+//    return formatter.format(instance);
+  }
+
+
 }
