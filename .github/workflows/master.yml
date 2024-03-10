@@ -28,7 +28,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build with Maven
-        run: mvn clean package -Pnative --enable-preview
+        run: mvn clean package -Pnative
 
       - name: Push Images to Docker Registry
         run: docker push -a bjoggis/jonasandersen-admin
