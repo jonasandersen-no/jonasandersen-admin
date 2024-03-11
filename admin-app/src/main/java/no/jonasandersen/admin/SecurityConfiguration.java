@@ -1,7 +1,10 @@
 package no.jonasandersen.admin;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -10,7 +13,20 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
   @Bean
+  @Profile("prod")
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(authorizeRequests ->
+            authorizeRequests.anyRequest().authenticated()
+        )
+        .oauth2Login(withDefaults())
+        .oauth2Client(withDefaults());
+    return http.build();
+  }
+
+  @Bean
+  @Profile("dev")
+  SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests.anyRequest().permitAll()
