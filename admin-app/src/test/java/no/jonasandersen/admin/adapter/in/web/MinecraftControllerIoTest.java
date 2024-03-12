@@ -1,5 +1,6 @@
 package no.jonasandersen.admin.adapter.in.web;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -8,6 +9,7 @@ import no.jonasandersen.admin.config.IoBasedTest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 class MinecraftControllerIoTest extends IoBasedTest {
@@ -19,12 +21,14 @@ class MinecraftControllerIoTest extends IoBasedTest {
   class Get {
 
     @Test
+    @WithMockUser
     void canHitMinecraftEndpointWithHtmx() throws Exception {
       mockMvc.perform(get("/minecraft").header("HX-Request", "GET"))
           .andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser
     void normalControllersCantFindMinecraftEndpoint() throws Exception {
       mockMvc.perform(get("/minecraft"))
           .andExpect(status().isNotFound());
@@ -35,14 +39,18 @@ class MinecraftControllerIoTest extends IoBasedTest {
   class Post {
 
     @Test
+    @WithMockUser
     void canPostToMinecraftEndpointWithHtmx() throws Exception {
-      mockMvc.perform(post("/minecraft").header("HX-Request", "POST"))
+      mockMvc.perform(post("/minecraft")
+              .with(csrf())
+              .header("HX-Request", "POST"))
           .andExpect(status().isOk());
     }
 
     @Test
+    @WithMockUser
     void normalControllersCantPostToMinecraftEndpoint() throws Exception {
-      mockMvc.perform(post("/minecraft"))
+      mockMvc.perform(post("/minecraft").with(csrf()))
           .andExpect(status().isNotFound());
     }
 
