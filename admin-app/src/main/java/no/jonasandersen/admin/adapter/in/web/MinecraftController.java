@@ -1,6 +1,5 @@
 package no.jonasandersen.admin.adapter.in.web;
 
-import io.github.wimdeblauwe.htmx.spring.boot.mvc.HtmxResponse;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxTrigger;
 import no.jonasandersen.admin.core.minecraft.MinecraftService;
@@ -31,13 +30,13 @@ public class MinecraftController {
 
   @PostMapping
   @HxRequest
-  @HxTrigger("myEvent")
+  @HxTrigger("my-event")
   public String postMinecraft() {
     MinecraftInstance minecraftInstance = service.findMinecraftInstance();
 
     isRunning = !isRunning;
 
-    if(isRunning) {
+    if (isRunning) {
       return "Start server";
     }
 

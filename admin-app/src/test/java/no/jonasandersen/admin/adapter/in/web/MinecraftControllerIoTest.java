@@ -3,6 +3,7 @@ package no.jonasandersen.admin.adapter.in.web;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import no.jonasandersen.admin.config.IoBasedTest;
@@ -45,6 +46,16 @@ class MinecraftControllerIoTest extends IoBasedTest {
               .with(csrf())
               .header("HX-Request", "POST"))
           .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser
+    void postHtmlxReturnsHxTriggerHeader() throws Exception {
+      mockMvc.perform(post("/minecraft")
+              .with(csrf())
+              .header("HX-Request", "POST"))
+          .andExpect(status().isOk())
+          .andExpect(header().string("HX-Trigger", "my-event"));
     }
 
     @Test
