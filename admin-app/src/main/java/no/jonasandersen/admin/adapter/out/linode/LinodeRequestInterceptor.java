@@ -20,10 +20,10 @@ public class LinodeRequestInterceptor implements ClientHttpRequestInterceptor {
   private static final String AUTH_URL = "https://login.bjoggis.com";
   private static final Logger logger = LoggerFactory.getLogger(LinodeRequestInterceptor.class);
 
-  @Value("${spring.security.oauth2.client.registration.spring.client-id}")
+  @Value("${spring.security.oauth2.client.registration.spring.client-id:}")
   private String clientId;
 
-  @Value("${spring.security.oauth2.client.registration.spring.client-secret}")
+  @Value("${spring.security.oauth2.client.registration.spring.client-secret:}")
   private String clientSecret;
 
   private Date expires;
