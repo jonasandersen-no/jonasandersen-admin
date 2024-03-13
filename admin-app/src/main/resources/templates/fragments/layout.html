@@ -27,6 +27,14 @@
       justify-content: center;
     }
 
+    footer {
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      display: flex;
+      justify-content: center;
+    }
+
     nav ul {
       display: flex;
       list-style: none;
@@ -46,34 +54,40 @@
       color: #0056b3;
     }
 
-    #content {
-      margin: auto;
-      width: 80%;
-      background: #f8f9fa;
+    html, body {
+      margin: 0;
+      height: 100%;
+      min-height: 100%;
     }
 
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    header,
+    footer {
+      flex: none;
+    }
 
   </style>
 </head>
 <body class="sans-regular">
-<div class="flex flex-col" style="min-height: 100vh">
-  <div>
-    <nav>
-      <div>
-        <ul>
-          <li><a th:href="@{/}">Home</a></li>
-          <li><a th:href="@{/linode}">Linode</a></li>
-          <li><a th:href="@{/test}">Test</a></li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+<header>
+  <nav>
+    <ul>
+      <li><a th:href="@{/}">Home</a></li>
+      <li><a th:href="@{/linode}">Linode</a></li>
+      <li><a th:href="@{/test}">Test</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <main th:replace="${main}">MAIN</main>
-  <footer class="footer mt-auto debug">
-    <p class="text-muted">Place sticky footer content here.</p>
-  </footer>
-</div>
+<main th:replace="${main}">MAIN</main>
+<footer class="footer mt-auto">
+  <p class="text-muted">Jonas Bjørge Andersen &copy; - Version <span
+      th:text="${@buildProperties.getVersion()}"></span></p>
+</footer>
 
 </body>
 </html>
