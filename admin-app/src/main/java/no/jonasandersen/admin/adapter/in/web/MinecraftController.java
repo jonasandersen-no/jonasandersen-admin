@@ -25,7 +25,13 @@ public class MinecraftController {
   @GetMapping
   @HxRequest
   public String getMinecraft() {
-    return formatter.format(service.findMinecraftInstance());
+    MinecraftInstance instance = service.findMinecraftInstance();
+    if (instance.isEmpty()) {
+      return """
+          <p> No server is running </p>
+          """;
+    }
+    return formatter.format(instance);
   }
 
   @PostMapping

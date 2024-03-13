@@ -52,4 +52,8 @@ public class MinecraftInstance {
   public void setStatus(String status) {
     this.status = status;
   }
+
+  public boolean isEmpty() {
+    return name == null && ip == null && status == null;
+  }
 }
