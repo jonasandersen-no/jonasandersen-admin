@@ -78,3 +78,12 @@
 .btn:hover {
   border: 2px solid #0056b3;
 }
+
+table, th, td {
+  border: 1px solid;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}

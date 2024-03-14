@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::main})}"
+      lang="en">
+
+<head>
+  <title>Shortcut</title>
+  <meta charset=" UTF-8"/>
+</head>
+<body>
+<main >
+  <h2 class="text-center sans-bold">Shortcuts</h2>
+
+  <div class="flex flex-center text-center" style="width: 50%; margin: auto;">
+    <table>
+      <thead>
+      <tr>
+        <th>Project</th>
+        <th>Shortcut</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody id="table-body">
+      <tr th:each="entry : ${shortcuts}" th:id="|list-item-${entry.id()}|">
+        <td th:text="${entry.project()}"></td>
+        <td th:text="${entry.shortcut()}"></td>
+        <td th:text="${entry.description()}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+</body>
+
+</html>
