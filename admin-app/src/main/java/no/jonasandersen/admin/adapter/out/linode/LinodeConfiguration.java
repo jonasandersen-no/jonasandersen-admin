@@ -16,6 +16,7 @@ class LinodeConfiguration {
         .requestInterceptor(linodeRequestInterceptor)
         .build();
 
+
     HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(
         RestClientAdapter.create(client)).build();
 
