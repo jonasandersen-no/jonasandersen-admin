@@ -17,6 +17,10 @@ public class ShortcutService {
     return repository.save(shortcut);
   }
 
+  public List<Shortcut> getShortcutsByProject(String project) {
+    return repository.findByProject(project);
+  }
+
   public List<Shortcut> getShortcuts() {
     return repository.findAll();
   }

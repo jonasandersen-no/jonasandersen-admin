@@ -5,36 +5,62 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import fixture.TestShortcutRepository;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class ShortcutServiceTest {
 
-  @Test
-  void shortcutCreatedIsCorrect() {
-    ShortcutService service = new ShortcutService(new TestShortcutRepository());
-    Shortcut shortcut = service.createShortcut("Test", "Ctrl+Shift+T",
-        "Open new tab");
+  @Nested
+  class Create {
 
-    assertThat(shortcut.project()).isEqualTo("Test");
-    assertThat(shortcut.shortcut()).isEqualTo("Ctrl+Shift+T");
-    assertThat(shortcut.description()).isEqualTo("Open new tab");
+    @Test
+    void shortcutCreatedIsCorrect() {
+      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      Shortcut shortcut = service.createShortcut("Test", "Ctrl+Shift+T",
+          "Open new tab");
+
+      assertThat(shortcut.project()).isEqualTo("Test");
+      assertThat(shortcut.shortcut()).isEqualTo("Ctrl+Shift+T");
+      assertThat(shortcut.description()).isEqualTo("Open new tab");
+    }
+
+    @Test
+    void shortcutCreatedAddsOneToListOfShortcuts() {
+      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      service.createShortcut("Test", "Ctrl+Shift+T",
+          "Open new tab");
+
+      assertThat(service.getShortcuts()).hasSize(1);
+    }
   }
 
-  @Test
-  void shortcutCreatedAddsOneToListOfShortcuts() {
-    ShortcutService service = new ShortcutService(new TestShortcutRepository());
-    service.createShortcut("Test", "Ctrl+Shift+T",
-        "Open new tab");
+  @Nested
+  class Find {
 
-    assertThat(service.getShortcuts()).hasSize(1);
-  }
+    @Test
+    void findShortcutsByProjectReturnsCorrectShortcuts() {
+      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      service.createShortcut("Test", "Ctrl+Shift+T",
+          "Open new tab");
+      service.createShortcut("Test2", "Ctrl+Shift+N",
+          "Open new window");
+      service.createShortcut("Test3", "Ctrl+Shift+W",
+          "Close window");
 
-  @Test
-  void listShortcutsContainsCreatedShortcut() {
-    ShortcutService service = new ShortcutService(new TestShortcutRepository());
-    Shortcut shortcut = service.createShortcut("Test", "Ctrl+Shift+T",
-        "Open new tab");
+      assertThat(service.getShortcutsByProject("Test")).hasSize(1);
+    }
 
-    assertThat(service.getShortcuts()).contains(shortcut);
+    @Test
+    void findShortcutsReturnsAllShortcuts() {
+      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      service.createShortcut("Test", "Ctrl+Shift+T",
+          "Open new tab");
+      service.createShortcut("Test2", "Ctrl+Shift+N",
+          "Open new window");
+      service.createShortcut("Test3", "Ctrl+Shift+W",
+          "Close window");
+
+      assertThat(service.getShortcuts()).hasSize(3);
+    }
   }
 }

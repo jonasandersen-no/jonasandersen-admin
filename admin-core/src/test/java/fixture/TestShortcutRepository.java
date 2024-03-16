@@ -19,4 +19,17 @@ public class TestShortcutRepository implements ShortcutRepository {
   public List<Shortcut> findAll() {
     return shortcuts;
   }
+
+  /**
+   * Find all shortcuts by project. Is case-insensitive.
+   *
+   * @param project The project to find shortcuts for
+   * @return An unmodifiable list of shortcuts
+   */
+  @Override
+  public List<Shortcut> findByProject(String project) {
+    return shortcuts.stream()
+        .filter(shortcut -> shortcut.project().equalsIgnoreCase(project))
+        .toList();
+  }
 }

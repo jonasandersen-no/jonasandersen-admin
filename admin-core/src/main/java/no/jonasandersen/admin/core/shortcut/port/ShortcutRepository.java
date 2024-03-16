@@ -8,4 +8,6 @@ public interface ShortcutRepository {
   Shortcut save(Shortcut shortcut);
 
   List<Shortcut> findAll();
+
+  List<Shortcut> findByProject(String project);
 }

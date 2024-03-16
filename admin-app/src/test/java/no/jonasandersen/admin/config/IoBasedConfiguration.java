@@ -18,7 +18,9 @@ class IoBasedConfiguration {
 
   @Bean
   @ServiceConnection
-  MariaDBContainer<?> mysqlContainer() {
-    return new MariaDBContainer<>(DockerImageName.parse("mariadb:latest"));
+  @SuppressWarnings("resource")
+  MariaDBContainer<?> mariaDBContainer() {
+    return new MariaDBContainer<>(DockerImageName.parse("mariadb:latest"))
+        .withDatabaseName("admin");
   }
 }

@@ -19,17 +19,27 @@ public class JdbcShortcutRepository implements ShortcutRepository {
   @Override
   public Shortcut save(Shortcut shortcut) {
     Shortcut entity = Shortcut.from(shortcut);
-    jdbcClient.sql("insert into shortcut(project, shortcut, description) values(?, ?, ?)")
+    int update = jdbcClient.sql("""
+          insert into shortcut(project, shortcut, description) \
+          values(?, ?, ?)""")
         .params(entity.project(), entity.shortcut(), entity.description())
         .update();
 
-    logger.info("Saved shortcut: {}", entity);
+    logger.info("Inserted {} rows", update);
     return entity;
   }
 
   @Override
   public List<Shortcut> findAll() {
     return jdbcClient.sql("select * from shortcut")
+        .query(Shortcut.class)
+        .list();
+  }
+
+  @Override
+  public List<Shortcut> findByProject(String project) {
+    return jdbcClient.sql("select * from shortcut where project = ?")
+        .params(project)
         .query(Shortcut.class)
         .list();
   }
