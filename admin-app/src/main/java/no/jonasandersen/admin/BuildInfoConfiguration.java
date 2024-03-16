@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("intellij")
+@Profile({"intellij", "integration"})
 public class BuildInfoConfiguration {
 
   @Bean
