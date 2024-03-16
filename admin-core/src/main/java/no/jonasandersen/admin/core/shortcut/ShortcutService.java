@@ -14,8 +14,7 @@ public class ShortcutService {
 
   public Shortcut createShortcut(String project, String keymap, String description) {
     Shortcut shortcut = new Shortcut(null, project, keymap, description);
-    repository.save(shortcut);
-    return shortcut;
+    return repository.save(shortcut);
   }
 
   public List<Shortcut> getShortcuts() {
