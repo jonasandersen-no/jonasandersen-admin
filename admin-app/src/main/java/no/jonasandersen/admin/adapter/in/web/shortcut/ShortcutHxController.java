@@ -2,9 +2,9 @@ package no.jonasandersen.admin.adapter.in.web.shortcut;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import java.util.List;
+import no.jonasandersen.admin.ShortcutHtmlFormatter;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.domain.Shortcut;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +34,7 @@ public class ShortcutHxController {
             && shortcut1.shortcut().equalsIgnoreCase(shortcut)
             && shortcut1.description().equalsIgnoreCase(description)).findFirst().orElseThrow();
 
-    return tableRow(shortcutFound);
+    return ShortcutHtmlFormatter.tableRow(shortcutFound);
   }
 
   @PutMapping("/edit/{id}")
@@ -49,7 +49,7 @@ public class ShortcutHxController {
         .filter(shortcut2 -> shortcut2.id().equals(id))
         .findFirst().orElseThrow();
 
-    return tableRow(shortcutFound);
+    return ShortcutHtmlFormatter.tableRow(shortcutFound);
   }
 
   @GetMapping("/edit/cancel/{id}")
@@ -60,7 +60,7 @@ public class ShortcutHxController {
         .filter(shortcut -> shortcut.id().equals(id))
         .findFirst().orElseThrow();
 
-    return tableRow(shortcut1);
+    return ShortcutHtmlFormatter.tableRow(shortcut1);
   }
 
   @GetMapping("/edit/{id}")
@@ -103,22 +103,4 @@ public class ShortcutHxController {
         """;
   }
 
-  private static @NotNull String tableRow(Shortcut shortcutFound) {
-    return STR."""
-        <tr id="list-item-\{shortcutFound.id()}">
-        <td>\{shortcutFound.project()}</td>
-        <td>\{shortcutFound.shortcut()}</td>
-        <td>\{shortcutFound.description()}</td>
-        <td>
-        <button
-            hx-get="/hx/shortcut/edit/\{shortcutFound.id()}"
-            hx-target="#list-item-\{shortcutFound.id()}"
-            hx-swap="outerHTML"
-            class="btn">
-            Edit
-          </button>
-        </td>
-        </tr>
-        """;
-  }
 }

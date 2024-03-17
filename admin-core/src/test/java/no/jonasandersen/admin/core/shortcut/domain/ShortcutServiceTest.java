@@ -16,7 +16,7 @@ class ShortcutServiceTest {
 
     @Test
     void shortcutCreatedIsCorrect() {
-      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      ShortcutService service = new ShortcutService(new TestShortcutRepository(), List.of());
       Shortcut shortcut = service.createShortcut("Test", "Ctrl+Shift+T",
           "Open new tab");
 
@@ -27,7 +27,7 @@ class ShortcutServiceTest {
 
     @Test
     void shortcutCreatedAddsOneToListOfShortcuts() {
-      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      ShortcutService service = new ShortcutService(new TestShortcutRepository(), List.of());
       service.createShortcut("Test", "Ctrl+Shift+T",
           "Open new tab");
 
@@ -40,7 +40,7 @@ class ShortcutServiceTest {
 
     @Test
     void findShortcutsByProjectReturnsCorrectShortcuts() {
-      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      ShortcutService service = new ShortcutService(new TestShortcutRepository(), List.of());
       service.createShortcut("Test", "Ctrl+Shift+T",
           "Open new tab");
       service.createShortcut("Test2", "Ctrl+Shift+N",
@@ -53,7 +53,7 @@ class ShortcutServiceTest {
 
     @Test
     void findShortcutsReturnsAllShortcuts() {
-      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      ShortcutService service = new ShortcutService(new TestShortcutRepository(), List.of());
       service.createShortcut("Test", "Ctrl+Shift+T",
           "Open new tab");
       service.createShortcut("Test2", "Ctrl+Shift+N",
@@ -70,7 +70,7 @@ class ShortcutServiceTest {
 
     @Test
     void updateShortcutReturnsCorrectShortcut() {
-      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      ShortcutService service = new ShortcutService(new TestShortcutRepository(), List.of());
       Shortcut shortcut = service.createShortcut("UPDATE-TEST", "Ctrl+Shift+T",
           "Open new tab");
 

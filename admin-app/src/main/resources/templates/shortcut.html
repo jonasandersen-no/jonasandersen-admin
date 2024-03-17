@@ -11,7 +11,10 @@
 <main>
   <h2 class="text-center sans-bold">Shortcuts</h2>
   <div class="text-center" style="width: 50%; margin: auto;">
-    <div class="flex flex-center text-center">
+    <div class="flex flex-center text-center"
+         hx-ext="ws"
+         ws-connect="/ws/shortcut"
+    >
       <table>
         <thead>
         <tr>
@@ -25,7 +28,10 @@
           <td th:text="${entry.project()}"></td>
           <td th:text="${entry.shortcut()}"></td>
           <td th:text="${entry.description()}"></td>
-          <td><button class="btn" hx-swap="outerHTML" th:hx-target="|#list-item-${entry.id()}|" th:hx-get="|/hx/shortcut/edit/${entry.id()}|">Edit</button>
+          <td>
+            <button class="btn" hx-swap="outerHTML" th:hx-target="|#list-item-${entry.id()}|"
+                    th:hx-get="|/hx/shortcut/edit/${entry.id()}|">Edit
+            </button>
           </td>
         </tr>
         </tbody>
