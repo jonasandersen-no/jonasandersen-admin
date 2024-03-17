@@ -10,4 +10,6 @@ public interface ShortcutRepository {
   List<Shortcut> findAll();
 
   List<Shortcut> findByProject(String project);
+
+  void update(Shortcut shortcut);
 }

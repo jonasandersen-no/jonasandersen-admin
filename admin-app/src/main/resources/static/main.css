@@ -87,3 +87,9 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+
+input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

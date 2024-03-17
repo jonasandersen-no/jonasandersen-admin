@@ -20,8 +20,8 @@ public class JdbcShortcutRepository implements ShortcutRepository {
   public Shortcut save(Shortcut shortcut) {
     Shortcut entity = Shortcut.from(shortcut);
     int update = jdbcClient.sql("""
-          insert into shortcut(project, shortcut, description) \
-          values(?, ?, ?)""")
+            insert into shortcut(project, shortcut, description) \
+            values(?, ?, ?)""")
         .params(entity.project(), entity.shortcut(), entity.description())
         .update();
 
@@ -42,5 +42,18 @@ public class JdbcShortcutRepository implements ShortcutRepository {
         .params(project)
         .query(Shortcut.class)
         .list();
+  }
+
+  @Override
+  public void update(Shortcut shortcut) {
+    int update = jdbcClient.sql("""
+            update shortcut \
+            set project = ?, shortcut = ?, description = ? \
+            where id = ?
+            """)
+        .params(shortcut.project(), shortcut.shortcut(), shortcut.description(), shortcut.id())
+        .update();
+
+    logger.info("Updated {} rows", update);
   }
 }

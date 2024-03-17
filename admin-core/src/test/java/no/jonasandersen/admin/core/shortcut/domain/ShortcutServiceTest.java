@@ -4,6 +4,7 @@ package no.jonasandersen.admin.core.shortcut.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import fixture.TestShortcutRepository;
+import java.util.List;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -61,6 +62,29 @@ class ShortcutServiceTest {
           "Close window");
 
       assertThat(service.getShortcuts()).hasSize(3);
+    }
+  }
+
+  @Nested
+  class Update {
+
+    @Test
+    void updateShortcutReturnsCorrectShortcut() {
+      ShortcutService service = new ShortcutService(new TestShortcutRepository());
+      Shortcut shortcut = service.createShortcut("UPDATE-TEST", "Ctrl+Shift+T",
+          "Open new tab");
+
+      service.updateShortcut(new Shortcut(shortcut.id(), "UPDATE-TEST", "Ctrl+Shift+L",
+          "Search"));
+
+      List<Shortcut> shortcuts = service.getShortcuts();
+      Shortcut updated = shortcuts.stream()
+          .filter(shortcut1 -> shortcut1.id().equals(shortcut.id()))
+          .findFirst().orElseThrow();
+
+      assertThat(updated.project()).isEqualTo("UPDATE-TEST");
+      assertThat(updated.shortcut()).isEqualTo("Ctrl+Shift+L");
+      assertThat(updated.description()).isEqualTo("Search");
     }
   }
 }

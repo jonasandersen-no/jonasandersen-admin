@@ -73,4 +73,30 @@ class JdbcShortcutRepositoryTest extends IoBasedTest {
       assertThat(shortcutRepository.findByProject("FindByProject1")).hasSize(1);
     }
   }
+
+  @Nested
+  class Update {
+
+      @Test
+      void updateShortcutInDatabase() {
+        Shortcut saved = shortcutRepository.save(
+            new Shortcut(null, "Update", "Ctrl+Shift+T", "Open new tab"));
+
+        Shortcut entity = shortcutRepository.findAll().stream()
+            .filter(shortcut -> shortcut.project().equalsIgnoreCase(saved.project())
+                && shortcut.shortcut().equalsIgnoreCase(saved.shortcut())
+                && shortcut.description().equalsIgnoreCase(saved.description()))
+            .findFirst().orElseThrow();
+
+        shortcutRepository.update(new Shortcut(entity.id(), "Update", "Ctrl+Shift+L", "Search"));
+
+        assertThat(jdbcClient.sql("""
+                select count(id) from shortcut \
+                where project = ? and shortcut = ? and description = ?
+                """)
+            .params("Update", "Ctrl+Shift+L", "Search")
+            .query(Integer.class)
+            .single()).isEqualTo(1);
+      }
+  }
 }

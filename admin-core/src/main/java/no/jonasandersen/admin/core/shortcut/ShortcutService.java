@@ -24,4 +24,8 @@ public class ShortcutService {
   public List<Shortcut> getShortcuts() {
     return repository.findAll();
   }
+
+  public void updateShortcut(Shortcut shortcut) {
+    repository.update(shortcut);
+  }
 }
