@@ -2,9 +2,11 @@ package no.jonasandersen.admin.adapter.in.web.shortcut;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import java.util.List;
-import no.jonasandersen.admin.ShortcutHtmlFormatter;
+import java.util.stream.Collectors;
+import no.jonasandersen.admin.core.shortcut.ShortcutHtmlFormatter;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.domain.Shortcut;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +24,18 @@ public class ShortcutHxController {
     this.service = service;
   }
 
+  @GetMapping("/all")
+  @HxRequest
+  String getAllShortcuts() {
+    String collect = service.getShortcuts().stream()
+        .map(ShortcutHtmlFormatter::asTableRow)
+        .collect(Collectors.joining());
+    return collect;
+  }
+
   @PostMapping
   @HxRequest
-  public String postShortcut(String project, String shortcut, String description) {
+  public void postShortcut(String project, String shortcut, String description) {
     Shortcut created = service.createShortcut(project, shortcut, description);
 
     List<Shortcut> shortcuts = service.getShortcuts();
@@ -34,7 +45,14 @@ public class ShortcutHxController {
             && shortcut1.shortcut().equalsIgnoreCase(shortcut)
             && shortcut1.description().equalsIgnoreCase(description)).findFirst().orElseThrow();
 
-    return ShortcutHtmlFormatter.tableRow(shortcutFound);
+//    return ShortcutHtmlFormatter.asTableRow(shortcutFound);
+  }
+
+  @DeleteMapping("/{id}")
+  @HxRequest
+  String deleteShortcut(@PathVariable Long id) {
+    service.deleteShortcut(id);
+    return "";
   }
 
   @PutMapping("/edit/{id}")
@@ -49,7 +67,7 @@ public class ShortcutHxController {
         .filter(shortcut2 -> shortcut2.id().equals(id))
         .findFirst().orElseThrow();
 
-    return ShortcutHtmlFormatter.tableRow(shortcutFound);
+    return ShortcutHtmlFormatter.asTableRow(shortcutFound);
   }
 
   @GetMapping("/edit/cancel/{id}")
@@ -60,7 +78,7 @@ public class ShortcutHxController {
         .filter(shortcut -> shortcut.id().equals(id))
         .findFirst().orElseThrow();
 
-    return ShortcutHtmlFormatter.tableRow(shortcut1);
+    return ShortcutHtmlFormatter.asTableRow(shortcut1);
   }
 
   @GetMapping("/edit/{id}")

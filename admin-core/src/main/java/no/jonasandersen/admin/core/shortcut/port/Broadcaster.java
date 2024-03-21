@@ -7,4 +7,6 @@ public interface Broadcaster {
   void onShortcutCreated(Shortcut shortcut);
 
   void onShortcutUpdated(Shortcut shortcut);
+
+  void onShortcutDeleted(Long id);
 }

@@ -42,4 +42,9 @@ public class TestShortcutRepository implements ShortcutRepository {
     shortcuts.removeIf(s -> s.id().equals(shortcut.id()));
     shortcuts.add(shortcut);
   }
+
+  @Override
+  public void delete(Long id) {
+    shortcuts.removeIf(shortcut -> shortcut.id().equals(id));
+  }
 }

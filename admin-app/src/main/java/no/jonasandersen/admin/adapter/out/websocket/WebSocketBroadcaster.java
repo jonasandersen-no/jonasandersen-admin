@@ -2,9 +2,8 @@ package no.jonasandersen.admin.adapter.out.websocket;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import no.jonasandersen.admin.ShortcutHtmlFormatter;
+import no.jonasandersen.admin.core.shortcut.ShortcutHtmlFormatter;
 import no.jonasandersen.admin.core.shortcut.domain.Shortcut;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
 import org.slf4j.Logger;
@@ -22,24 +21,56 @@ public class WebSocketBroadcaster extends TextWebSocketHandler implements Broadc
   private static final Logger logger = LoggerFactory.getLogger(WebSocketBroadcaster.class);
 
   private final Map<String, WebSocketSession> sessionMap = new ConcurrentHashMap<>();
-  private Optional<TextMessage> currentTextMessage = Optional.empty();
 
   @Override
-  public void onShortcutCreated(Shortcut shortcut) {
-    String html = ShortcutHtmlFormatter.tableRow(shortcut);
+  // language=HTML
+  public void onShortcutCreated(Shortcut shortcutFound) {
+    var html = STR."""
+        <tr hx-swap-oob="afterend:#table-body">
+          <tr>
+          <td>\{shortcutFound.project()}</td>
+          <td>\{shortcutFound.shortcut()}</td>
+          <td>\{shortcutFound.description()}</td>
+          <td>
+            <button
+                hx-get="/hx/shortcut/edit/\{shortcutFound.id()}"
+                hx-target="#list-item-\{shortcutFound.id()}"
+                hx-swap="outerHTML"
+                class="btn">
+                Edit
+              </button>
+              <button
+                hx-delete="/hx/shortcut/\{shortcutFound.id()}"
+                hx-target="#list-item-\{shortcutFound.id()}"
+                hx-swap="outerHTML"
+                hx-confirm='Are you sure you want to delete this shortcut?'
+                class="btn">
+                Delete
+              </button>
+          </td>
+          </tr>TAB
+        </tr>
 
-    TextMessage textMessage = new TextMessage(html);
-    currentTextMessage = Optional.of(textMessage);
-    sessionMap.values().forEach(session -> sendMessageViaWebSocket(session, textMessage));
+        """;
+
+    sendMessage(html);
   }
 
   @Override
   public void onShortcutUpdated(Shortcut shortcut) {
-    String html = ShortcutHtmlFormatter.tableRow(shortcut);
+    String html = ShortcutHtmlFormatter.asTableRow(shortcut);
 
-    TextMessage textMessage = new TextMessage(html);
-    currentTextMessage = Optional.of(textMessage);
-    sessionMap.values().forEach(session -> sendMessageViaWebSocket(session, textMessage));
+    sendMessage(html);
+  }
+
+  @Override
+  // language=HTML
+  public void onShortcutDeleted(Long id) {
+    var delete = STR."""
+        <delete-element hx-swap-oob="delete" id="list-item-\{id}"/>
+        """;
+    sessionMap.values()
+        .forEach(session -> sendMessageViaWebSocket(session, new TextMessage(delete)));
   }
 
   @Override
@@ -47,9 +78,12 @@ public class WebSocketBroadcaster extends TextWebSocketHandler implements Broadc
     logger.info("Websocket connection established, session ID: {}, session remote address: {}",
         session.getId(), session.getRemoteAddress());
     sessionMap.put(session.getId(), session);
-    currentTextMessage.ifPresent(message -> sendMessageViaWebSocket(session, message));
   }
 
+  private void sendMessage(String html) {
+    TextMessage textMessage = new TextMessage(html);
+    sessionMap.values().forEach(session -> sendMessageViaWebSocket(session, textMessage));
+  }
 
   private void sendMessageViaWebSocket(WebSocketSession session, TextMessage message) {
     try {

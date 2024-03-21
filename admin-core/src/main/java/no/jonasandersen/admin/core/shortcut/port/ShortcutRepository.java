@@ -12,4 +12,6 @@ public interface ShortcutRepository {
   List<Shortcut> findByProject(String project);
 
   void update(Shortcut shortcut);
+
+  void delete(Long id);
 }

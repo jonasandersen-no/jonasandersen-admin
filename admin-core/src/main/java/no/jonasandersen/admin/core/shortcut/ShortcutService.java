@@ -42,4 +42,9 @@ public class ShortcutService {
     repository.update(shortcut);
     broadcasters.forEach(broadcaster -> broadcaster.onShortcutUpdated(shortcut));
   }
+
+  public void deleteShortcut(Long id) {
+    repository.delete(id);
+    broadcasters.forEach(broadcaster -> broadcaster.onShortcutDeleted(id));
+  }
 }

@@ -56,4 +56,13 @@ public class JdbcShortcutRepository implements ShortcutRepository {
 
     logger.info("Updated {} rows", update);
   }
+
+  @Override
+  public void delete(Long id) {
+    int update = jdbcClient.sql("delete from shortcut where id = ?")
+        .params(id)
+        .update();
+
+    logger.info("Deleted {} rows", update);
+  }
 }
