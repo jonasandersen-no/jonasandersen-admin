@@ -22,7 +22,7 @@ class ShortcutControllerTest extends IoBasedTest {
     this.mockMvc
         .perform(get("/shortcut"))
         .andExpect(status().isOk())
-        .andExpect(view().name("shortcut"))
-        .andExpect(model().attributeExists("shortcuts"));
+        .andExpect(view().name("shortcut-overview"))
+        .andExpect(model().attributeExists("projectNames"));
   }
 }
