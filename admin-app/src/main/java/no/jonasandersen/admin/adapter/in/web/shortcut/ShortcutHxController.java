@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,6 +23,15 @@ public class ShortcutHxController {
 
   public ShortcutHxController(ShortcutService service) {
     this.service = service;
+  }
+
+  @GetMapping("/{project}")
+  @HxRequest
+  String getShortcuts(@PathVariable String project) {
+    List<Shortcut> shortcuts = service.getShortcutsByProject(project);
+    return shortcuts.stream()
+        .map(ShortcutHtmlFormatter::asTableRow)
+        .collect(Collectors.joining());
   }
 
   @GetMapping("/all")
@@ -79,6 +89,25 @@ public class ShortcutHxController {
         .findFirst().orElseThrow();
 
     return ShortcutHtmlFormatter.asTableRow(shortcut1);
+  }
+
+  @GetMapping("/projects")
+  @HxRequest
+  String getProjects() {
+    List<String> projects = service.getProjects();
+
+    String options = projects.stream()
+        .map(project -> STR."""
+            <option value="\{project}">\{project}</option>
+            """)
+        .collect(Collectors.joining());
+
+    return STR."""
+           <select name="project" id="project-select" hx-get="/hx/shortcut" hx-swap="innerHTML" hx-trigger="change, load" hx-target="#table-body">
+           \{options}
+           </select>
+        """;
+
   }
 
   @GetMapping("/edit/{id}")

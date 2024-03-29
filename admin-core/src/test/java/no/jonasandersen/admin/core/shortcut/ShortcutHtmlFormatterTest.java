@@ -15,7 +15,6 @@ class ShortcutHtmlFormatterTest {
 
     assertThat(formattedHtml).isEqualTo("""
         <tr id="list-item-1">
-          <td>Test</td>
           <td>Ctrl+Shift+T</td>
           <td>Open new tab</td>
           <td>

@@ -11,7 +11,6 @@ public class ShortcutHtmlFormatter {
   public static String asTableRow(Shortcut shortcutFound) {
     return STR."""
         <tr id="list-item-\{shortcutFound.id()}">
-          <td>\{shortcutFound.project()}</td>
           <td>\{shortcutFound.shortcut()}</td>
           <td>\{shortcutFound.description()}</td>
           <td>

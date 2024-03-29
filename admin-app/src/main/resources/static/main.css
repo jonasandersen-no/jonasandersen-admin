@@ -37,6 +37,10 @@
   margin-top: auto;
 }
 
+.m-auto {
+  margin: auto;
+}
+
 .text-center {
   text-align: center;
 }
@@ -92,4 +96,38 @@ input {
   padding: 0.5rem;
   border-radius: 5px;
   border: 1px solid #ccc;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab a {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Change background color of buttons on hover */
+.tab a:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab a.active {
+  background-color: #ccc;
+}
+
+.w-fit {
+  width: fit-content;
 }

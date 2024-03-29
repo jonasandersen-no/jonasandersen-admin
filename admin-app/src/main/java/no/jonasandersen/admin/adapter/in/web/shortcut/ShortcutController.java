@@ -4,6 +4,7 @@ import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class ShortcutController {
@@ -16,7 +17,13 @@ public class ShortcutController {
 
   @GetMapping("/shortcut")
   String shortcut(Model model) {
-    model.addAttribute("shortcuts", service.getShortcuts());
+    model.addAttribute("projectNames", service.getProjects());
+    return "shortcut-overview";
+  }
+
+  @GetMapping("/shortcut/{project}")
+  String shortcut(Model model, @PathVariable String project) {
+    model.addAttribute("project", project);
     return "shortcut";
   }
 

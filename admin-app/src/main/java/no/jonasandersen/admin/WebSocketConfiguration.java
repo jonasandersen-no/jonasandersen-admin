@@ -20,7 +20,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketBroadcaster, "/ws/shortcut");
+        registry.addHandler(webSocketBroadcaster, "/ws/shortcut/**");
     }
 
 }

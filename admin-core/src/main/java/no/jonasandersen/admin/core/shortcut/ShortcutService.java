@@ -47,4 +47,11 @@ public class ShortcutService {
     repository.delete(id);
     broadcasters.forEach(broadcaster -> broadcaster.onShortcutDeleted(id));
   }
+
+  public List<String> getProjects() {
+    return repository.findAll().stream()
+        .map(Shortcut::project)
+        .distinct()
+        .toList();
+  }
 }
