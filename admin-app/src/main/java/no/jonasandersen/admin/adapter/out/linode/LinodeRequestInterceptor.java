@@ -7,17 +7,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class LinodeRequestInterceptor implements ClientHttpRequestInterceptor {
 
-  private static final String AUTH_URL = "https://login.bjoggis.com";
+  private static final String AUTH_URL = "https://auth.jonasandersen.no";
   private static final Logger logger = LoggerFactory.getLogger(LinodeRequestInterceptor.class);
 
   @Value("${spring.security.oauth2.client.registration.spring.client-id:}")
@@ -46,20 +52,28 @@ public class LinodeRequestInterceptor implements ClientHttpRequestInterceptor {
         .rootUri(AUTH_URL)
         .build();
 
-    IdentityAccessTokenResource resource = null;
+    MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+    requestBody.add("grant_type", "client_credentials");
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Content-Type", "application/x-www-form-urlencoded");
+    HttpEntity<?> requestEntity = new HttpEntity<>(requestBody, headers);
+
+    ResponseEntity<IdentityAccessTokenResource> resource = null;
     try {
-      resource = restTemplate.postForObject(
-          "/oauth2/token?grant_type=client_credentials", null, IdentityAccessTokenResource.class);
+
+      resource = restTemplate.exchange("/oauth2/token", HttpMethod.POST, requestEntity,
+          IdentityAccessTokenResource.class);
     } catch (Exception e) {
       logger.info("Error getting access token", e);
     }
-    Long expiresInSeconds = resource.getExpiresIn();
+    Long expiresInSeconds = resource.getBody().getExpiresIn();
     Calendar instance = Calendar.getInstance();
 
     instance.add(Calendar.SECOND, expiresInSeconds.intValue());
 
     expires = instance.getTime();
-    return resource.getAccessToken();
+    return resource.getBody().getAccessToken();
   }
 
 }
