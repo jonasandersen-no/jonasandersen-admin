@@ -1,0 +1,6 @@
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh ./get-docker.sh
+curl -fsSL https://raw.githubusercontent.com/NotBjoggisAtAll/minecraft-compose/main/testing/docker-compse.yml -o docker-compose.yml
+mkdir "/mnt/minecraft-volume-01"
+docker compose up -d
+sleep 10

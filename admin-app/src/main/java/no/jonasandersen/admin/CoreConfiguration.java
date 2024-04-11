@@ -2,6 +2,7 @@ package no.jonasandersen.admin;
 
 import java.util.List;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
+import no.jonasandersen.admin.core.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.MinecraftService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
@@ -15,8 +16,8 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 public class CoreConfiguration {
 
   @Bean
-  MinecraftService minecraftService(ServerApi serverApi) {
-    return new MinecraftService(serverApi);
+  MinecraftService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
+    return new MinecraftService(serverApi, linodeVolumeService);
   }
 
   @Bean
@@ -27,5 +28,10 @@ public class CoreConfiguration {
   @Bean
   ShortcutRepository shortcutRepository(JdbcClient jdbcClient) {
     return new JdbcShortcutRepository(jdbcClient);
+  }
+
+  @Bean
+  LinodeVolumeService linodeVolumeService(ServerApi serverApi) {
+    return new LinodeVolumeService(serverApi);
   }
 }

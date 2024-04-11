@@ -1,7 +1,5 @@
 package no.jonasandersen.admin.adapter.out.websocket;
 
-import gg.jte.TemplateEngine;
-import gg.jte.output.StringOutput;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import no.jonasandersen.admin.adapter.in.web.JteHtmlGenerator;
 import no.jonasandersen.admin.core.shortcut.ShortcutHtmlFormatter;
 import no.jonasandersen.admin.core.shortcut.domain.Shortcut;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
@@ -29,20 +28,21 @@ public class WebSocketBroadcaster extends TextWebSocketHandler implements Broadc
   public static final String SHORTCUT = "shortcut/";
   public static final String HX = "hx/";
 
-  private final TemplateEngine jteTemplateEngine;
+  private final JteHtmlGenerator jteHtmlGenerator;
 
   private final Map<String, List<WebSocketSession>> sessionMap = new ConcurrentHashMap<>();
 
-  public WebSocketBroadcaster(TemplateEngine jteTemplateEngine) {
-    this.jteTemplateEngine = jteTemplateEngine;
+  public WebSocketBroadcaster(JteHtmlGenerator jteHtmlGenerator) {
+    this.jteHtmlGenerator = jteHtmlGenerator;
   }
 
   @Override
   public void onShortcutCreated(Shortcut shortcut) {
 
-    String html = generateHtml("insertTable.jte", Model.from(shortcut));
+    String html = jteHtmlGenerator.generateHtml(SHORTCUT + HX + "insertTable",
+        Model.from(shortcut));
 
-var est =     STR."""
+    var est = STR."""
         <tbody id="target-body">
             <tr>
                 <td>\{shortcut.shortcut()}</td>
@@ -141,11 +141,4 @@ var est =     STR."""
 
     logger.info("Removed session: {}", session.getId());
   }
-
-  String generateHtml(String jteFileName, Model model) {
-    StringOutput stringOutput = new StringOutput();
-    jteTemplateEngine.render(SHORTCUT + HX + jteFileName, model.model(), stringOutput);
-    return stringOutput.toString();
-  }
-
 }

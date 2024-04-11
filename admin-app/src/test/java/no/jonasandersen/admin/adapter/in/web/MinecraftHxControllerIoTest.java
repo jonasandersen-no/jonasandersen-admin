@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-class MinecraftControllerIoTest extends IoBasedTest {
+class MinecraftHxControllerIoTest extends IoBasedTest {
 
   @Autowired
   private MockMvc mockMvc;

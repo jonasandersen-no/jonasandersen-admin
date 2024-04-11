@@ -14,9 +14,4 @@ public class IndexController {
     return "front";
   }
 
-  @GetMapping("/linode")
-  String linode() {
-    return "linode";
-  }
-
 }

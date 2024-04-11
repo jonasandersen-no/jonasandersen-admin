@@ -1,0 +1,60 @@
+package no.jonasandersen.admin.adapter.out.linode.api.model;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Alerts;
+import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Backups;
+import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Specs;
+import no.jonasandersen.admin.core.domain.LinodeId;
+import no.jonasandersen.admin.core.domain.LinodeInstance;
+
+public record LinodeInstanceApi(
+    long id,
+    String label,
+    String group,
+    String status,
+    LocalDateTime created,
+    LocalDateTime updated,
+    String type,
+    List<String> ipv4,
+    String ipv6,
+    String image,
+    String region,
+    Specs specs,
+    Alerts alerts,
+    Backups backups,
+    String hypervisor,
+    boolean watchdogEnabled,
+    List<String> tags,
+    String hostUuid,
+    boolean hasUserData
+) {
+
+  public LinodeInstanceApi {
+    if (id <= 0) {
+      throw new IllegalArgumentException("Id must be positive");
+    }
+    if (ipv4 == null || ipv4.isEmpty()) {
+      throw new IllegalArgumentException("At least one IPv4 address is required");
+    }
+    if (ipv6 == null || ipv6.isEmpty()) {
+      throw new IllegalArgumentException("IPv6 address is required");
+    }
+  }
+
+  public LinodeInstance toDomain() {
+    return new LinodeInstance(new LinodeId(id), ipv4.getFirst(), status, label, tags, List.of());
+  }
+
+//  public Instance toDomain() {
+//    final Instance instance = new Instance();
+//
+//    instance.setId(LinodeId.of(id));
+//    instance.setLabel(label);
+//    instance.setIp(ipv4.getFirst());
+//    instance.setStatus(status);
+//    instance.setCreated(created);
+//
+//    return instance;
+//  }
+}

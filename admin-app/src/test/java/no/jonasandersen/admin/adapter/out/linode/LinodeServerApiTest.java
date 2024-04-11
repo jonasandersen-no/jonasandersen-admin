@@ -10,7 +10,7 @@ class LinodeServerApiTest {
 
   @Test
   void callingListServerInfoReturnsServerInfo() {
-    ServerApi api = new LinodeServerApi(new TestLinodeExchange());
+    ServerApi api = new LinodeServerApi(new TestLinodeBjoggisExchange(), new TestLinodeExchange());
     MinecraftInstance response = api.listServerInfo();
 
     assertThat(response.getName())

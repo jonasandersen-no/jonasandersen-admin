@@ -131,3 +131,10 @@ input {
 .w-fit {
   width: fit-content;
 }
+
+.linode-instance {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1rem;
+  margin: 1rem;
+}

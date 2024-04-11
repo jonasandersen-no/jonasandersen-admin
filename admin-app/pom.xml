@@ -11,6 +11,10 @@
 
   <artifactId>admin-app</artifactId>
 
+  <properties>
+    <jte.version>3.1.9</jte.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -19,12 +23,17 @@
     <dependency>
       <groupId>gg.jte</groupId>
       <artifactId>jte-spring-boot-starter-3</artifactId>
-      <version>3.1.9</version>
+      <version>${jte.version}</version>
     </dependency>
     <dependency>
       <groupId>gg.jte</groupId>
       <artifactId>jte</artifactId>
-      <version>3.1.9</version>
+      <version>${jte.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>0.1.55</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

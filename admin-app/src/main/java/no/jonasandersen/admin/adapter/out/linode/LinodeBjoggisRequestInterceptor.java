@@ -21,10 +21,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class LinodeRequestInterceptor implements ClientHttpRequestInterceptor {
+public class LinodeBjoggisRequestInterceptor implements ClientHttpRequestInterceptor {
 
   private static final String AUTH_URL = "https://auth.jonasandersen.no";
-  private static final Logger logger = LoggerFactory.getLogger(LinodeRequestInterceptor.class);
+  private static final Logger logger = LoggerFactory.getLogger(LinodeBjoggisRequestInterceptor.class);
 
   @Value("${spring.security.oauth2.client.registration.spring.client-id:}")
   private String clientId;
