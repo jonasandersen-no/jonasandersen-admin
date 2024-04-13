@@ -2,8 +2,9 @@ package no.jonasandersen.admin.adapter.in.web;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
-import no.jonasandersen.admin.ThemeService;
 import no.jonasandersen.admin.adapter.out.websocket.Model;
 import no.jonasandersen.admin.core.LinodeVolumeService;
 import no.jonasandersen.admin.core.domain.LinodeId;
@@ -22,23 +23,23 @@ public class LinodeHxController {
   private final LinodeVolumeService linodeVolumeService;
   private final JteHtmlGenerator jteHtmlGenerator;
   private final MinecraftService minecraftService;
-  private final ThemeService themeService;
 
 
   public LinodeHxController(LinodeVolumeService linodeVolumeService,
-      JteHtmlGenerator jteHtmlGenerator, MinecraftService minecraftService, ThemeService themeService) {
+      JteHtmlGenerator jteHtmlGenerator, MinecraftService minecraftService) {
     this.linodeVolumeService = linodeVolumeService;
     this.jteHtmlGenerator = jteHtmlGenerator;
     this.minecraftService = minecraftService;
 
-    this.themeService = themeService;
   }
 
   @PostMapping("/instance/create")
   @HxRequest
   String createInstance() {
+    Random random = new Random();
     return jteHtmlGenerator.generateHtml("linode/instance", Model.from(
-        new LinodeInstance(new LinodeId(1L), "127.0.0.1,", "running", "Some label",
+        new LinodeInstance(new LinodeId(random.nextLong()), "127.0.0.1", "running",
+            UUID.randomUUID().toString(),
             List.of("tags"), List.of())));
   }
 

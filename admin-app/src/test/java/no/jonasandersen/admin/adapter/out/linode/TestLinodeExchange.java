@@ -10,4 +10,9 @@ public class TestLinodeExchange implements
   public Page<LinodeInstanceApi> list() {
     return null;
   }
+
+  @Override
+  public Page<LinodeVolumeDto> volumes(String linodeId) {
+    return null;
+  }
 }
