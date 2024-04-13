@@ -1,34 +1,35 @@
 @param no.jonasandersen.admin.core.domain.LinodeInstance instance
 
 
-<div class="linode-instance container " style="width: 30rem;">
+<a href="/linode/${instance.linodeId().id()}" class="linode-instance container m-auto "
+   style="width: 30rem;">
 
-    <div class="">
-        <h3 class="">${instance.prettyPrintLabel()}</h3>
+    <div>
+        <h3>${instance.prettyPrintLabel()}</h3>
         <p class="small"><strong>ID:</strong> ${instance.linodeId().id()}</p>
     </div>
-    <div class="debug d-flex">
-        <div>
-            <div class="flex flex-row items-center gap-2">
+    <div class="d-flex">
+        <div class="flex-grow-1">
+            <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">wifi</span>
                 <span>${instance.ip()}</span>
             </div>
-            <div class="flex flex-row items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">label</span>
                 <span>${instance.prettyPrintTags()}</span>
             </div>
-            <div class="flex flex-row items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">update</span>
                 <span>${instance.prettyPrintStatus()}</span>
             </div>
-            <div class="flex flex-row items-center gap-2">
+            <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">save</span>
                 <span>${instance.prettyPrintVolumeNames()}</span>
             </div>
         </div>
-        <div class="debug">
-            <button class="btn btn-primary m-auto">Details</button>
+        <div class="d-flex align-items-end">
+            <button class="btn btn-primary">Details</button>
         </div>
     </div>
 
-</div>
+</a>

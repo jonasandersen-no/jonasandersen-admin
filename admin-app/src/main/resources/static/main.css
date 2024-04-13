@@ -4,48 +4,6 @@
   border-color: #ff0000;
 }
 
-.flex {
-  display: flex;
-}
-
-.flex-center {
-  align-items: center;
-  justify-content: center;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.flex-row {
-  flex-direction: row;
-}
-
-.flex-wrap {
-  flex-wrap: wrap;
-}
-
-.flex-space-between {
-  justify-content: space-between;
-}
-
-.flex-grow {
-  flex-grow: 1;
-}
-
-.mt-auto {
-  margin-top: auto;
-}
-
-.m-auto {
-  margin: auto;
-}
-
-.text-center {
-  text-align: center;
-}
-
-
 .sans-light {
   font-family: "Open Sans", sans-serif;
   font-optical-sizing: auto;
@@ -68,19 +26,6 @@
   font-weight: 700;
   font-style: normal;
   font-variation-settings: "wdth" 100;
-}
-
-.btn {
-  padding: 0.5rem 1rem;
-  border: 2px solid transparent;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-}
-
-.btn:hover {
-  border: 2px solid #0056b3;
 }
 
 table, th, td {
@@ -128,13 +73,15 @@ input {
   background-color: #ccc;
 }
 
-.w-fit {
-  width: fit-content;
-}
-
 .linode-instance {
   border: 1px solid #ccc;
+  text-decoration: none;
+  color: black;
   border-radius: 5px;
   padding: 1rem;
   margin: 1rem;
+}
+
+.linode-instance:hover  {
+  background-color: #f1f1f1;
 }
