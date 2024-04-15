@@ -10,6 +10,9 @@ interface LinodeExchange {
   @GetExchange("/linode/instances")
   Page<LinodeInstanceApi> list();
 
+  @GetExchange("/linode/instances/{linodeId}")
+  LinodeInstanceApi getInstanceById(@PathVariable Long linodeId);
+
   @GetExchange("/linode/instances/{linodeId}/volumes")
   Page<LinodeVolumeDto> volumes(@PathVariable String linodeId);
 }

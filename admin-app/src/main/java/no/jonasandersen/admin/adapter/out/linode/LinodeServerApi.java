@@ -71,6 +71,13 @@ class LinodeServerApi implements ServerApi {
   }
 
   @Override
+  public LinodeInstance getInstanceById(LinodeId linodeId) {
+    LinodeInstanceApi linodeInstanceApi = linodeExchange.getInstanceById(linodeId.id());
+
+    return linodeInstanceApi.toDomain();
+  }
+
+  @Override
   public List<LinodeVolume> getVolumesByInstance(LinodeId linodeId) {
     Page<LinodeVolumeDto> volumes = linodeExchange.volumes(linodeId.id().toString());
 

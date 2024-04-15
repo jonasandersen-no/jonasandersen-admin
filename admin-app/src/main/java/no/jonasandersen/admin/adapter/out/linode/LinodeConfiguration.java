@@ -28,8 +28,9 @@ class LinodeConfiguration {
   @Bean
   LinodeExchange linodeExchange(AdminProperties properties) {
     Linode linode = properties.linode();
+    var t = "https://9429826b-ed5a-498f-9634-4105f99690fd.mock.pstmn.io/v4";
     RestClient restClient = RestClient.builder()
-        .baseUrl(linode.baseUrl())
+        .baseUrl(t)
         .requestInitializer(request -> request.getHeaders().setBearerAuth(linode.token()))
         .build();
 

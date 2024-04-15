@@ -26,6 +26,11 @@ public class TestServerApi implements ServerApi {
   }
 
   @Override
+  public LinodeInstance getInstanceById(LinodeId linodeId) {
+    return null;
+  }
+
+  @Override
   public List<LinodeVolume> getVolumesByInstance(LinodeId linodeId) {
     return List.of();
   }

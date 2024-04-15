@@ -1,11 +1,13 @@
 package no.jonasandersen.admin.adapter.in.web;
 
 import java.util.List;
+import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.minecraft.MinecraftService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -24,4 +26,12 @@ public class LinodeController {
     model.addAttribute("instances", instances);
     return "linode-new";
   }
+
+  @GetMapping("/{linodeId}")
+  String getInstance(Model model, @PathVariable Long linodeId) {
+    LinodeInstance instance = service.getInstanceById(LinodeId.from(linodeId));
+    model.addAttribute("instance", instance);
+    return "linode/instance-detail";
+  }
+
 }

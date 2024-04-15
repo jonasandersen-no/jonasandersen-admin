@@ -14,5 +14,7 @@ public interface ServerApi {
 
   List<LinodeInstance> getInstances();
 
+  LinodeInstance getInstanceById(LinodeId linodeId);
+
   List<LinodeVolume> getVolumesByInstance(LinodeId linodeId);
 }

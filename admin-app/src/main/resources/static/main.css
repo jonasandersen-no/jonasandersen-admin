@@ -1,3 +1,5 @@
+@import 'bootstrap.css';
+
 .debug {
   border-style: solid;
   border-width: 2px;
@@ -76,12 +78,8 @@ input {
 .linode-instance {
   border: 1px solid #ccc;
   text-decoration: none;
-  color: black;
+  color: var(--bs-white);
   border-radius: 5px;
   padding: 1rem;
   margin: 1rem;
-}
-
-.linode-instance:hover  {
-  background-color: #f1f1f1;
 }
