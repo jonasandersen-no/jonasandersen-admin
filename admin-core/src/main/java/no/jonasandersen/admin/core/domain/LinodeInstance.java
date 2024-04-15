@@ -2,7 +2,7 @@ package no.jonasandersen.admin.core.domain;
 
 import java.util.List;
 
-public record LinodeInstance(LinodeId linodeId, String ip, String status, String label,
+public record LinodeInstance(LinodeId linodeId, List<String> ip, String status, String label,
                              List<String> tags, List<String> volumeNames) {
 
   public String prettyPrintTags() {
@@ -25,5 +25,9 @@ public record LinodeInstance(LinodeId linodeId, String ip, String status, String
 
   public String prettyPrintStatus() {
     return status.substring(0, 1).toUpperCase() + status.substring(1).toLowerCase();
+  }
+
+  public String prettyPrintIp() {
+    return String.join(", ", ip);
   }
 }

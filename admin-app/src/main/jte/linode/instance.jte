@@ -12,7 +12,7 @@
         <div class="flex-grow-1">
             <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">wifi</span>
-                <span>${instance.ip()}</span>
+                <span>${instance.prettyPrintIp()}</span>
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">label</span>

@@ -43,7 +43,7 @@ public record LinodeInstanceApi(
   }
 
   public LinodeInstance toDomain() {
-    return new LinodeInstance(new LinodeId(id), ipv4.getFirst(), status, label, tags, List.of());
+    return new LinodeInstance(new LinodeId(id), List.copyOf(ipv4), status, label, tags, List.of());
   }
 
 //  public Instance toDomain() {

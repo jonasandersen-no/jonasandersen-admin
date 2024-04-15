@@ -7,10 +7,10 @@
             <h1>${instance.prettyPrintLabel()}</h1>
             <p class="small"><strong>ID:</strong> ${instance.linodeId().id()}</p>
         </div>
-        <div>
+        <div class="row g-3">
             <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">wifi</span>
-                <span>${instance.ip()}</span>
+                <span>${instance.prettyPrintIp()}</span>
             </div>
             <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">label</span>

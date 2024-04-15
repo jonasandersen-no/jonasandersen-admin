@@ -38,7 +38,7 @@ public class LinodeHxController {
   String createInstance() {
     Random random = new Random();
     return jteHtmlGenerator.generateHtml("linode/instance", Model.from(
-        new LinodeInstance(new LinodeId(random.nextLong()), "127.0.0.1", "running",
+        new LinodeInstance(new LinodeId(random.nextLong()), List.of("127.0.0.1"), "running",
             UUID.randomUUID().toString(),
             List.of("tags"), List.of())));
   }
