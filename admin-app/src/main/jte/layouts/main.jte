@@ -1,7 +1,6 @@
-@import static no.jonasandersen.admin.ThemeService.getTheme
-@import org.springframework.boot.info.BuildProperties
+@import static no.jonasandersen.admin.JteStatics.getTheme
+@import static no.jonasandersen.admin.JteStatics.getBuildVersion
 
-@param BuildProperties buildProperties
 @param gg.jte.Content content
 @param String title
 
@@ -58,9 +57,13 @@
 <main hx-ext="debug">
     ${content}
 </main>
-<footer class="footer mt-auto">
-    <p class="text-muted">Jonas Bjørge Andersen &copy; - Version
-        <span>${buildProperties.getVersion()}</span></p>
+
+<footer class="footer fixed-bottom">
+    <div class=" d-flex justify-content-center">
+        <p class="text-muted">Jonas Bjørge Andersen &copy; - Version
+            <span>${getBuildVersion()}</span></p>
+    </div>
+
 </footer>
 
 </body>

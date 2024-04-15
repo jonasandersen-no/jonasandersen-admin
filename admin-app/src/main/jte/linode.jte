@@ -1,7 +1,4 @@
-@param String serverString
-
-
-@template.layouts.main(title = "Minecraft", buildProperties = new org.springframework.boot.info.BuildProperties(new java.util.Properties()), content = @`
+@template.layouts.main(title = "Minecraft", content = @`
     <h2 class="text-center sans-bold">Minecraft Server</h2>
 
     <div class="" style="text-align: center;">

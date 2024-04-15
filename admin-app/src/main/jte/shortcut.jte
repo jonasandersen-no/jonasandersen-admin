@@ -1,6 +1,6 @@
 @param String project
 
-@template.layouts.main(title = "Shortcut", buildProperties = new org.springframework.boot.info.BuildProperties(new java.util.Properties()), content = @`
+@template.layouts.main(title = "Shortcut", content = @`
     <h2 class="text-center sans-bold">Shortcuts</h2>
     <h3 class="text-center sans-bold">Project: ${project}</h3>
     <div class="text-center" style="width: 50%; margin: auto;">

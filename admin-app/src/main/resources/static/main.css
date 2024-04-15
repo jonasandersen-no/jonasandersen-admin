@@ -78,7 +78,7 @@ input {
 .linode-instance {
   border: 1px solid #ccc;
   text-decoration: none;
-  color: var(--bs-white);
+  color: var(--bs-body-color);
   border-radius: 5px;
   padding: 1rem;
   margin: 1rem;
