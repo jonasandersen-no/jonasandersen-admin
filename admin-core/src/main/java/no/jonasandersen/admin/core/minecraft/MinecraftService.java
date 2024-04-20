@@ -23,7 +23,17 @@ public class MinecraftService {
   }
 
   public LinodeInstance getInstanceById(LinodeId linodeId) {
-    return serverApi.getInstanceById(linodeId);
+    LinodeInstance instance = serverApi.getInstanceById(linodeId);
+
+
+    List<LinodeVolume> volumesByInstance = linodeVolumeService.getVolumesByInstance(linodeId);
+
+    List<String> volumeNames = volumesByInstance.stream()
+        .map(LinodeVolume::label)
+        .toList();
+
+    return new LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
+        instance.label(), instance.tags(), volumeNames);
   }
 
   public List<LinodeInstance> getInstances() {

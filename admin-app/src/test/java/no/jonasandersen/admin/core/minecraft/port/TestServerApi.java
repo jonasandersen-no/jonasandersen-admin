@@ -10,9 +10,18 @@ import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 public class TestServerApi implements ServerApi {
 
 
+  private final MinecraftInstance minecraftInstance = new MinecraftInstance(
+      "minecraft-auto-config-1",
+      "127.0.0.1", "running");
+  private LinodeInstance linodeInstance = new LinodeInstance(LinodeId.from(1L),
+      List.of("127.0.0.1"), "running",
+      "minecraft-auto-config-1",
+      List.of("minecraft"),
+      List.of("minecraft-auto-config-1-volume-1", "minecraft-auto-config-1-volume-2"));
+
   @Override
   public MinecraftInstance listServerInfo() {
-    return new MinecraftInstance("minecraft-auto-config-1", "127.0.0.1", "running");
+    return minecraftInstance;
   }
 
   @Override
@@ -22,12 +31,12 @@ public class TestServerApi implements ServerApi {
 
   @Override
   public List<LinodeInstance> getInstances() {
-    return List.of();
+    return List.of(linodeInstance);
   }
 
   @Override
   public LinodeInstance getInstanceById(LinodeId linodeId) {
-    return null;
+    return linodeInstance;
   }
 
   @Override

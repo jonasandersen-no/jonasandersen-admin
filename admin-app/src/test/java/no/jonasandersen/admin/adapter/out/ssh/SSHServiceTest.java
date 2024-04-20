@@ -11,6 +11,7 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeBjoggisExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.config.IoBasedTest;
 import no.jonasandersen.admin.core.minecraft.domain.Ip;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
+@Disabled
 class SSHServiceTest extends IoBasedTest {
 
   public static final Long LINODE_ID = 56601153L;

@@ -32,4 +32,10 @@ public class JteHtmlGenerator {
     jteTemplateEngine.render(fileName, model.model(), stringOutput);
     return stringOutput.toString();
   }
+
+  public String generateHtml(String jteFileName) {
+    StringOutput stringOutput = new StringOutput();
+    jteTemplateEngine.render(jteFileName + ".jte", null, new StringOutput());
+    return stringOutput.toString();
+  }
 }
