@@ -64,14 +64,15 @@ class ShortcutHxControllerTest extends IoBasedTest {
               && shortcut.description().equalsIgnoreCase(saved.description()))
           .findFirst().orElseThrow();
 
-      mockMvc.perform(put(STR."/hx/shortcut/edit/\{entity.id()}")
+      mockMvc.perform(put("/hx/shortcut/edit/%s".formatted(entity.id()))
               .header("HX-Request", "PUT")
               .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-              .content(STR."""
-              project=\{entity.project()}\
-              &shortcut=\{entity.shortcut()}\
-              &description=\{entity.description()}
-              """).with(csrf()))
+              .content("""
+                  project=%s\
+                  &shortcut=%s\
+                  &description=%s
+                  """.formatted(entity.project(), entity.shortcut(), entity.description()))
+              .with(csrf()))
           .andExpect(status().isOk());
     }
 
@@ -95,14 +96,15 @@ class ShortcutHxControllerTest extends IoBasedTest {
               && shortcut.description().equalsIgnoreCase(saved.description()))
           .findFirst().orElseThrow();
 
-      mockMvc.perform(get(STR."/hx/shortcut/edit/cancel/\{entity.id()}")
+      mockMvc.perform(get("/hx/shortcut/edit/cancel/%s".formatted(entity.id()))
               .header("HX-Request", "GET")
               .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-              .content(STR."""
-              project=\{entity.project()}\
-              &shortcut=\{entity.shortcut()}\
-              &description=\{entity.description()}
-              """).with(csrf()))
+              .content("""
+                  project=%s\
+                  &shortcut=%s\
+                  &description=%s
+                  """.formatted(entity.project(), entity.shortcut(), entity.description()))
+              .with(csrf()))
           .andExpect(status().isOk());
     }
 
@@ -124,14 +126,14 @@ class ShortcutHxControllerTest extends IoBasedTest {
               && shortcut.description().equalsIgnoreCase(saved.description()))
           .findFirst().orElseThrow();
 
-      mockMvc.perform(get(STR."/hx/shortcut/edit/\{entity.id()}")
+      mockMvc.perform(get("/hx/shortcut/edit/%s".formatted(entity.id()))
               .header("HX-Request", "GET")
               .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-              .content(STR."""
-              project=\{entity.project()}\
-              &shortcut=\{entity.shortcut()}\
-              &description=\{entity.description()}
-              """).with(csrf()))
+              .content("""
+              project=%s\
+              &shortcut=%s\
+              &description=%s
+              """.formatted(entity.project(), entity.shortcut(), entity.description())).with(csrf()))
           .andExpect(status().isOk());
     }
 

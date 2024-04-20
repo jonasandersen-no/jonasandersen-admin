@@ -71,7 +71,8 @@ public class SSHService {
     linodeBjoggisExchange.attachVolume(VOLUME_ID, linodeId);
 
     logger.info(
-        STR."Sleeping for \{sleepAfterVolumeAttachSeconds} seconds to wait for volume to attach");
+        "Sleeping for %s seconds to wait for volume to attach".formatted(
+            sleepAfterVolumeAttachSeconds));
     Thread.sleep(Duration.ofSeconds(sleepAfterVolumeAttachSeconds).toMillis());
   }
 
@@ -79,7 +80,8 @@ public class SSHService {
     linodeBjoggisExchange.detachVolume(VOLUME_ID);
 
     logger.info(
-        STR."Sleeping for \{sleepAfterVolumeDetachSeconds} seconds to wait for volume to detach");
+        "Sleeping for %s seconds to wait for volume to detach".formatted(
+            sleepAfterVolumeDetachSeconds));
     Thread.sleep(Duration.ofSeconds(sleepAfterVolumeDetachSeconds).toMillis());
   }
 

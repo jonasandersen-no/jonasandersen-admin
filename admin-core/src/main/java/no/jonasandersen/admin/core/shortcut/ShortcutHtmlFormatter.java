@@ -9,21 +9,21 @@ public class ShortcutHtmlFormatter {
 
   //language=HTML
   public static String asTableRow(Shortcut shortcutFound) {
-    return STR."""
-        <tr id="list-item-\{shortcutFound.id()}">
-          <td>\{shortcutFound.shortcut()}</td>
-          <td>\{shortcutFound.description()}</td>
+    return """
+        <tr id="list-item-%s">
+          <td>%s</td>
+          <td>%s</td>
           <td>
             <button
-                hx-get="/hx/shortcut/edit/\{shortcutFound.id()}"
-                hx-target="#list-item-\{shortcutFound.id()}"
+                hx-get="/hx/shortcut/edit/%s"
+                hx-target="#list-item-%s"
                 hx-swap="outerHTML"
                 class="btn">
                 Edit
               </button>
               <button
-                hx-delete="/hx/shortcut/\{shortcutFound.id()}"
-                hx-target="#list-item-\{shortcutFound.id()}"
+                hx-delete="/hx/shortcut/%s"
+                hx-target="#list-item-%s"
                 hx-swap="outerHTML"
                 hx-confirm='Are you sure you want to delete this shortcut?'
                 class="btn">
@@ -31,6 +31,14 @@ public class ShortcutHtmlFormatter {
               </button>
           </td>
         </tr>
-        """;
+        """.formatted(
+        shortcutFound.id(),
+        shortcutFound.shortcut(),
+        shortcutFound.description(),
+        shortcutFound.id(),
+        shortcutFound.id(),
+        shortcutFound.id(),
+        shortcutFound.id()
+    );
   }
 }

@@ -18,4 +18,8 @@ public record Model(Map<String, Object> model) {
     model.put("instance", linodeInstance);
     return new Model(model);
   }
+
+  public static Model empty() {
+    return new Model(new HashMap<>());
+  }
 }

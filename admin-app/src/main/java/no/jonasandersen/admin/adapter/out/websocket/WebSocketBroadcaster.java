@@ -42,31 +42,6 @@ public class WebSocketBroadcaster extends TextWebSocketHandler implements Broadc
     String html = jteHtmlGenerator.generateHtml(SHORTCUT + HX + "insertTable",
         Model.from(shortcut));
 
-    var est = STR."""
-        <tbody id="target-body">
-            <tr>
-                <td>\{shortcut.shortcut()}</td>
-                <td>\{shortcut.description()}</td>
-                <td>
-                    <button
-                            hx-get="/hx/shortcut/edit/\{shortcut.id()}"
-                            hx-target="#list-item-\{shortcut.id()}"
-                            hx-swap="outerHTML"
-                            class="btn">
-                        Edit
-                    </button>
-                    <button
-                            hx-delete="/hx/shortcut/\{shortcut.id()}"
-                            hx-target="#list-item-\{shortcut.id()}"
-                            hx-swap="outerHTML"
-                            hx-confirm='Are you sure you want to delete this shortcut?'
-                            class="btn">
-                        Delete
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-        """;
     sendMessage(html.replaceAll("\r\n", "").replaceAll("\n", ""));
   }
 
@@ -80,9 +55,9 @@ public class WebSocketBroadcaster extends TextWebSocketHandler implements Broadc
   @Override
   // language=HTML
   public void onShortcutDeleted(Long id) {
-    var delete = STR."""
-        <delete-element hx-swap-oob="delete" id="list-item-\{id}"/>
-        """;
+    var delete = """
+        <delete-element hx-swap-oob="delete" id="list-item-%s"/>
+        """.formatted(id);
     sessionMap
         .forEach((key, value) -> sendMessageViaWebSocket(key, value, new TextMessage(delete)));
   }

@@ -1,11 +1,10 @@
 services:
   app:
-    image: bjoggis/jonasandersen-admin:v0-x86_64
+    image: bjoggis/jonasandersen-admin:v0.0.18-x86_64
     pull_policy: missing
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=dev,docker
-      - SPRING_CLOUD_CONFIG_USERNAME=${SPRING_CLOUD_CONFIG_SECURITY_USERNAME}
-      - SPRING_CLOUD_CONFIG_PASSWORD=${SPRING_CLOUD_CONFIG_SECURITY_PASSWORD}
-      - JAVA_OPTS='--enable-preview'
+      - SPRING_CLOUD_CONFIG_USERNAME=${SPRING_CLOUD_CONFIG_USERNAME}
+      - SPRING_CLOUD_CONFIG_PASSWORD=${SPRING_CLOUD_CONFIG_PASSWORD}

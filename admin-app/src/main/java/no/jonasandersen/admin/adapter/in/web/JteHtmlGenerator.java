@@ -35,7 +35,8 @@ public class JteHtmlGenerator {
 
   public String generateHtml(String jteFileName) {
     StringOutput stringOutput = new StringOutput();
-    jteTemplateEngine.render(jteFileName + ".jte", null, new StringOutput());
+    logger.info("Generating HTML from JTE file: {}", jteFileName + ".jte");
+    jteTemplateEngine.render(jteFileName + ".jte", Model.empty(), stringOutput);
     return stringOutput.toString();
   }
 }

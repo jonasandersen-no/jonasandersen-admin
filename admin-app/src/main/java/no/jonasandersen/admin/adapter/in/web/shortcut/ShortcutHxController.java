@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -97,16 +96,16 @@ public class ShortcutHxController {
     List<String> projects = service.getProjects();
 
     String options = projects.stream()
-        .map(project -> STR."""
-            <option value="\{project}">\{project}</option>
-            """)
+        .map(project -> """
+            <option value="%s">%s</option>
+            """.formatted(project, project))
         .collect(Collectors.joining());
 
-    return STR."""
+    return """
            <select name="project" id="project-select" hx-get="/hx/shortcut" hx-swap="innerHTML" hx-trigger="change, load" hx-target="#table-body">
-           \{options}
+           %s
            </select>
-        """;
+        """.formatted(options);
 
   }
 
@@ -118,36 +117,37 @@ public class ShortcutHxController {
         .filter(shortcut -> shortcut.id().equals(id))
         .findFirst().orElseThrow();
 
-    return STR."""
-        <tr id="list-item-\{shortcut1.id()}">
+    return """
+        <tr id="list-item-%s">
           <td>
-            <input type="text" value="\{shortcut1.project()}" name="project" />
+            <input type="text" value="%s" name="project" />
           </td>
           <td>
-            <input type="text" value="\{shortcut1.shortcut()}" name="shortcut" />
+            <input type="text" value="%s" name="shortcut" />
           </td>
           <td>
-            <input type="text" value="\{shortcut1.description()}" name="description" />
+            <input type="text" value="%s" name="description" />
           </td>
           <td>
            <button
-              hx-put="/hx/shortcut/edit/\{shortcut1.id()}"
-              hx-target="#list-item-\{shortcut1.id()}"
+              hx-put="/hx/shortcut/edit/%s"
+              hx-target="#list-item-%s"
               hx-swap="outerHTML"
               hx-include="closest tr"
               class="btn">
               Save
             </button>
             <button
-              hx-get="/hx/shortcut/edit/cancel/\{shortcut1.id()}"
-              hx-target="#list-item-\{shortcut1.id()}"
+              hx-get="/hx/shortcut/edit/cancel/%s"
+              hx-target="#list-item-%s"
               hx-swap="outerHTML"
               class="btn">
               Cancel
             </button>
           </td>
         </tr>
-        """;
+        """.formatted(shortcut1.id(), shortcut1.project(), shortcut1.shortcut(),
+        shortcut1.description(), shortcut1.id(), shortcut1.id(), shortcut1.id(), shortcut1.id());
   }
 
 }

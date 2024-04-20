@@ -228,7 +228,7 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
+        <configuration>12
           <image>
             <builder>dashaun/builder:tiny</builder>
             <name>bjoggis/${project.parent.artifactId}:v${project.version}-${os.detected.arch}
