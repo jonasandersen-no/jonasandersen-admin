@@ -242,6 +242,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version>
         <configuration>
+          <workingDirectory>${pom.parent.basedir}</workingDirectory>
           <excludedGroups>manual</excludedGroups>
         </configuration>
       </plugin>
