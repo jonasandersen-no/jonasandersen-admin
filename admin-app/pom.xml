@@ -12,7 +12,7 @@
   <artifactId>admin-app</artifactId>
 
   <properties>
-    <jte.version>3.1.9</jte.version>
+    <jte.version>3.1.10</jte.version>
   </properties>
 
   <dependencies>
