@@ -12,13 +12,7 @@ import org.testcontainers.utility.DockerImageName;
 class IoBasedConfiguration {
 
   @Bean
-  ServerApi serverApi() {
-    return new TestServerApi();
-  }
-
-  @Bean
   @ServiceConnection
-  @SuppressWarnings("resource")
   MariaDBContainer<?> mariaDBContainer() {
     return new MariaDBContainer<>(DockerImageName.parse("mariadb:latest"))
         .withDatabaseName("admin");
