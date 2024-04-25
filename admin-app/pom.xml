@@ -21,14 +21,14 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>gg.jte</groupId>
-      <artifactId>jte-spring-boot-starter-3</artifactId>
-      <version>${jte.version}</version>
+      <groupId>de.tschuehly</groupId>
+      <artifactId>spring-view-component-core</artifactId>
+      <version>0.7.4</version>
     </dependency>
     <dependency>
-      <groupId>gg.jte</groupId>
-      <artifactId>jte</artifactId>
-      <version>${jte.version}</version>
+      <groupId>de.tschuehly</groupId>
+      <artifactId>spring-view-component-jte</artifactId>
+      <version>0.7.4</version>
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
@@ -148,70 +148,23 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>21</source>
+          <target>21</target>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>de.tschuehly</groupId>
+              <artifactId>spring-view-component-core</artifactId>
+              <version>0.7.4</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.graalvm.buildtools</groupId>
         <artifactId>native-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>gg.jte</groupId>
-        <artifactId>jte-maven-plugin</artifactId>
-        <version>3.1.10</version>
-        <configuration>
-          <!-- This is the directory where your .jte files are located. -->
-          <sourceDirectory>admin-app/src/main/jte</sourceDirectory>
-          <contentType>Html</contentType>
-          <binaryStaticContent>true</binaryStaticContent>
-          <targetDirectory/>
-        </configuration>
-        <executions>
-          <execution>
-            <?m2e execute onConfiguration,onIncremental?>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${project.build.directory}/generated-sources/jte</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}/target/generated-sources/jte</directory>
-                  <includes>
-                    <include>**/*.bin</include>
-                  </includes>
-                  <filtering>false</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
