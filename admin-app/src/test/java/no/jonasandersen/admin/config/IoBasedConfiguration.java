@@ -14,7 +14,7 @@ class IoBasedConfiguration {
   @Bean
   @ServiceConnection
   MariaDBContainer<?> mariaDBContainer() {
-    return new MariaDBContainer<>(DockerImageName.parse("mariadb:latest"))
+    return new MariaDBContainer<>(DockerImageName.parse("mariadb:10.11"))
         .withDatabaseName("admin");
   }
 }
