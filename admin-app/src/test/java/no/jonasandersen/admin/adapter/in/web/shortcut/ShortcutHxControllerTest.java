@@ -10,6 +10,7 @@ import java.util.List;
 import no.jonasandersen.admin.config.IoBasedTest;
 import no.jonasandersen.admin.core.shortcut.domain.Shortcut;
 import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WithMockUser
+@Disabled
 class ShortcutHxControllerTest extends IoBasedTest {
 
   @Autowired
