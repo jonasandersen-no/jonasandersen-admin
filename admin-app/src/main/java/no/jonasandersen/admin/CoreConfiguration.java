@@ -8,12 +8,19 @@ import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
 import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
+import no.jonasandersen.admin.core.theme.UserSettingsService;
+import no.jonasandersen.admin.core.theme.port.UserSettingsRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 @Configuration
-public class CoreConfiguration {
+class CoreConfiguration {
+
+  @Bean
+  UserSettingsService userSettingsService(UserSettingsRepository repository) {
+    return new UserSettingsService(repository);
+  }
 
   @Bean
   MinecraftService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {

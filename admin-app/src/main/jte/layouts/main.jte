@@ -1,11 +1,8 @@
-@import static no.jonasandersen.admin.JteStatics.getTheme
-@import static no.jonasandersen.admin.JteStatics.getBuildVersion
-
 @param gg.jte.Content content
 @param String title
 
 
-<html data-bs-theme="${getTheme()}" lang="en">
+<html data-bs-theme="" lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,7 +58,7 @@
 <footer class="footer fixed-bottom">
     <div class=" d-flex justify-content-center">
         <p class="text-muted">Jonas Bjørge Andersen &copy; - Version
-            <span>${getBuildVersion()}</span></p>
+            <span></span></p>
     </div>
 
 </footer>

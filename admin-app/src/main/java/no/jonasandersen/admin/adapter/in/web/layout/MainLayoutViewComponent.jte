@@ -1,11 +1,8 @@
-@import static no.jonasandersen.admin.JteStatics.getTheme
-@import static no.jonasandersen.admin.JteStatics.getBuildVersion
 @import no.jonasandersen.admin.adapter.in.web.layout.MainLayoutViewComponent.MainLayoutView
 
 @param MainLayoutView mainLayoutView
 
-
-<html data-bs-theme="${getTheme()}" lang="en">
+<html data-bs-theme="${mainLayoutView.theme()}" lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,6 +44,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/shortcut">Shortcut</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/settings">Settings</a>
+                    </li>
                 </ul>
 
             </div>
@@ -61,7 +61,7 @@
 <footer class="footer fixed-bottom">
     <div class=" d-flex justify-content-center">
         <p class="text-muted">Jonas Bjørge Andersen &copy; - Version
-            <span>${getBuildVersion()}</span></p>
+            <span>${mainLayoutView.buildVersion()}</span></p>
     </div>
 
 </footer>

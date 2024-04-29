@@ -7,4 +7,6 @@ import no.jonasandersen.admin.core.theme.domain.Username;
 public interface UserSettingsRepository {
 
   Optional<Theme> findTheme(Username username);
+
+  void saveTheme(Username username, Theme theme);
 }
