@@ -15,4 +15,7 @@ interface LinodeExchange {
 
   @GetExchange("/linode/instances/{linodeId}/volumes")
   Page<LinodeVolumeDto> volumes(@PathVariable String linodeId);
+
+  @GetExchange("/volume")
+  Page<LinodeVolumeDto> volumes();
 }

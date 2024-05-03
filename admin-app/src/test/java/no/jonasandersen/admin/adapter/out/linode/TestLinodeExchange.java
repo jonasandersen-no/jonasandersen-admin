@@ -19,4 +19,9 @@ public class TestLinodeExchange implements LinodeExchange {
   public Page<LinodeVolumeDto> volumes(String linodeId) {
     return null;
   }
+
+  @Override
+  public Page<LinodeVolumeDto> volumes() {
+    return null;
+  }
 }

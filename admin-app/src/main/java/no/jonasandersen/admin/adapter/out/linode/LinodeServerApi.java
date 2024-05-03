@@ -12,9 +12,11 @@ import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
+@Profile("prod")
 class LinodeServerApi implements ServerApi {
 
   private final LinodeBjoggisExchange linodeBjoggisExchange;
@@ -46,9 +48,9 @@ class LinodeServerApi implements ServerApi {
 
   @Override
   public List<LinodeVolume> getVolumes() {
-    List<LinodeVolumeDto> volumes = linodeBjoggisExchange.getVolumes();
+    Page<LinodeVolumeDto> volumes = linodeExchange.volumes();
 
-    return volumes.stream().map(
+    return volumes.data().stream().map(
             volume -> {
               VolumeId volumeId = new VolumeId(volume.id());
               LinodeId linodeId =

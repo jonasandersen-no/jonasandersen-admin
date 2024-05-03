@@ -58,7 +58,7 @@
     ${mainLayoutView.mainContent()}
 </main>
 
-<footer class="footer fixed-bottom">
+<footer class="footer mt-5">
     <div class=" d-flex justify-content-center">
         <p class="text-muted">Jonas Bjørge Andersen &copy; - Version
             <span>${mainLayoutView.buildVersion()}</span></p>

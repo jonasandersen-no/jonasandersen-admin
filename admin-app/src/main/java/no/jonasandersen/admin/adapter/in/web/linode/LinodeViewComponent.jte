@@ -4,9 +4,7 @@
 
 <div class="container m-auto">
     <div class="container text-center">
-        <button class="btn btn-primary" hx-get="/hx/linode/instance/create"
-                hx-target="#form-container">Create new instance
-        </button>
+        <a class="btn btn-primary" href="/linode/create">Create new instance</a>
         <button class="btn btn-secondary" hx-get="/hx/linode/instance/refresh"
                 hx-target="#instance-row" hx-swap="innerHTML">Refresh
         </button>

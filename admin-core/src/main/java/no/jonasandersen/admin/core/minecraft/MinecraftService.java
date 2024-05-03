@@ -5,6 +5,7 @@ import no.jonasandersen.admin.core.LinodeVolumeService;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
+import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 
@@ -56,5 +57,9 @@ public class MinecraftService {
 
   public void startMinecraftInstance() {
 
+  }
+
+  public void createLinode(String instanceName, VolumeId volumeId) {
+//    serverApi.createLinode(instanceName, volumeId);
   }
 }

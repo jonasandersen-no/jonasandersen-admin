@@ -2,10 +2,7 @@ package no.jonasandersen.admin.adapter.in.web.linode;
 
 import de.tschuehly.spring.viewcomponent.core.component.ViewComponent;
 import de.tschuehly.spring.viewcomponent.jte.ViewContext;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import no.jonasandersen.admin.AdminProperties.Linode;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.minecraft.MinecraftService;
 
@@ -28,11 +25,7 @@ public class LinodeViewComponent {
 
   public LinodeView render() {
     List<LinodeInstance> instances = service.getInstances();
-    List<LinodeInstance> instances2 = service.getInstances();
-    List<LinodeInstance> joined = new ArrayList<>();
-    joined.addAll(instances);
-    joined.addAll(instances2);
-    return new LinodeView(joined, this);
+    return new LinodeView(instances, this);
   }
 
   public LinodeCardViewComponent.LinodeCardView renderCard(LinodeInstance instance) {
