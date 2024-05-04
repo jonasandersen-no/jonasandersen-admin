@@ -12,31 +12,156 @@
   <groupId>no.jonasandersen</groupId>
   <artifactId>jonasandersen-admin</artifactId>
   <version>0</version>
-  <packaging>pom</packaging>
 
   <properties>
     <java.version>21</java.version>
     <spring-cloud.version>2023.0.1</spring-cloud.version>
+    <jte.version>3.1.10</jte.version>
+
   </properties>
 
-  <modules>
-    <module>admin-core</module>
-    <module>admin-app</module>
-    <module>admin-details</module>
-    <module>admin-test</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>de.tschuehly</groupId>
+      <artifactId>spring-view-component-core</artifactId>
+      <version>0.7.4</version>
+    </dependency>
+    <dependency>
+      <groupId>de.tschuehly</groupId>
+      <artifactId>spring-view-component-jte</artifactId>
+      <version>0.7.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>0.1.55</version>
+    </dependency>
+    <dependency>
+      <groupId>org.instancio</groupId>
+      <artifactId>instancio-core</artifactId>
+      <version>4.5.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jdbc</artifactId>
+    </dependency>
 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-docker-compose</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+    </dependency>
+
+    <!--    <dependency>-->
+    <!--      <groupId>com.github.loki4j</groupId>-->
+    <!--      <artifactId>loki-logback-appender</artifactId>-->
+    <!--      <version>1.4.2</version>-->
+    <!--    </dependency>-->
+
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.flywaydb</groupId>
+      <artifactId>flyway-mysql</artifactId>
+    </dependency>
+
+
+    <dependency>
+      <groupId>io.github.wimdeblauwe</groupId>
+      <artifactId>htmx-spring-boot</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!--Test dependencies-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>mariadb</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>24.1.0</version>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>no.jonasandersen</groupId>
-        <artifactId>admin-core</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>no.jonasandersen</groupId>
-        <artifactId>admin-test</artifactId>
-        <version>${project.version}</version>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -49,13 +174,67 @@
         <configuration>
           <source>21</source>
           <target>21</target>
-          <encoding>UTF-8</encoding>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>de.tschuehly</groupId>
+              <artifactId>spring-view-component-core</artifactId>
+              <version>0.7.4</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <excludedGroups>manual</excludedGroups>
+        </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>build-info</id>
+            <goals>
+              <goal>build-info</goal>
+            </goals>
+          </execution>
+          <execution>
+            <goals>
+              <goal>build-image-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <image>
+            <builder>dashaun/builder:tiny</builder>
+            <name>bjoggis/${project.parent.artifactId}:v${project.version}-${os.detected.arch}
+            </name>
+          </image>
+        </configuration>
+      </plugin>
+      <!--      <plugin>-->
+      <!--        <groupId>org.apache.maven.plugins</groupId>-->
+      <!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
+      <!--        <version>3.3.1</version>-->
+      <!--        <configuration>-->
+      <!--          <configLocation>google_checks.xml</configLocation>-->
+      <!--          <consoleOutput>true</consoleOutput>-->
+      <!--          <failsOnError>true</failsOnError>-->
+      <!--          <violationSeverity>warning</violationSeverity>-->
+      <!--        </configuration>-->
+      <!--        <executions>-->
+      <!--          <execution>-->
+      <!--            <id>validate</id>-->
+      <!--            <phase>validate</phase>-->
+      <!--            <goals>-->
+      <!--              <goal>check</goal>-->
+      <!--            </goals>-->
+      <!--          </execution>-->
+      <!--        </executions>-->
+      <!--      </plugin>-->
     </plugins>
   </build>
 </project>
