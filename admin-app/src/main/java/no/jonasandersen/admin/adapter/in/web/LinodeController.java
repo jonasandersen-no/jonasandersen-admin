@@ -10,7 +10,7 @@ import no.jonasandersen.admin.core.LinodeVolumeService;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
-import no.jonasandersen.admin.core.minecraft.MinecraftService;
+import no.jonasandersen.admin.core.minecraft.LinodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -31,19 +31,19 @@ public class LinodeController {
 
   private final CreateFormComponent createFormComponent;
   private final LinodeVolumeService linodeVolumeService;
-  private final MinecraftService minecraftService;
+  private final LinodeService linodeService;
 
   public LinodeController(MainLayoutViewComponent mainLayoutViewComponent,
       LinodeViewComponent linodeViewComponent,
       LinodeDetailViewComponent linodeDetailViewComponent,
       CreateFormComponent createFormComponent, LinodeVolumeService linodeVolumeService,
-      MinecraftService minecraftService) {
+      LinodeService linodeService) {
     this.mainLayoutViewComponent = mainLayoutViewComponent;
     this.linodeViewComponent = linodeViewComponent;
     this.linodeDetailViewComponent = linodeDetailViewComponent;
     this.createFormComponent = createFormComponent;
     this.linodeVolumeService = linodeVolumeService;
-    this.minecraftService = minecraftService;
+    this.linodeService = linodeService;
   }
 
   @GetMapping
@@ -68,7 +68,7 @@ public class LinodeController {
   ViewContext createResponse(@RequestParam String instanceName, @RequestParam Long volumeId) {
     log.info("Creating Linode with name: {} and volumeId: {}", instanceName, volumeId);
 
-    minecraftService.createLinode(instanceName, new VolumeId(volumeId));
+    linodeService.createLinode(instanceName, new VolumeId(volumeId));
     return linode();
   }
 

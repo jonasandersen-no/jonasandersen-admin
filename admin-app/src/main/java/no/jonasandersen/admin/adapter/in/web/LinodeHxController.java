@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import no.jonasandersen.admin.adapter.out.websocket.Model;
 import no.jonasandersen.admin.core.LinodeVolumeService;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.minecraft.MinecraftService;
+import no.jonasandersen.admin.core.minecraft.LinodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +20,14 @@ public class LinodeHxController {
   private static final Logger log = LoggerFactory.getLogger(LinodeHxController.class);
   private final LinodeVolumeService linodeVolumeService;
   private final JteHtmlGenerator jteHtmlGenerator;
-  private final MinecraftService minecraftService;
+  private final LinodeService linodeService;
 
 
   public LinodeHxController(LinodeVolumeService linodeVolumeService,
-      JteHtmlGenerator jteHtmlGenerator, MinecraftService minecraftService) {
+      JteHtmlGenerator jteHtmlGenerator, LinodeService linodeService) {
     this.linodeVolumeService = linodeVolumeService;
     this.jteHtmlGenerator = jteHtmlGenerator;
-    this.minecraftService = minecraftService;
+    this.linodeService = linodeService;
 
   }
 
@@ -43,7 +42,7 @@ public class LinodeHxController {
   @HxRequest
   String refreshInstance() {
 
-    List<LinodeInstance> instances = minecraftService.getInstances();
+    List<no.jonasandersen.admin.core.domain.LinodeInstance> instances = linodeService.getInstances();
     return instances.stream()
         .map(instance -> jteHtmlGenerator.generateHtml("linode/instance", Model.from(instance)))
         .collect(Collectors.joining());

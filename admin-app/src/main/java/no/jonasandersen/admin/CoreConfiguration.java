@@ -3,7 +3,7 @@ package no.jonasandersen.admin;
 import java.util.List;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
 import no.jonasandersen.admin.core.LinodeVolumeService;
-import no.jonasandersen.admin.core.minecraft.MinecraftService;
+import no.jonasandersen.admin.core.minecraft.LinodeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
@@ -23,8 +23,8 @@ class CoreConfiguration {
   }
 
   @Bean
-  MinecraftService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
-    return new MinecraftService(serverApi, linodeVolumeService);
+  LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
+    return new LinodeService(serverApi, linodeVolumeService);
   }
 
   @Bean

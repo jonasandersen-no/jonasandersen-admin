@@ -20,8 +20,8 @@ public class TestServerApi implements ServerApi {
       List.of("minecraft-auto-config-1-volume-1", "minecraft-auto-config-1-volume-2"));
 
   @Override
-  public MinecraftInstance listServerInfo() {
-    return minecraftInstance;
+  public LinodeInstance createInstance(String label, String tags) {
+    throw new UnsupportedOperationException();
   }
 
   @Override

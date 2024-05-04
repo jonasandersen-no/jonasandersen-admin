@@ -7,7 +7,7 @@ import no.jonasandersen.admin.config.IoBasedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class JdbcLinodeInstanceRepositoryTest extends IoBasedTest {
+class JdbcLinodeServiceRepositoryTest extends IoBasedTest {
 
 
   @Autowired

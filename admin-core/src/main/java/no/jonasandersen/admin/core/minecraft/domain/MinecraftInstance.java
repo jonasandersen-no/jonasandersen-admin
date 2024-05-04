@@ -2,6 +2,7 @@ package no.jonasandersen.admin.core.minecraft.domain;
 
 
 import jakarta.validation.constraints.NotNull;
+import no.jonasandersen.admin.core.domain.LinodeInstance;
 
 public class MinecraftInstance {
 
@@ -55,5 +56,10 @@ public class MinecraftInstance {
 
   public boolean isEmpty() {
     return name == null && ip == null && status == null;
+  }
+
+  public static MinecraftInstance from(LinodeInstance linodeInstance) {
+    return new MinecraftInstance(linodeInstance.label(), linodeInstance.ip().getFirst(),
+        linodeInstance.status());
   }
 }

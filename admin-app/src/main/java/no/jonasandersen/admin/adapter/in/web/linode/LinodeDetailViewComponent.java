@@ -3,19 +3,18 @@ package no.jonasandersen.admin.adapter.in.web.linode;
 import de.tschuehly.spring.viewcomponent.core.component.ViewComponent;
 import de.tschuehly.spring.viewcomponent.jte.ViewContext;
 import no.jonasandersen.admin.core.domain.LinodeId;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.minecraft.MinecraftService;
+import no.jonasandersen.admin.core.minecraft.LinodeService;
 
 @ViewComponent
 public class LinodeDetailViewComponent {
 
-  private final MinecraftService service;
+  private final LinodeService service;
 
-  public LinodeDetailViewComponent(MinecraftService service) {
+  public LinodeDetailViewComponent(LinodeService service) {
     this.service = service;
   }
 
-  public record LinodeDetailView(LinodeInstance instance) implements ViewContext {
+  public record LinodeDetailView(no.jonasandersen.admin.core.domain.LinodeInstance instance) implements ViewContext {
 
   }
 

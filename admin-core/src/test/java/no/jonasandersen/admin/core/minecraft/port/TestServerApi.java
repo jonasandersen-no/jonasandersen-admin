@@ -5,14 +5,13 @@ import java.util.List;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 
 public class TestServerApi implements ServerApi {
 
 
   @Override
-  public MinecraftInstance listServerInfo() {
-    return new MinecraftInstance("minecraft-auto-config-1", "127.0.0.1", "running");
+  public LinodeInstance createInstance(String label, String tags) {
+    return null;
   }
 
   @Override

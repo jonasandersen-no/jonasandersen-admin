@@ -6,7 +6,6 @@ import no.jonasandersen.admin.adapter.out.linode.model.api.db.LinodeVolumeDbo;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,8 @@ public class DatabaseServerApi implements ServerApi {
   }
 
   @Override
-  public MinecraftInstance listServerInfo() {
-    return null;
+  public LinodeInstance createInstance(String label, String tags) {
+    throw new UnsupportedOperationException();
   }
 
   @Override

@@ -3,29 +3,23 @@ package no.jonasandersen.admin.core.minecraft;
 import java.util.List;
 import no.jonasandersen.admin.core.LinodeVolumeService;
 import no.jonasandersen.admin.core.domain.LinodeId;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 
-public class MinecraftService {
+public class LinodeService {
 
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
 
-  public MinecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
+  public LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
   }
 
-  public MinecraftInstance findMinecraftInstance() {
-    return serverApi.listServerInfo();
-  }
-
-  public LinodeInstance getInstanceById(LinodeId linodeId) {
-    LinodeInstance instance = serverApi.getInstanceById(linodeId);
-
+  public no.jonasandersen.admin.core.domain.LinodeInstance getInstanceById(LinodeId linodeId) {
+    no.jonasandersen.admin.core.domain.LinodeInstance instance = serverApi.getInstanceById(linodeId);
 
     List<LinodeVolume> volumesByInstance = linodeVolumeService.getVolumesByInstance(linodeId);
 
@@ -33,12 +27,12 @@ public class MinecraftService {
         .map(LinodeVolume::label)
         .toList();
 
-    return new LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
+    return new no.jonasandersen.admin.core.domain.LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
         instance.label(), instance.tags(), volumeNames);
   }
 
-  public List<LinodeInstance> getInstances() {
-    List<LinodeInstance> instances = serverApi.getInstances();
+  public List<no.jonasandersen.admin.core.domain.LinodeInstance> getInstances() {
+    List<no.jonasandersen.admin.core.domain.LinodeInstance> instances = serverApi.getInstances();
     return instances.parallelStream()
 
         .map(instance -> {
@@ -49,14 +43,20 @@ public class MinecraftService {
               .map(LinodeVolume::label)
               .toList();
 
-          return new LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
+          return new no.jonasandersen.admin.core.domain.LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
               instance.label(), instance.tags(), volumeNames);
         })
         .toList();
   }
 
-  public void startMinecraftInstance() {
+  public MinecraftInstance startMinecraftInstance(LinodeId linodeId) {
+    no.jonasandersen.admin.core.domain.LinodeInstance instance = serverApi.getInstanceById(linodeId);
 
+    if (instance != null) {
+      return new MinecraftInstance(instance.label(), instance.ip().getFirst(), instance.status());
+    }
+
+    return null;
   }
 
   public void createLinode(String instanceName, VolumeId volumeId) {
