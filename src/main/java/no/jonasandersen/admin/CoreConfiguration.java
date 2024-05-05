@@ -10,8 +10,8 @@ import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
 import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
-import no.jonasandersen.admin.core.theme.UserSettingsService;
-import no.jonasandersen.admin.core.theme.port.UserSettingsRepository;
+import no.jonasandersen.admin.application.ThemeService;
+import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 class CoreConfiguration {
 
   @Bean
-  UserSettingsService userSettingsService(UserSettingsRepository repository) {
-    return UserSettingsService.create(repository);
+  ThemeService themeService(UserSettingsRepository repository) {
+    return ThemeService.create(repository);
   }
 
   @Bean

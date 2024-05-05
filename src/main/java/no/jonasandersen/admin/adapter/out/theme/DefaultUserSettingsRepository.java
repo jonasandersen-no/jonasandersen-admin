@@ -3,9 +3,9 @@ package no.jonasandersen.admin.adapter.out.theme;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import no.jonasandersen.admin.core.theme.domain.Theme;
-import no.jonasandersen.admin.core.theme.domain.Username;
-import no.jonasandersen.admin.core.theme.port.UserSettingsRepository;
+import no.jonasandersen.admin.domain.Theme;
+import no.jonasandersen.admin.domain.Username;
+import no.jonasandersen.admin.application.port.UserSettingsRepository;
 
 public class DefaultUserSettingsRepository implements UserSettingsRepository {
 

@@ -2,9 +2,9 @@ package no.jonasandersen.admin.adapter.in.web.settings;
 
 import de.tschuehly.spring.viewcomponent.jte.ViewContext;
 import no.jonasandersen.admin.adapter.in.web.layout.MainLayoutViewComponent;
-import no.jonasandersen.admin.core.theme.UserSettingsService;
-import no.jonasandersen.admin.core.theme.domain.Theme;
-import no.jonasandersen.admin.core.theme.domain.Username;
+import no.jonasandersen.admin.application.ThemeService;
+import no.jonasandersen.admin.domain.Theme;
+import no.jonasandersen.admin.domain.Username;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +18,14 @@ class UserSettingsController {
 
   private final MainLayoutViewComponent mainLayoutViewComponent;
   private final UserSettingsViewComponent userSettingsViewComponent;
-  private final UserSettingsService userSettingsService;
+  private final ThemeService themeService;
 
   UserSettingsController(MainLayoutViewComponent mainLayoutViewComponent,
       UserSettingsViewComponent userSettingsViewComponent,
-      UserSettingsService userSettingsService) {
+      ThemeService themeService) {
     this.mainLayoutViewComponent = mainLayoutViewComponent;
     this.userSettingsViewComponent = userSettingsViewComponent;
-    this.userSettingsService = userSettingsService;
+    this.themeService = themeService;
   }
 
   @GetMapping
@@ -37,7 +37,7 @@ class UserSettingsController {
   public ViewContext saveSettings(@RequestParam String theme) {
     String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 
-    userSettingsService.setTheme(Username.from(userName), Theme.from(theme));
+    themeService.saveTheme(Username.create(userName), Theme.from(theme));
 
     return mainLayoutViewComponent.render("Settings", userSettingsViewComponent.render());
   }

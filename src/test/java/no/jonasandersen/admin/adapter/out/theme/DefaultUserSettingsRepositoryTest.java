@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 import no.jonasandersen.admin.config.IoBasedTest;
-import no.jonasandersen.admin.core.theme.domain.Theme;
-import no.jonasandersen.admin.core.theme.domain.Username;
+import no.jonasandersen.admin.domain.Theme;
+import no.jonasandersen.admin.domain.Username;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

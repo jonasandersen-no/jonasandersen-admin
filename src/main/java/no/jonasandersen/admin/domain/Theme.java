@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.core.theme.domain;
+package no.jonasandersen.admin.domain;
 
 public record Theme(String value) {
 

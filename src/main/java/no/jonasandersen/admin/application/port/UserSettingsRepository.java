@@ -1,8 +1,8 @@
-package no.jonasandersen.admin.core.theme.port;
+package no.jonasandersen.admin.application.port;
 
 import java.util.Optional;
-import no.jonasandersen.admin.core.theme.domain.Theme;
-import no.jonasandersen.admin.core.theme.domain.Username;
+import no.jonasandersen.admin.domain.Theme;
+import no.jonasandersen.admin.domain.Username;
 
 public interface UserSettingsRepository {
 
