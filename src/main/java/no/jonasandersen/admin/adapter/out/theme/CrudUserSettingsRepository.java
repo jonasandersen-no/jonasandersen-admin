@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-interface JdbcUserSettingsRepository extends CrudRepository<UserSettingsDbo, Long> {
+public interface CrudUserSettingsRepository extends CrudRepository<UserSettingsDbo, Long> {
 
   Optional<UserSettingsDbo> findByUsername(String username);
 }

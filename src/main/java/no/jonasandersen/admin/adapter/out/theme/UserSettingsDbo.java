@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(value = "user_settings", schema = "admin")
-class UserSettingsDbo {
+public class UserSettingsDbo {
 
   @Id
   private Long id;

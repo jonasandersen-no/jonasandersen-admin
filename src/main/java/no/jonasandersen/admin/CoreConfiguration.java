@@ -2,8 +2,10 @@ package no.jonasandersen.admin;
 
 import java.util.List;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
-import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
+import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
+import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
 import no.jonasandersen.admin.core.minecraft.LinodeService;
+import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
@@ -13,13 +15,14 @@ import no.jonasandersen.admin.core.theme.port.UserSettingsRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 class CoreConfiguration {
 
   @Bean
   UserSettingsService userSettingsService(UserSettingsRepository repository) {
-    return new UserSettingsService(repository);
+    return UserSettingsService.create(repository);
   }
 
   @Bean
@@ -40,5 +43,11 @@ class CoreConfiguration {
   @Bean
   LinodeVolumeService linodeVolumeService(ServerApi serverApi) {
     return new LinodeVolumeService(serverApi);
+  }
+
+  @Bean
+  @Transactional
+  DefaultUserSettingsRepository userSettingsRepository(CrudUserSettingsRepository repository) {
+    return DefaultUserSettingsRepository.create(repository);
   }
 }

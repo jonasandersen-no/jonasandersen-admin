@@ -18,7 +18,7 @@ class DefaultUserSettingsRepositoryTest extends IoBasedTest {
   @Autowired
   private DefaultUserSettingsRepository repository;
   @Autowired
-  private JdbcUserSettingsRepository jdbcRepository;
+  private CrudUserSettingsRepository jdbcRepository;
 
 
   @Test
