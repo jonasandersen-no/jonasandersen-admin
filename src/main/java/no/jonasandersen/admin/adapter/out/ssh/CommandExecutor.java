@@ -54,21 +54,6 @@ public class CommandExecutor {
       throw new IllegalStateException("Session is not connected");
     }
 
-    executeCommand(command, session);
-  }
-
-  private void setupConnection(ConnectionInfo connectionInfo) throws JSchException {
-    log.info("Connecting to {}", connectionInfo);
-    session = jsch.getSession(connectionInfo.username(), connectionInfo.ip().value(), connectionInfo.port());
-    session.setPassword(connectionInfo.password());
-
-    Properties config = new Properties();
-    config.put("StrictHostKeyChecking", "no");
-    session.setConfig(config);
-  }
-
-
-  private void executeCommand(String command, SessionWrapper session) throws JSchException, IOException {
     ChannelExecWrapper exec = session.openChannel("exec");
     try {
       exec.setCommand(command);
@@ -81,6 +66,17 @@ public class CommandExecutor {
       exec.disconnect();
     }
   }
+
+  private void setupConnection(ConnectionInfo connectionInfo) throws JSchException {
+    log.info("Connecting to {}", connectionInfo);
+    session = jsch.getSession(connectionInfo.username(), connectionInfo.ip().value(), connectionInfo.port());
+    session.setPassword(connectionInfo.password());
+
+    Properties config = new Properties();
+    config.put("StrictHostKeyChecking", "no");
+    session.setConfig(config);
+  }
+
 
   private String getChannelOutput(ChannelExecWrapper channel, InputStream in) throws IOException {
 
