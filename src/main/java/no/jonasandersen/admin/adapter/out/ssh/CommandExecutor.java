@@ -27,14 +27,12 @@ public class CommandExecutor {
   }
 
   public static CommandExecutor createNull() throws JSchException {
-    return new CommandExecutor(new StubJSchWrapper(), null);
+    return new CommandExecutor(new StubJSchWrapper(), ConnectionInfo.createNull());
   }
 
   private CommandExecutor(JSchWrapper jschWrapper, ConnectionInfo connectionInfo) throws JSchException {
     this.jsch = jschWrapper;
-    if (connectionInfo != null) {
-      setupConnection(connectionInfo);
-    }
+    setupConnection(connectionInfo);
   }
 
   public OutputTracker<String> trackOutput() {

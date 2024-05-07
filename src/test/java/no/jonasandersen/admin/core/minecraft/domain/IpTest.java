@@ -18,4 +18,11 @@ class IpTest {
     assertThatThrownBy(() -> new Ip("1234.1234.1234.1234")).isInstanceOf(
         IllegalArgumentException.class);
   }
+
+  @Test
+  void throwsExceptionWhenValueIsNull() {
+    assertThatThrownBy(() -> new Ip(null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("Value cannot be null");
+  }
 }
