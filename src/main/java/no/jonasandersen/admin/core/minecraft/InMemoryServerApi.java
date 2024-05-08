@@ -8,6 +8,7 @@ import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
+import no.jonasandersen.admin.domain.InstanceDetails;
 
 public class InMemoryServerApi implements ServerApi {
 
@@ -22,6 +23,11 @@ public class InMemoryServerApi implements ServerApi {
 
     instances.put(linodeInstance.linodeId(), linodeInstance);
     return linodeInstance;
+  }
+
+  @Override
+  public LinodeInstance createInstance(InstanceDetails instanceDetails) {
+    return null;
   }
 
   @Override

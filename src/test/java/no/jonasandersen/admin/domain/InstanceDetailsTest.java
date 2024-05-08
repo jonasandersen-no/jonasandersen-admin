@@ -8,7 +8,7 @@ class InstanceDetailsTest {
 
   @Test
   void defaultMinecraftSetupIsAsExpected() {
-    InstanceDetails details = InstanceDetails.createDefaultMinecraft();
+    InstanceDetails details = InstanceDetails.createDefaultMinecraft("password");
 
     assertThat(details.region()).isEqualTo("se-sto");
     assertThat(details.image()).isEqualTo("linode/ubuntu22.04");

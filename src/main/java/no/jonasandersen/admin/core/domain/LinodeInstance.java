@@ -30,4 +30,8 @@ public record LinodeInstance(LinodeId linodeId, List<String> ip, String status, 
   public String prettyPrintIp() {
     return String.join(", ", ip);
   }
+
+  public static LinodeInstance createNull() {
+    return new LinodeInstance(new LinodeId(0L), List.of(), "", "", List.of(), List.of());
+  }
 }
