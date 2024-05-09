@@ -59,13 +59,13 @@ class CoreConfiguration {
 
   @Bean
   @Profile("prod")
-  ServerApi serverApi(LinodeExchange linodeExchange) {
+  ServerApi linodeServerApi(LinodeExchange linodeExchange) {
     return LinodeServerApi.create(linodeExchange);
   }
 
   @Bean
   @Profile("!prod")
-  ServerApi serverApi(JdbcLinodeInstanceRepository repository,
+  ServerApi databaseServerApi(JdbcLinodeInstanceRepository repository,
       JdbcLinodeVolumeRepository volumeRepository) {
     return new DatabaseServerApi(repository, volumeRepository);
   }

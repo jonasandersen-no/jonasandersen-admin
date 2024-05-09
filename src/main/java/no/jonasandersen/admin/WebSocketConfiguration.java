@@ -11,16 +11,16 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfiguration implements WebSocketConfigurer {
 
-    private final WebSocketBroadcaster webSocketBroadcaster;
+  private final WebSocketBroadcaster webSocketBroadcaster;
 
-    @Autowired
-    public WebSocketConfiguration(WebSocketBroadcaster webSocketBroadcaster) {
-        this.webSocketBroadcaster = webSocketBroadcaster;
-    }
+  @Autowired
+  public WebSocketConfiguration(WebSocketBroadcaster webSocketBroadcaster) {
+    this.webSocketBroadcaster = webSocketBroadcaster;
+  }
 
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketBroadcaster, "/ws/shortcut/**");
-    }
+  @Override
+  public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    registry.addHandler(webSocketBroadcaster, "/ws/shortcut/**");
+  }
 
 }

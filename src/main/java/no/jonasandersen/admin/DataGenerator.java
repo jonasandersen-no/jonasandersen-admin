@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Profile("dev")
 public class DataGenerator implements ApplicationListener<ApplicationStartedEvent> {
 
-  private static final Boolean OVERWRITE_DATA = true;
+  private static final Boolean OVERWRITE_DATA = false;
   private static final Logger log = LoggerFactory.getLogger(DataGenerator.class);
   private final JdbcLinodeInstanceRepository instanceRepository;
   private final JdbcLinodeVolumeRepository volumeRepository;
