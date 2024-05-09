@@ -2,6 +2,9 @@ package no.jonasandersen.admin;
 
 import java.util.List;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
+import no.jonasandersen.admin.adapter.out.linode.DatabaseServerApi;
+import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeInstanceRepository;
+import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeVolumeRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
@@ -16,6 +19,7 @@ import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
 import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +58,15 @@ class CoreConfiguration {
   }
 
   @Bean
+  @Profile("prod")
   ServerApi serverApi(LinodeExchange linodeExchange) {
     return LinodeServerApi.create(linodeExchange);
+  }
+
+  @Bean
+  @Profile("!prod")
+  ServerApi serverApi(JdbcLinodeInstanceRepository repository,
+      JdbcLinodeVolumeRepository volumeRepository) {
+    return new DatabaseServerApi(repository, volumeRepository);
   }
 }

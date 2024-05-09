@@ -17,9 +17,7 @@ import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.domain.InstanceDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 
-@Profile("prod")
 public class LinodeServerApi implements ServerApi {
 
   private final LinodeExchange linodeExchange;

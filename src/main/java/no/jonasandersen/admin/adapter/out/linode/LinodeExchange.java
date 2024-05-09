@@ -22,6 +22,6 @@ public interface LinodeExchange {
   @GetExchange("/volume")
   Page<LinodeVolumeDto> volumes();
 
-  @PostExchange("/v4/linode/instances")
+  @PostExchange("/linode/instances")
   LinodeInstanceApi createInstance(@RequestBody InstanceDetails instanceDetails);
 }

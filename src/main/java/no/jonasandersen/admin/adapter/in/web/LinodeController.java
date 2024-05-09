@@ -6,6 +6,7 @@ import no.jonasandersen.admin.adapter.in.web.layout.MainLayoutViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeDetailViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.create.CreateFormComponent;
+import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
@@ -70,6 +71,13 @@ public class LinodeController {
 
     linodeService.createLinode(instanceName, new VolumeId(volumeId));
     return linode();
+  }
+
+  @PostMapping("/create/minecraft")
+  String createDefaultMinecraft() {
+    LinodeInstance defaultMinecraftInstance = linodeService.createDefaultMinecraftInstance();
+
+    return "redirect:/linode";
   }
 
 }
