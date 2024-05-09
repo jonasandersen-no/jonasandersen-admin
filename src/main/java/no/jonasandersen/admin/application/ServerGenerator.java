@@ -2,7 +2,6 @@ package no.jonasandersen.admin.application;
 
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.minecraft.LinodeService;
-import no.jonasandersen.admin.core.minecraft.domain.Ip;
 
 public class ServerGenerator {
 
@@ -29,9 +28,10 @@ public class ServerGenerator {
     switch (serverType) {
       case MINECRAFT -> {
         LinodeInstance instance = service.createDefaultMinecraftInstance();
-        return new ServerGeneratorResponse(instance.label(), new Ip(instance.ip().getFirst()));
+        return ServerGeneratorResponse.from(instance);
       }
       default -> throw new IllegalStateException("Unexpected value: " + serverType);
     }
   }
+
 }
