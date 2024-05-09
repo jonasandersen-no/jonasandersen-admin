@@ -11,14 +11,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WithMockUser
-class LinodeApiControllerIoTest extends IoBasedTest {
+class ServerGeneratorControllerTest extends IoBasedTest {
 
   @Autowired
   private MockMvc mockMvc;
 
   @Test
   void name() throws Exception {
-    mockMvc.perform(post("/api/linode").with(csrf()))
+    mockMvc.perform(post("/api/server-generator").with(csrf()))
         .andExpect(status().isOk());
 
   }

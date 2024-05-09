@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/linode")
-public class LinodeApiController {
+@RequestMapping("/api/server-generator")
+public class ServerGeneratorController {
 
   private final ServerGenerator serverGenerator;
 
-  public LinodeApiController(ServerGenerator serverGenerator) {
+  public ServerGeneratorController(ServerGenerator serverGenerator) {
     this.serverGenerator = serverGenerator;
   }
 
