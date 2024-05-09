@@ -9,6 +9,7 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
+import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.core.minecraft.LinodeService;
@@ -68,5 +69,10 @@ class CoreConfiguration {
   ServerApi databaseServerApi(JdbcLinodeInstanceRepository repository,
       JdbcLinodeVolumeRepository volumeRepository) {
     return new DatabaseServerApi(repository, volumeRepository);
+  }
+
+  @Bean
+  ServerGenerator serverGenerator(LinodeService linodeService) {
+    return ServerGenerator.create(linodeService);
   }
 }

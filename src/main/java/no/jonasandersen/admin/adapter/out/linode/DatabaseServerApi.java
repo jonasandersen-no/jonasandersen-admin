@@ -27,7 +27,7 @@ public class DatabaseServerApi implements ServerApi {
 
   @Override
   public LinodeInstance createInstance(InstanceDetails instanceDetails) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override
