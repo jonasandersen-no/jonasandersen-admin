@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.core.minecraft;
 
 import java.util.List;
+import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
@@ -17,6 +18,10 @@ public class LinodeService {
   public LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
+  }
+
+  public static LinodeService createNull() {
+    return new LinodeService(LinodeServerApi.createNull(), null);
   }
 
   public no.jonasandersen.admin.core.domain.LinodeInstance getInstanceById(LinodeId linodeId) {
