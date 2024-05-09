@@ -1,5 +1,7 @@
 package no.jonasandersen.admin.application;
 
+import no.jonasandersen.admin.core.minecraft.domain.Ip;
+
 public class ServerGenerator {
 
 
@@ -14,7 +16,7 @@ public class ServerGenerator {
   private ServerGenerator() {
   }
 
-  public Object generate() {
-    return new Object();
+  public ServerGeneratorResponse generate() {
+    return new ServerGeneratorResponse("label", new Ip("127.0.0.1"));
   }
 }
