@@ -18,14 +18,22 @@ import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
 import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 class CoreConfiguration {
+
+  private static final Logger log = LoggerFactory.getLogger(CoreConfiguration.class);
+  private final UseStubPredicate useStubPredicate;
+
+  CoreConfiguration(UseStubPredicate useStubPredicate) {
+    this.useStubPredicate = useStubPredicate;
+  }
 
   @Bean
   ThemeService themeService(UserSettingsRepository repository) {
@@ -59,14 +67,17 @@ class CoreConfiguration {
   }
 
   @Bean
-  @Profile("prod")
   ServerApi linodeServerApi(LinodeExchange linodeExchange) {
+    if (useStubPredicate.test("linode")) {
+      log.info("Using stub LinodeServerApi");
+      return LinodeServerApi.createNull();
+    }
+
     return LinodeServerApi.create(linodeExchange);
   }
 
   @Bean
-  @Profile("!prod")
-  ServerApi databaseServerApi(JdbcLinodeInstanceRepository repository,
+  DatabaseServerApi databaseServerApi(JdbcLinodeInstanceRepository repository,
       JdbcLinodeVolumeRepository volumeRepository) {
     return new DatabaseServerApi(repository, volumeRepository);
   }
