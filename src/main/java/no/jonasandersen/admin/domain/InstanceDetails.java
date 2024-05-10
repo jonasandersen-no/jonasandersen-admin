@@ -1,10 +1,9 @@
 package no.jonasandersen.admin.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record InstanceDetails(String region, String image, String label, String type, List<String> tags,
-                              @JsonProperty("root_pass") SensitiveString rootPassword, Boolean volume) {
+                              SensitiveString rootPassword, Boolean volume) {
 
   public static InstanceDetails createDefaultMinecraft(String password) {
     return new InstanceDetails("se-sto", "linode/ubuntu22.04",

@@ -40,7 +40,7 @@ public class LinodeServerApi implements ServerApi {
   public LinodeInstance createInstance(InstanceDetails instanceDetails) {
     logger.info("Creating instance with details: {}", instanceDetails);
 
-    LinodeInstanceApi linodeInstanceApi = linodeExchange.createInstance(instanceDetails);
+    LinodeInstanceApi linodeInstanceApi = linodeExchange.createInstance(CreateInstanceRequest.from(instanceDetails));
     return linodeInstanceApi.toDomain();
   }
 
@@ -126,28 +126,28 @@ public class LinodeServerApi implements ServerApi {
     }
 
     @Override
-    public LinodeInstanceApi createInstance(InstanceDetails instanceDetails) {
+    public LinodeInstanceApi createInstance(CreateInstanceRequest request) {
       LinodeInstanceApi instance = new LinodeInstanceApi(id++,
-          instanceDetails.label(),
+          request.label(),
           "group",
           "running",
           LocalDateTime.now(),
           LocalDateTime.now(),
-          instanceDetails.type(),
+          request.type(),
           List.of("127.0.0.1"),
           "::1",
-          instanceDetails.image(),
-          instanceDetails.region(),
+          request.image(),
+          request.region(),
           new Specs(81920, 4096, 2, 0, 4000),
           new Alerts(100, 10, 10, 80, 10000),
           new Backups(true, true, new Schedule("Saturday", "W22"), LocalDateTime.now()),
           "kvm",
           false,
-          List.copyOf(instanceDetails.tags()),
+          List.copyOf(request.tags()),
           "21e5aaacb4064de1951324ce58a2c41b",
           false);
 
-      if (instanceDetails.volume()) {
+      if (request.volume()) {
         LinodeVolumeDto volume = new LinodeVolumeDto(id++, "volume", "active", instance.id());
         volumes.add(volume);
       }
