@@ -1,13 +1,17 @@
 package no.jonasandersen.admin.adapter.out.theme;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
-@Table(value = "user_settings", schema = "admin")
+@Entity
+@Table(name = "user_settings", schema = "admin")
 public class UserSettingsDbo {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String username;
