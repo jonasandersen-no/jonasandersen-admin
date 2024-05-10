@@ -112,12 +112,12 @@ public class LinodeServerApi implements ServerApi {
 
     @Override
     public Page<LinodeVolumeDto> volumes(String linodeId) {
-      return null;
+      return Page.empty();
     }
 
     @Override
     public Page<LinodeVolumeDto> volumes() {
-      return null;
+      return Page.empty();
     }
 
     @Override
