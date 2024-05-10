@@ -17,15 +17,6 @@ public class InMemoryServerApi implements ServerApi {
   private final Map<LinodeId, LinodeVolume> volumes = new HashMap<>();
 
   @Override
-  public LinodeInstance createInstance(String label, String tags) {
-    LinodeInstance linodeInstance = new LinodeInstance(LinodeId.from(SEQUENCE.getAndIncrement()),
-        List.of("127.0.0.1"), "running", label, List.of(tags), List.of());
-
-    instances.put(linodeInstance.linodeId(), linodeInstance);
-    return linodeInstance;
-  }
-
-  @Override
   public LinodeInstance createInstance(InstanceDetails instanceDetails) {
     return null;
   }

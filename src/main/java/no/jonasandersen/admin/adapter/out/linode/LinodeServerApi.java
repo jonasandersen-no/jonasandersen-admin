@@ -36,12 +36,6 @@ public class LinodeServerApi implements ServerApi {
     this.linodeExchange = linodeExchange;
   }
 
-
-  @Override
-  public LinodeInstance createInstance(String label, String tags) {
-    throw new UnsupportedOperationException();
-  }
-
   @Override
   public LinodeInstance createInstance(InstanceDetails instanceDetails) {
     logger.info("Creating instance with details: {}", instanceDetails);

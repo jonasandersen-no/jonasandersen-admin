@@ -8,12 +8,6 @@ import no.jonasandersen.admin.domain.InstanceDetails;
 
 public interface ServerApi {
 
-  /**
-   * @deprecated use {@link #createInstance(InstanceDetails)} instead
-   */
-  @Deprecated
-  LinodeInstance createInstance(String label, String tags);
-
   LinodeInstance createInstance(InstanceDetails instanceDetails);
 
   List<LinodeVolume> getVolumes();
