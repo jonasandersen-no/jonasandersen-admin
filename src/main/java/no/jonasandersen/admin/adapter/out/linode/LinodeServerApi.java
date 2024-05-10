@@ -79,7 +79,7 @@ public class LinodeServerApi implements ServerApi {
 
   @Override
   public List<LinodeVolume> getVolumesByInstance(LinodeId linodeId) {
-    Page<LinodeVolumeDto> volumes = linodeExchange.volumes(linodeId.id().toString());
+    Page<LinodeVolumeDto> volumes = linodeExchange.volumes(String.valueOf(linodeId.id()));
 
     return volumes.data().stream()
         .map(
@@ -95,7 +95,8 @@ public class LinodeServerApi implements ServerApi {
   private static class StubLinodeExchange implements LinodeExchange {
 
     private final List<LinodeInstanceApi> instances = new ArrayList<>();
-    private Long linodeId = 1L;
+    private final List<LinodeVolumeDto> volumes = new ArrayList<>();
+    private Long id = 1L;
 
     @Override
     public Page<LinodeInstanceApi> list() {
@@ -112,17 +113,21 @@ public class LinodeServerApi implements ServerApi {
 
     @Override
     public Page<LinodeVolumeDto> volumes(String linodeId) {
-      return Page.empty();
+      List<LinodeVolumeDto> filteredList = volumes.stream()
+          .filter(volume -> volume.linodeId().equals(Long.valueOf(linodeId)))
+          .toList();
+
+      return new Page<>(List.copyOf(filteredList), 0, 1, filteredList.size());
     }
 
     @Override
     public Page<LinodeVolumeDto> volumes() {
-      return Page.empty();
+      return new Page<>(List.copyOf(volumes), 0, 1, volumes.size());
     }
 
     @Override
     public LinodeInstanceApi createInstance(InstanceDetails instanceDetails) {
-      LinodeInstanceApi instance = new LinodeInstanceApi(linodeId++,
+      LinodeInstanceApi instance = new LinodeInstanceApi(id++,
           instanceDetails.label(),
           "group",
           "running",
@@ -141,6 +146,12 @@ public class LinodeServerApi implements ServerApi {
           List.copyOf(instanceDetails.tags()),
           "21e5aaacb4064de1951324ce58a2c41b",
           false);
+
+      if (instanceDetails.volume()) {
+        LinodeVolumeDto volume = new LinodeVolumeDto(id++, "volume", "active", instance.id());
+        volumes.add(volume);
+      }
+
       instances.add(instance);
       return instance;
     }

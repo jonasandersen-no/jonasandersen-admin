@@ -15,6 +15,7 @@ class InstanceDetailsTest {
     assertThat(details.label()).startsWith("minecraft-auto-config-");
     assertThat(details.type()).isEqualTo("g6-dedicated-4");
     assertThat(details.tags()).containsExactly("minecraft", "auto-created");
-    assertThat(details.rootPassword()).isNotBlank();
+    assertThat(details.rootPassword().isPresent()).isTrue();
+    assertThat(details.volume()).isTrue();
   }
 }
