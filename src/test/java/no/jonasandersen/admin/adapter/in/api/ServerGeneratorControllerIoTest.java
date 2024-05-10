@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import no.jonasandersen.admin.config.IoBasedTest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -18,7 +17,6 @@ class ServerGeneratorControllerIoTest extends IoBasedTest {
   private MockMvc mockMvc;
 
   @Test
-  @Disabled("Disabled because I don't have a null version of LinodeServerApi in test context yet.")
   void name() throws Exception {
     mockMvc.perform(post("/api/server-generator").with(csrf()))
         .andExpect(status().isOk());
