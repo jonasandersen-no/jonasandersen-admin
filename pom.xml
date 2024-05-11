@@ -206,7 +206,7 @@
         <configuration>
           <image>
             <builder>dashaun/builder:tiny</builder>
-            <name>bjoggis/${project.parent.artifactId}:v${project.version}-${os.detected.arch}
+            <name>bjoggis/${project.artifactId}:v${project.version}-${os.detected.arch}
             </name>
           </image>
         </configuration>
