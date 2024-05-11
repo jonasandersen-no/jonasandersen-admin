@@ -9,6 +9,7 @@ import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import org.jetbrains.annotations.NotNull;
 
 public class LinodeService {
 
@@ -27,32 +28,27 @@ public class LinodeService {
   public no.jonasandersen.admin.core.domain.LinodeInstance getInstanceById(LinodeId linodeId) {
     no.jonasandersen.admin.core.domain.LinodeInstance instance = serverApi.getInstanceById(linodeId);
 
-    List<LinodeVolume> volumesByInstance = linodeVolumeService.getVolumesByInstance(linodeId);
-
-    List<String> volumeNames = volumesByInstance.stream()
-        .map(LinodeVolume::label)
-        .toList();
-
-    return new no.jonasandersen.admin.core.domain.LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
-        instance.label(), instance.tags(), volumeNames);
+    return findVolumeForInstance(instance);
   }
 
   public List<no.jonasandersen.admin.core.domain.LinodeInstance> getInstances() {
     List<no.jonasandersen.admin.core.domain.LinodeInstance> instances = serverApi.getInstances();
     return instances.parallelStream()
 
-        .map(instance -> {
-          List<LinodeVolume> volumesByInstance = linodeVolumeService.getVolumesByInstance(
-              instance.linodeId());
-
-          List<String> volumeNames = volumesByInstance.stream()
-              .map(LinodeVolume::label)
-              .toList();
-
-          return new no.jonasandersen.admin.core.domain.LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
-              instance.label(), instance.tags(), volumeNames);
-        })
+        .map(this::findVolumeForInstance)
         .toList();
+  }
+
+  private @NotNull LinodeInstance findVolumeForInstance(LinodeInstance instance) {
+    List<LinodeVolume> volumesByInstance = linodeVolumeService.getVolumesByInstance(
+        instance.linodeId());
+
+    List<String> volumeNames = volumesByInstance.stream()
+        .map(LinodeVolume::label)
+        .toList();
+
+    return new LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
+        instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 
   public MinecraftInstance startMinecraftInstance(LinodeId linodeId) {

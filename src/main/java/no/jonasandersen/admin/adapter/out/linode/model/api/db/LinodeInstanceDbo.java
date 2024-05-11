@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import java.util.List;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
+import no.jonasandersen.admin.core.domain.LinodeSpecs;
 
 @Entity
 @Table(name = "linode_instance", schema = "admin")
@@ -85,7 +86,7 @@ public class LinodeInstanceDbo {
 
   public LinodeInstance toDomain() {
     return new LinodeInstance(LinodeId.from(id), List.of(ips.split(",")), status, label,
-        List.of(tags.split(",")), List.of(volumeNames.split(",")));
+        List.of(tags.split(",")), List.of(volumeNames.split(",")), new LinodeSpecs(0));
   }
 }
 

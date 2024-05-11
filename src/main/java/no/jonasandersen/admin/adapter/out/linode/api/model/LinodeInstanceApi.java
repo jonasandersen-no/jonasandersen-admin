@@ -7,6 +7,7 @@ import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Backups;
 import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Specs;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
+import no.jonasandersen.admin.core.domain.LinodeSpecs;
 
 public record LinodeInstanceApi(
     long id,
@@ -43,7 +44,8 @@ public record LinodeInstanceApi(
   }
 
   public LinodeInstance toDomain() {
-    return new LinodeInstance(new LinodeId(id), List.copyOf(ipv4), status, label, tags, List.of());
+    return new LinodeInstance(new LinodeId(id), List.copyOf(ipv4), status, label, tags, List.of(),
+        new LinodeSpecs(specs.memory()));
   }
 
 //  public Instance toDomain() {

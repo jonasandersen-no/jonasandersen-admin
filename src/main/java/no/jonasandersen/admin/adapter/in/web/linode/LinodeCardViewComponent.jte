@@ -15,6 +15,10 @@
                 <span>${instance.prettyPrintIp()}</span>
             </div>
             <div class="d-flex align-items-center gap-2">
+                <span class="material-symbols-outlined">memory</span>
+                <span>${instance.prettyPrintSpecs()}</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
                 <span class="material-symbols-outlined">label</span>
                 <span>${instance.prettyPrintTags()}</span>
             </div>
