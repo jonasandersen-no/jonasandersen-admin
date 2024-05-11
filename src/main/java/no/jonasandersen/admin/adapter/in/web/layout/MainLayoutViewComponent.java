@@ -21,7 +21,7 @@ public class MainLayoutViewComponent {
   }
 
   public record MainLayoutView(String theme, String buildVersion, String title,
-                               ViewContext mainContent) implements
+                               String username, ViewContext mainContent) implements
       ViewContext {
 
   }
@@ -29,6 +29,6 @@ public class MainLayoutViewComponent {
   public MainLayoutView render(String title, ViewContext mainContent) {
     String name = SecurityContextHolder.getContext().getAuthentication().getName();
     Theme theme = themeService.findTheme(Username.create(name));
-    return new MainLayoutView(theme.value(), buildProperties.getVersion(), title, mainContent);
+    return new MainLayoutView(theme.value(), buildProperties.getVersion(), title, name, mainContent);
   }
 }

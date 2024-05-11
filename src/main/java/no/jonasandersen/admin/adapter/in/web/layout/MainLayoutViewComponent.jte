@@ -48,7 +48,7 @@
                         <a class="nav-link" href="/settings">Settings</a>
                     </li>
                 </ul>
-
+                <span class="m-auto me-0">${mainLayoutView.username()}</span>
             </div>
         </div>
     </nav>
