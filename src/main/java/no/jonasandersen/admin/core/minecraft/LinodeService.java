@@ -6,7 +6,6 @@ import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
-import no.jonasandersen.admin.core.minecraft.domain.MinecraftInstance;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.domain.InstanceDetails;
 import org.jetbrains.annotations.NotNull;
@@ -51,18 +50,8 @@ public class LinodeService {
         instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 
-  public MinecraftInstance startMinecraftInstance(LinodeId linodeId) {
-    no.jonasandersen.admin.core.domain.LinodeInstance instance = serverApi.getInstanceById(linodeId);
-
-    if (instance != null) {
-      return new MinecraftInstance(instance.label(), instance.ip().getFirst(), instance.status());
-    }
-
-    return null;
-  }
-
   public void createLinode(String instanceName, VolumeId volumeId) {
-//    serverApi.createLinode(instanceName, volumeId);
+    throw new UnsupportedOperationException("Not implemented");
   }
 
   public LinodeInstance createDefaultMinecraftInstance() {
