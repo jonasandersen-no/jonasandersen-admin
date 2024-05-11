@@ -32,6 +32,10 @@ public class LinodeServerApi implements ServerApi {
     return new LinodeServerApi(new StubLinodeExchange());
   }
 
+  public static LinodeServerApi createNull(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
+    return new LinodeServerApi(new StubLinodeExchange(instances, volumes));
+  }
+
   private LinodeServerApi(LinodeExchange linodeExchange) {
     this.linodeExchange = linodeExchange;
   }
@@ -94,9 +98,19 @@ public class LinodeServerApi implements ServerApi {
 
   private static class StubLinodeExchange implements LinodeExchange {
 
-    private final List<LinodeInstanceApi> instances = new ArrayList<>();
-    private final List<LinodeVolumeDto> volumes = new ArrayList<>();
+    private final List<LinodeInstanceApi> instances;
+    private final List<LinodeVolumeDto> volumes;
     private Long id = 1L;
+
+    public StubLinodeExchange() {
+      instances = new ArrayList<>();
+      volumes = new ArrayList<>();
+    }
+
+    public StubLinodeExchange(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
+      this.instances = List.copyOf(instances);
+      this.volumes = List.copyOf(volumes);
+    }
 
     @Override
     public Page<LinodeInstanceApi> list() {
