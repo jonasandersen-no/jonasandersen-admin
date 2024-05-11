@@ -1,7 +1,7 @@
 package no.jonasandersen.admin.adapter.out.linode;
 
-import no.jonasandersen.admin.AdminProperties;
-import no.jonasandersen.admin.AdminProperties.Linode;
+import no.jonasandersen.admin.infrastructure.AdminProperties;
+import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;

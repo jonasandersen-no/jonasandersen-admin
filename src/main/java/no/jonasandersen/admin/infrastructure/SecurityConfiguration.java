@@ -1,4 +1,4 @@
-package no.jonasandersen.admin;
+package no.jonasandersen.admin.infrastructure;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -14,7 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class SecurityConfiguration {
+class SecurityConfiguration {
 
   @Bean
   @Order(2)
@@ -53,7 +53,7 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  public AuthenticationEventPublisher authenticationEventPublisher
+  AuthenticationEventPublisher authenticationEventPublisher
       (ApplicationEventPublisher applicationEventPublisher) {
     return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
   }

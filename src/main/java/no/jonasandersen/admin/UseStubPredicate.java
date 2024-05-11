@@ -1,6 +1,7 @@
 package no.jonasandersen.admin;
 
 import java.util.function.Predicate;
+import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,4 +1,4 @@
-package no.jonasandersen.admin;
+package no.jonasandersen.admin.infrastructure;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

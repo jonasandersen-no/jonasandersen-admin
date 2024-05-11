@@ -1,6 +1,7 @@
-package no.jonasandersen.admin;
+package no.jonasandersen.admin.infrastructure;
 
 import java.util.List;
+import no.jonasandersen.admin.UseStubPredicate;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
 import no.jonasandersen.admin.adapter.out.linode.DatabaseServerApi;
 import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeInstanceRepository;

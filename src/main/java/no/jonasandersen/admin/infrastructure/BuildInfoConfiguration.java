@@ -1,4 +1,4 @@
-package no.jonasandersen.admin;
+package no.jonasandersen.admin.infrastructure;
 
 import java.util.Properties;
 import org.springframework.boot.info.BuildProperties;
@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile({"intellij", "integration"})
-public class BuildInfoConfiguration {
+class BuildInfoConfiguration {
 
   @Bean
-  public BuildProperties buildProperties() {
+  BuildProperties buildProperties() {
     Properties properties = new Properties();
     properties.put("version", "Intellij");
     return new BuildProperties(properties);
