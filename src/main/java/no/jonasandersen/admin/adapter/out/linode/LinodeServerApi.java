@@ -3,6 +3,7 @@ package no.jonasandersen.admin.adapter.out.linode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.adapter.out.linode.api.model.Page;
 import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Alerts;
@@ -75,10 +76,11 @@ public class LinodeServerApi implements ServerApi {
   }
 
   @Override
-  public LinodeInstance getInstanceById(LinodeId linodeId) {
-    LinodeInstanceApi linodeInstanceApi = linodeExchange.getInstanceById(linodeId.id());
+  public Optional<LinodeInstance> findInstanceById(LinodeId linodeId) {
+    Optional<LinodeInstanceApi> linodeInstanceApi = linodeExchange.findInstanceById(linodeId.id());
 
-    return linodeInstanceApi.toDomain();
+    return linodeInstanceApi
+        .map(LinodeInstanceApi::toDomain);
   }
 
   @Override
@@ -118,11 +120,10 @@ public class LinodeServerApi implements ServerApi {
     }
 
     @Override
-    public LinodeInstanceApi getInstanceById(Long linodeId) {
+    public Optional<LinodeInstanceApi> findInstanceById(Long linodeId) {
       return instances.stream()
           .filter(instance -> linodeId.equals(instance.id()))
-          .findFirst()
-          .orElseThrow();
+          .findFirst();
     }
 
     @Override

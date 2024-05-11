@@ -6,15 +6,17 @@ import no.jonasandersen.admin.adapter.in.web.layout.MainLayoutViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeDetailViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.create.CreateFormComponent;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
+import no.jonasandersen.admin.core.domain.InstanceNotFound;
 import no.jonasandersen.admin.core.domain.LinodeId;
+import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.core.minecraft.LinodeService;
+import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,8 +56,16 @@ public class LinodeController {
 
   @GetMapping("/{linodeId}")
   ViewContext getInstance(@PathVariable Long linodeId) {
+    LinodeInstance instance;
+    instance = linodeService.getInstanceById(new LinodeId(linodeId));
+
     return mainLayoutViewComponent.render("Linode Detail - " + linodeId,
-        linodeDetailViewComponent.render(new LinodeId(linodeId)));
+        linodeDetailViewComponent.render(instance));
+  }
+
+  @ExceptionHandler(InstanceNotFound.class)
+  public String handleInstanceNotFound() {
+    return "redirect:/linode";
   }
 
   @GetMapping("/create")

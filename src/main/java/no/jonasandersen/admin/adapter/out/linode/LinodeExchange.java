@@ -1,5 +1,6 @@
 package no.jonasandersen.admin.adapter.out.linode;
 
+import java.util.Optional;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.adapter.out.linode.api.model.Page;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,7 @@ public interface LinodeExchange {
   Page<LinodeInstanceApi> list();
 
   @GetExchange("/linode/instances/{linodeId}")
-  LinodeInstanceApi getInstanceById(@PathVariable Long linodeId);
+  Optional<LinodeInstanceApi> findInstanceById(@PathVariable Long linodeId);
 
   @GetExchange("/linode/instances/{linodeId}/volumes")
   Page<LinodeVolumeDto> volumes(@PathVariable String linodeId);

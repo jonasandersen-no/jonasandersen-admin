@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Specs;
 import no.jonasandersen.admin.core.domain.LinodeId;
@@ -34,11 +35,10 @@ class LinodeServerApiTest {
 
     LinodeInstance instance = serverApi.createInstance(InstanceDetails.createDefaultMinecraft("password"));
 
+    Optional<LinodeInstance> instanceById = serverApi.findInstanceById(instance.linodeId());
 
-    LinodeInstance instanceById = serverApi.getInstanceById(instance.linodeId());
-
-    assertThat(instanceById).isNotNull();
-    assertThat(instanceById.linodeId()).isEqualTo(instance.linodeId());
+    assertThat(instanceById.isPresent()).isTrue();
+    assertThat(instanceById.get().linodeId()).isEqualTo(instance.linodeId());
   }
 
   @Test
