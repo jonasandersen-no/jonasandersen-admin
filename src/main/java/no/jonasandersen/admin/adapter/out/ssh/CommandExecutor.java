@@ -67,7 +67,8 @@ public class CommandExecutor {
 
   private void setupConnection(ConnectionInfo connectionInfo) throws JSchException {
     log.info("Connecting to {}", connectionInfo);
-    session = jsch.getSession(connectionInfo.username(), connectionInfo.ip().value(), connectionInfo.port());
+    session = jsch.getSession(connectionInfo.username(), connectionInfo.ip().value(),
+        connectionInfo.port());
     session.setPassword(connectionInfo.password());
 
     Properties config = new Properties();
