@@ -21,9 +21,8 @@ import org.slf4j.LoggerFactory;
 
 public class LinodeServerApi implements ServerApi {
 
-  private final LinodeExchange linodeExchange;
   private final Logger logger = LoggerFactory.getLogger(LinodeServerApi.class);
-
+  private final LinodeExchange linodeExchange;
 
   public static LinodeServerApi create(LinodeExchange linodeExchange) {
     return new LinodeServerApi(linodeExchange);
@@ -97,6 +96,7 @@ public class LinodeServerApi implements ServerApi {
         .toList();
   }
 
+  // NULLABLES
 
   private static class StubLinodeExchange implements LinodeExchange {
 
@@ -171,4 +171,5 @@ public class LinodeServerApi implements ServerApi {
       return instance;
     }
   }
+
 }

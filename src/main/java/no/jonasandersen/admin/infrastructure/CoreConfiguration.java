@@ -14,6 +14,7 @@ import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.core.minecraft.LinodeService;
+import no.jonasandersen.admin.core.minecraft.LinodeService.RealPrincipal;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
@@ -43,7 +44,7 @@ class CoreConfiguration {
 
   @Bean
   LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
-    return new LinodeService(serverApi, linodeVolumeService);
+    return LinodeService.create(serverApi, linodeVolumeService);
   }
 
   @Bean
