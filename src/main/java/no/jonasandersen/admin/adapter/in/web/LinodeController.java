@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.adapter.in.web;
 
 import de.tschuehly.spring.viewcomponent.jte.ViewContext;
+import java.util.Optional;
 import no.jonasandersen.admin.adapter.in.web.layout.MainLayoutViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeDetailViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeViewComponent;
@@ -54,11 +55,10 @@ public class LinodeController {
 
   @GetMapping("/{linodeId}")
   ViewContext getInstance(@PathVariable Long linodeId) {
-    LinodeInstance instance;
-    instance = linodeService.getInstanceById(new LinodeId(linodeId));
+    Optional<LinodeInstance> instance = linodeService.findInstanceById(new LinodeId(linodeId));
 
     return mainLayoutViewComponent.render("Linode Detail - " + linodeId,
-        linodeDetailViewComponent.render(instance));
+        linodeDetailViewComponent.render(instance.orElse(null)));
   }
 
   @ExceptionHandler(InstanceNotFound.class)

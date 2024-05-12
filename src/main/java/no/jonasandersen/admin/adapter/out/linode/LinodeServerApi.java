@@ -110,8 +110,8 @@ public class LinodeServerApi implements ServerApi {
     }
 
     public StubLinodeExchange(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
-      this.instances = List.copyOf(instances);
-      this.volumes = List.copyOf(volumes);
+      this.instances = new ArrayList<>(instances);
+      this.volumes = new ArrayList<>(volumes);
     }
 
     @Override

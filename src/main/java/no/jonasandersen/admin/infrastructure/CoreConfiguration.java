@@ -59,7 +59,7 @@ class CoreConfiguration {
 
   @Bean
   LinodeVolumeService linodeVolumeService(ServerApi serverApi) {
-    return new LinodeVolumeService(serverApi);
+    return LinodeVolumeService.create(serverApi);
   }
 
   @Bean

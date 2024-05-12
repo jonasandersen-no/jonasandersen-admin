@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
+import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
+import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.core.domain.InstanceNotFound;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.domain.InstanceDetails;
@@ -22,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class LinodeService {
 
   private static final Logger log = LoggerFactory.getLogger(LinodeService.class);
+  public static final String AUTO_CREATED = "auto-created";
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
   private final Principal principal;
@@ -31,7 +33,12 @@ public class LinodeService {
   }
 
   public static LinodeService createNull() {
-    return new LinodeService(LinodeServerApi.createNull(), null, new StubPrincipal());
+    return createNull(List.of(), List.of());
+  }
+
+  public static LinodeService createNull(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
+    return new LinodeService(LinodeServerApi.createNull(instances, volumes), LinodeVolumeService.createNull(),
+        new StubPrincipal());
   }
 
   private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, Principal principal) {
@@ -40,7 +47,7 @@ public class LinodeService {
     this.principal = principal;
   }
 
-  public LinodeInstance getInstanceById(LinodeId linodeId) {
+  public Optional<LinodeInstance> findInstanceById(LinodeId linodeId) {
     Optional<LinodeInstance> instance = serverApi.findInstanceById(linodeId);
 
     if (instance.isEmpty()) {
@@ -48,14 +55,21 @@ public class LinodeService {
       throw new InstanceNotFound("Instance not found");
     }
 
-    return findVolumeForInstance(instance.get());
-  }
+    if (!instance.get().tags().contains(AUTO_CREATED)) {
+      log.info("Instance not auto-created: {}", linodeId);
+      return Optional.empty();
+    }
 
+    return Optional.of(findVolumeForInstance(instance.get()));
+  }
 
   public List<LinodeInstance> getInstances() {
     List<LinodeInstance> instances = serverApi.getInstances();
-    return instances.parallelStream()
+    List<LinodeInstance> filteredList = instances.stream()
+        .filter(instance -> instance.tags().contains(AUTO_CREATED))
+        .toList();
 
+    return filteredList.parallelStream()
         .map(this::findVolumeForInstance)
         .toList();
   }
@@ -70,10 +84,6 @@ public class LinodeService {
 
     return new LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
         instance.label(), instance.tags(), volumeNames, instance.specs());
-  }
-
-  public void createLinode(String instanceName, VolumeId volumeId) {
-    throw new UnsupportedOperationException("Not implemented");
   }
 
   LinodeInstance createDefaultMinecraftInstance(SensitiveString password) {
