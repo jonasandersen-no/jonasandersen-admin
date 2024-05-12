@@ -12,6 +12,7 @@ import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.SensitiveString;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,8 +75,8 @@ public class LinodeService {
     throw new UnsupportedOperationException("Not implemented");
   }
 
-  public LinodeInstance createDefaultMinecraftInstance() {
-    return createInstance(InstanceDetails.createDefaultMinecraft("password"));
+  public LinodeInstance createDefaultMinecraftInstance(SensitiveString password) {
+    return createInstance(InstanceDetails.createDefaultMinecraft(password));
   }
 
   LinodeInstance createInstance(InstanceDetails instanceDetails) {

@@ -10,6 +10,7 @@ import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.SensitiveString;
 import org.junit.jupiter.api.Test;
 
 class LinodeServerApiTest {
@@ -18,7 +19,8 @@ class LinodeServerApiTest {
   void instanceCreatedWhenDetailsIsProvided() {
     LinodeServerApi serverApi = LinodeServerApi.createNull();
 
-    LinodeInstance instance = serverApi.createInstance(InstanceDetails.createDefaultMinecraft("password"));
+    LinodeInstance instance = serverApi.createInstance(InstanceDetails.createDefaultMinecraft(
+        SensitiveString.of("password")));
 
     assertThat(instance).isNotNull();
     assertThat(instance.linodeId()).isEqualTo(LinodeId.from(1L));
@@ -30,7 +32,8 @@ class LinodeServerApiTest {
   void instanceIsReturnedWhenGettingById() {
     LinodeServerApi serverApi = LinodeServerApi.createNull();
 
-    LinodeInstance instance = serverApi.createInstance(InstanceDetails.createDefaultMinecraft("password"));
+    LinodeInstance instance = serverApi.createInstance(InstanceDetails.createDefaultMinecraft(
+        SensitiveString.of("password")));
 
     Optional<LinodeInstance> instanceById = serverApi.findInstanceById(instance.linodeId());
 
@@ -42,8 +45,8 @@ class LinodeServerApiTest {
   void allInstancesIsReturnedWhenGettingInstances() {
     LinodeServerApi serverApi = LinodeServerApi.createNull();
 
-    serverApi.createInstance(InstanceDetails.createDefaultMinecraft("password"));
-    serverApi.createInstance(InstanceDetails.createDefaultMinecraft("password1"));
+    serverApi.createInstance(InstanceDetails.createDefaultMinecraft(SensitiveString.of("password")));
+    serverApi.createInstance(InstanceDetails.createDefaultMinecraft(SensitiveString.of("password1")));
 
     List<LinodeInstance> instances = serverApi.getInstances();
 

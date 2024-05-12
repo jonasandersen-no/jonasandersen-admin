@@ -14,12 +14,12 @@ import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.core.minecraft.LinodeService;
-import no.jonasandersen.admin.core.minecraft.LinodeService.RealPrincipal;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
 import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
+import no.jonasandersen.admin.domain.SensitiveString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -85,7 +85,8 @@ class CoreConfiguration {
   }
 
   @Bean
-  ServerGenerator serverGenerator(LinodeService linodeService) {
-    return ServerGenerator.create(linodeService);
+  ServerGenerator serverGenerator(LinodeService linodeService, AdminProperties properties) {
+    String rootPassword = properties.linode().rootPassword();
+    return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword));
   }
 }

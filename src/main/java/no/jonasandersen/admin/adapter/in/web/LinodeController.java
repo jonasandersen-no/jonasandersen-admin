@@ -6,6 +6,8 @@ import no.jonasandersen.admin.adapter.in.web.layout.MainLayoutViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeDetailViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.LinodeViewComponent;
 import no.jonasandersen.admin.adapter.in.web.linode.create.CreateFormComponent;
+import no.jonasandersen.admin.application.ServerGenerator;
+import no.jonasandersen.admin.application.ServerGenerator.ServerType;
 import no.jonasandersen.admin.core.domain.InstanceNotFound;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
@@ -35,18 +37,20 @@ public class LinodeController {
   private final CreateFormComponent createFormComponent;
   private final LinodeVolumeService linodeVolumeService;
   private final LinodeService linodeService;
+  private final ServerGenerator serverGenerator;
 
   public LinodeController(MainLayoutViewComponent mainLayoutViewComponent,
       LinodeViewComponent linodeViewComponent,
       LinodeDetailViewComponent linodeDetailViewComponent,
       CreateFormComponent createFormComponent, LinodeVolumeService linodeVolumeService,
-      LinodeService linodeService) {
+      LinodeService linodeService, ServerGenerator serverGenerator) {
     this.mainLayoutViewComponent = mainLayoutViewComponent;
     this.linodeViewComponent = linodeViewComponent;
     this.linodeDetailViewComponent = linodeDetailViewComponent;
     this.createFormComponent = createFormComponent;
     this.linodeVolumeService = linodeVolumeService;
     this.linodeService = linodeService;
+    this.serverGenerator = serverGenerator;
   }
 
   @GetMapping
@@ -85,7 +89,7 @@ public class LinodeController {
 
   @PostMapping("/create/minecraft")
   String createDefaultMinecraft() {
-    LinodeInstance defaultMinecraftInstance = linodeService.createDefaultMinecraftInstance();
+    serverGenerator.generate(ServerType.MINECRAFT);
 
     return "redirect:/linode";
   }

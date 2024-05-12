@@ -3,13 +3,14 @@ package no.jonasandersen.admin.adapter.out.linode;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.SensitiveString;
 import org.junit.jupiter.api.Test;
 
 class CreateInstanceRequestTest {
 
   @Test
   void convertFromInstanceDetails() {
-    InstanceDetails instanceDetails = InstanceDetails.createDefaultMinecraft("password");
+    InstanceDetails instanceDetails = InstanceDetails.createDefaultMinecraft(SensitiveString.of("password"));
 
     CreateInstanceRequest request = CreateInstanceRequest.from(instanceDetails);
 
