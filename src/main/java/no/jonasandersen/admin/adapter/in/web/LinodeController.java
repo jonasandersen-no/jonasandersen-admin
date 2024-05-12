@@ -13,7 +13,7 @@ import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
-import no.jonasandersen.admin.core.minecraft.LinodeService;
+import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

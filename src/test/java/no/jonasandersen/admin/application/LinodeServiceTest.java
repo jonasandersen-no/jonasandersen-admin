@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.core.minecraft;
+package no.jonasandersen.admin.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

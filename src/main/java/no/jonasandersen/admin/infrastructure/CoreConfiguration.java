@@ -13,7 +13,7 @@ import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
-import no.jonasandersen.admin.core.minecraft.LinodeService;
+import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;

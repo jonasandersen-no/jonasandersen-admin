@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.core.minecraft;
+package no.jonasandersen.admin.application;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.domain.VolumeId;
+import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.domain.InstanceDetails;
 import no.jonasandersen.admin.domain.SensitiveString;
@@ -75,11 +76,11 @@ public class LinodeService {
     throw new UnsupportedOperationException("Not implemented");
   }
 
-  public LinodeInstance createDefaultMinecraftInstance(SensitiveString password) {
+  LinodeInstance createDefaultMinecraftInstance(SensitiveString password) {
     return createInstance(InstanceDetails.createDefaultMinecraft(password));
   }
 
-  LinodeInstance createInstance(InstanceDetails instanceDetails) {
+  private LinodeInstance createInstance(InstanceDetails instanceDetails) {
     return serverApi.createInstance(withPrincipalTag(instanceDetails));
   }
 

@@ -3,7 +3,6 @@ package no.jonasandersen.admin.application;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.minecraft.LinodeService;
 import no.jonasandersen.admin.domain.SensitiveString;
 
 public class ServerGenerator {

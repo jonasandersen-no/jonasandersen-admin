@@ -3,7 +3,7 @@ package no.jonasandersen.admin.adapter.in.web.linode;
 import de.tschuehly.spring.viewcomponent.core.component.ViewComponent;
 import de.tschuehly.spring.viewcomponent.jte.ViewContext;
 import java.util.List;
-import no.jonasandersen.admin.core.minecraft.LinodeService;
+import no.jonasandersen.admin.application.LinodeService;
 
 @ViewComponent
 public class LinodeViewComponent {

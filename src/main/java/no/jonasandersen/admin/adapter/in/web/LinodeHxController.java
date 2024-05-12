@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import no.jonasandersen.admin.adapter.out.websocket.Model;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.minecraft.LinodeService;
+import no.jonasandersen.admin.application.LinodeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
