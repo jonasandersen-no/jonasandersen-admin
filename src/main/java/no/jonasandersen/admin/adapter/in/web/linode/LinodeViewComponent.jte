@@ -8,11 +8,6 @@
         <button class="btn btn-secondary" hx-get="/hx/linode/instance/refresh"
                 hx-target="#instance-row" hx-swap="innerHTML">Refresh
         </button>
-        <form action="/linode/create/minecraft" method="post">
-            <button type="submit" class="btn btn-secondary">
-                Create default Minecraft Server
-            </button>
-        </form>
 
     </div>
     <div id="form-container"></div>

@@ -3,15 +3,11 @@
 <div class="container">
     <form method="post">
         <div class="mb-3">
-            <label for="instanceName" class="form-label">Instance Name</label>
-            <input type="text" class="form-control" id="instanceName" name="instanceName">
-        </div>
-        <div class="mb-3">
-            <label>Attach Volume</label>
-            <select class="form-select" aria-label="Default select example" name="volumeId">
+            <label for="serverType">Choose Server Type</label>
+            <select class="form-select" id="serverType" name="serverType">
                 <option selected disabled>Select one...</option>
-                @for(var volume : view.volumes())
-                    <option value="${volume.id()}">${volume.name()}</option>
+                @for(var serverType : view.serverTypes())
+                    <option value="${serverType}">${serverType}</option>
                 @endfor
             </select>
         </div>
