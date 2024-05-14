@@ -1,7 +1,6 @@
 package no.jonasandersen.admin.infrastructure;
 
 import java.util.List;
-import no.jonasandersen.admin.UseStubPredicate;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
 import no.jonasandersen.admin.adapter.out.linode.DatabaseServerApi;
 import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeInstanceRepository;
@@ -10,10 +9,12 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
+import no.jonasandersen.admin.application.Feature;
+import no.jonasandersen.admin.application.Features;
+import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
-import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.core.shortcut.ShortcutService;
@@ -24,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,11 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 class CoreConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(CoreConfiguration.class);
-  private final UseStubPredicate useStubPredicate;
-
-  CoreConfiguration(UseStubPredicate useStubPredicate) {
-    this.useStubPredicate = useStubPredicate;
-  }
 
   @Bean
   ThemeService themeService(UserSettingsRepository repository) {
@@ -69,8 +66,9 @@ class CoreConfiguration {
   }
 
   @Bean
+  @DependsOn("features")
   ServerApi linodeServerApi(LinodeExchange linodeExchange) {
-    if (useStubPredicate.test("linode")) {
+    if (Features.isEnabled(Feature.LINODE_STUB)) {
       log.info("Using stub LinodeServerApi");
       return LinodeServerApi.createNull();
     }

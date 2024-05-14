@@ -2,7 +2,9 @@ package no.jonasandersen.admin.infrastructure;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.EnumMap;
 import java.util.Map;
+import no.jonasandersen.admin.application.Feature;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
@@ -10,12 +12,12 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "jonasandersen.admin")
 @Validated
 public record AdminProperties(@Valid Minecraft minecraft, @Valid Cloudflare cloudflare,
-                              Linode linode, @NotNull String defaultTheme,
-                              Map<String, Boolean> stub) {
+                              Linode linode, @NotNull String defaultTheme, Map<Feature, Boolean> features) {
 
   public AdminProperties {
-    if (stub == null) {
-      stub = Map.of();
+
+    if (features == null) {
+      features = new EnumMap<>(Feature.class);
     }
   }
 
