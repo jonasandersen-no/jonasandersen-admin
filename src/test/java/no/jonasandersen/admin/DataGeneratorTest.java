@@ -25,4 +25,19 @@ class DataGeneratorTest {
 
     assertThat(tracker.data()).hasSize(5);
   }
+
+  @Test
+  void noInstancesCreatedWhenNotUsingLinodeStub() {
+    UseStubPredicate useStubPredicate = new UseStubPredicate(
+        new AdminProperties(null, null, null, "", Map.of("linode", false)));
+
+    LinodeServerApi serverApi = LinodeServerApi.createNull();
+
+    OutputTracker<LinodeInstanceApi> tracker = serverApi.track();
+
+    DataGenerator generator = new DataGenerator(serverApi, useStubPredicate);
+    generator.generate();
+
+    assertThat(tracker.data()).isEmpty();
+  }
 }

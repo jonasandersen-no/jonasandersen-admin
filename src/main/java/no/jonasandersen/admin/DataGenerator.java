@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class DataGenerator implements ApplicationListener<ApplicationStartedEvent> {
 
   private static final Logger log = LoggerFactory.getLogger(DataGenerator.class);
+  public static final int NUMBER_OF_INSTANCES = 5;
 
   private final LinodeServerApi linodeServerApi;
   private final UseStubPredicate useStubPredicate;
@@ -33,8 +34,8 @@ public class DataGenerator implements ApplicationListener<ApplicationStartedEven
 
   void generate() {
     if (useStubPredicate.test("linode")) {
-      log.info("Creating 5 instances");
-      for (int i = 0; i < 5; i++) {
+      log.info("Creating {} instances", NUMBER_OF_INSTANCES);
+      for (int i = 0; i < NUMBER_OF_INSTANCES; i++) {
         linodeServerApi.createInstance(InstanceDetails.createDefaultMinecraft(SensitiveString.of("password")));
       }
       return;
