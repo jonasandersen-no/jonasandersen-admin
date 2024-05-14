@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import no.jonasandersen.admin.OutputListener;
+import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.adapter.out.linode.api.model.Page;
 import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Alerts;
@@ -22,6 +24,7 @@ import org.slf4j.LoggerFactory;
 public class LinodeServerApi implements ServerApi {
 
   private final Logger logger = LoggerFactory.getLogger(LinodeServerApi.class);
+  private final OutputListener<LinodeInstanceApi> outputListener = new OutputListener<>();
   private final LinodeExchange linodeExchange;
 
   public static LinodeServerApi create(LinodeExchange linodeExchange) {
@@ -45,6 +48,7 @@ public class LinodeServerApi implements ServerApi {
     logger.info("Creating instance with details: {}", instanceDetails);
 
     LinodeInstanceApi linodeInstanceApi = linodeExchange.createInstance(CreateInstanceRequest.from(instanceDetails));
+    outputListener.track(linodeInstanceApi);
     return linodeInstanceApi.toDomain();
   }
 
@@ -94,6 +98,10 @@ public class LinodeServerApi implements ServerApi {
               return new LinodeVolume(volumeId, volume.label(), volume.status(), linodeId1);
             })
         .toList();
+  }
+
+  public OutputTracker<LinodeInstanceApi> track() {
+    return outputListener.createTracker();
   }
 
   // NULLABLES

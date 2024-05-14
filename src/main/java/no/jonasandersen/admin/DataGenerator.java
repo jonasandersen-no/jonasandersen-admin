@@ -1,12 +1,9 @@
 package no.jonasandersen.admin;
 
-import java.util.List;
-import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeInstanceRepository;
-import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeVolumeRepository;
-import no.jonasandersen.admin.adapter.out.linode.model.api.db.LinodeInstanceDbo;
-import no.jonasandersen.admin.adapter.out.linode.model.api.db.LinodeVolumeDbo;
-import org.instancio.Instancio;
-import org.instancio.Select;
+import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
+import no.jonasandersen.admin.core.minecraft.port.ServerApi;
+import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.SensitiveString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -18,50 +15,27 @@ import org.springframework.stereotype.Component;
 @Profile("dev")
 public class DataGenerator implements ApplicationListener<ApplicationStartedEvent> {
 
-  private static final Boolean OVERWRITE_DATA = false;
   private static final Logger log = LoggerFactory.getLogger(DataGenerator.class);
-  private final JdbcLinodeInstanceRepository instanceRepository;
-  private final JdbcLinodeVolumeRepository volumeRepository;
 
-  public DataGenerator(JdbcLinodeInstanceRepository instanceRepository,
-      JdbcLinodeVolumeRepository volumeRepository) {
-    this.instanceRepository = instanceRepository;
-    this.volumeRepository = volumeRepository;
+  private final LinodeServerApi linodeServerApi;
+  private final UseStubPredicate useStubPredicate;
+
+  public DataGenerator(ServerApi linodeServerApi,
+      UseStubPredicate useStubPredicate) {
+    this.linodeServerApi = (LinodeServerApi) linodeServerApi;
+    this.useStubPredicate = useStubPredicate;
   }
 
   @Override
   public void onApplicationEvent(ApplicationStartedEvent event) {
 
-    if (OVERWRITE_DATA) {
-      log.info("Deleting all instances and volumes...");
-      volumeRepository.deleteAll();
-      instanceRepository.deleteAll();
+    if (useStubPredicate.test("linode")) {
+      log.info("Creating 5 instances");
+      for (int i = 0; i < 5; i++) {
+        linodeServerApi.createInstance(InstanceDetails.createDefaultMinecraft(SensitiveString.of("password")));
+      }
+      return;
     }
-
-    long l = instanceRepository.countAll();
-
-    if (l == 0) {
-      log.info("Generating instances...");
-      List<LinodeInstanceDbo> instances = instanceRepository.saveAll(
-          Instancio.ofList(LinodeInstanceDbo.class)
-              .size(10)
-              .ignore(Select.field(LinodeInstanceDbo::id))
-              .generate(Select.field(LinodeInstanceDbo::status),
-                  generators -> generators.oneOf("booting", "running", "stopped", "provisioning"))
-              .generate(Select.field(LinodeInstanceDbo::tags),
-                  generators -> generators.oneOf("webserver", "database", "cache", "jump_host",
-                      "bastion", "jenkins", "monitoring", "logging", "qa", "prod", "windows",
-                      "linux", "freebsd", "containerized", "bare_metal", "high_availability",
-                      "disaster_recovery", "research", "training", "inactive"))
-              .generate(Select.field(LinodeInstanceDbo::label),
-                  generators -> generators.text().pattern("ubuntu-#a#a#a#a#a#a"))
-              .generate(Select.field(LinodeInstanceDbo::ips), generators -> generators.net().ip4())
-              .create()
-      );
-
-      instances.forEach(instance -> {
-        volumeRepository.save(new LinodeVolumeDbo(null, instance.volumeNames(),"active", instance.id()));
-      });
-    }
+    log.info("Not using stubs, skipping data generation.");
   }
 }
