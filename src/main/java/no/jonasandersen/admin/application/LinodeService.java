@@ -82,7 +82,7 @@ public class LinodeService {
         .map(LinodeVolume::label)
         .toList();
 
-    return new LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
+    return new LinodeInstance(null, instance.linodeId(), instance.ip(), instance.status(),
         instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 

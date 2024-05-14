@@ -2,7 +2,6 @@ package no.jonasandersen.admin.adapter.out.linode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import no.jonasandersen.admin.adapter.out.linode.model.api.db.LinodeInstanceDbo;
 import no.jonasandersen.admin.config.IoBasedTest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,7 @@ class JdbcLinodeServiceRepositoryTest extends IoBasedTest {
 
 
   @Autowired
-  JdbcLinodeInstanceRepository repository;
+  JpaLinodeInstanceRepository repository;
 
   @Test
   @Disabled

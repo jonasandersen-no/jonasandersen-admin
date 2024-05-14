@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JdbcLinodeInstanceRepository extends JpaRepository<LinodeInstanceDbo, Long> {
+public interface JpaLinodeInstanceRepository extends JpaRepository<LinodeInstanceDbo, Long> {
 
   @Query("select count(*) from LinodeInstanceDbo")
   long countAll();

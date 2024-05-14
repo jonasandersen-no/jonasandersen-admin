@@ -2,9 +2,8 @@ package no.jonasandersen.admin.infrastructure;
 
 import java.util.List;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
-import no.jonasandersen.admin.adapter.out.linode.DatabaseServerApi;
-import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeInstanceRepository;
-import no.jonasandersen.admin.adapter.out.linode.JdbcLinodeVolumeRepository;
+import no.jonasandersen.admin.adapter.out.linode.LinodeInstanceDatabaseRepository;
+import no.jonasandersen.admin.adapter.out.linode.JpaLinodeInstanceRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
@@ -77,9 +76,9 @@ class CoreConfiguration {
   }
 
   @Bean
-  DatabaseServerApi databaseServerApi(JdbcLinodeInstanceRepository repository,
-      JdbcLinodeVolumeRepository volumeRepository) {
-    return new DatabaseServerApi(repository, volumeRepository);
+  @Transactional
+  LinodeInstanceDatabaseRepository databaseServerApi(JpaLinodeInstanceRepository repository) {
+    return LinodeInstanceDatabaseRepository.create(repository);
   }
 
   @Bean
