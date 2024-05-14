@@ -21,8 +21,7 @@ class DataGeneratorTest {
     OutputTracker<LinodeInstanceApi> tracker = serverApi.track();
 
     DataGenerator generator = new DataGenerator(serverApi, useStubPredicate);
-    generator.onApplicationEvent(null);
-
+    generator.generate();
 
     assertThat(tracker.data()).hasSize(5);
   }

@@ -28,7 +28,10 @@ public class DataGenerator implements ApplicationListener<ApplicationStartedEven
 
   @Override
   public void onApplicationEvent(ApplicationStartedEvent event) {
+    generate();
+  }
 
+  void generate() {
     if (useStubPredicate.test("linode")) {
       log.info("Creating 5 instances");
       for (int i = 0; i < 5; i++) {
