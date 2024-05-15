@@ -9,9 +9,12 @@ import no.jonasandersen.admin.adapter.out.linode.model.api.db.LinodeInstanceDbo;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LinodeInstanceDatabaseRepository {
 
+  private static final Logger log = LoggerFactory.getLogger(LinodeInstanceDatabaseRepository.class);
   private final LinodeInstanceRepository repository;
 
   public static LinodeInstanceDatabaseRepository create(JpaLinodeInstanceRepository repository) {
@@ -46,33 +49,33 @@ public class LinodeInstanceDatabaseRepository {
   }
 
   public LinodeInstance save(LinodeInstance linodeInstance) {
-    String owner = "";
-
     Long id = linodeInstance.id();
     if (id != null) {
       Optional<LinodeInstanceDbo> found = repository.findById(id);
-
       if (found.isPresent()) {
+        log.info("Updating existing instance with id: {}", id);
         LinodeInstanceDbo dbo = found.get();
         dbo.setLinodeId(linodeInstance.linodeId().id());
         dbo.setSubDomain(null);
         dbo.setServerType(null);
-        dbo.setCreatedBy(owner);
+        dbo.setCreatedBy(linodeInstance.owner());
         LinodeInstanceDbo saved = repository.save(dbo);
-        return new LinodeInstance(saved.id(), linodeInstance.linodeId(), linodeInstance.ip(), linodeInstance.status(),
+        return new LinodeInstance(saved.id(), linodeInstance.linodeId(), linodeInstance.ip(), null,
+            linodeInstance.status(),
             linodeInstance.label(), linodeInstance.tags(), linodeInstance.volumeNames(), linodeInstance.specs());
       }
     }
 
+    log.info("Saving new instance {}", linodeInstance);
     LinodeInstanceDbo dbo = new LinodeInstanceDbo();
     dbo.setLinodeId(linodeInstance.linodeId().id());
     dbo.setCreatedDate(LocalDateTime.now());
     dbo.setSubDomain(null);
     dbo.setServerType(null);
-    dbo.setCreatedBy(owner);
+    dbo.setCreatedBy(linodeInstance.owner());
     LinodeInstanceDbo saved = repository.save(dbo);
 
-    return new LinodeInstance(saved.id(), linodeInstance.linodeId(), linodeInstance.ip(), linodeInstance.status(),
+    return new LinodeInstance(saved.id(), linodeInstance.linodeId(), linodeInstance.ip(), null, linodeInstance.status(),
         linodeInstance.label(), linodeInstance.tags(), linodeInstance.volumeNames(), linodeInstance.specs());
 
   }

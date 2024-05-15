@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import no.jonasandersen.admin.adapter.out.linode.LinodeInstanceDatabaseRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
@@ -27,9 +28,11 @@ public class LinodeService {
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
   private final Principal principal;
+  private final LinodeInstanceDatabaseRepository repository;
 
-  public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
-    return new LinodeService(serverApi, linodeVolumeService, new RealPrincipal());
+  public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
+      LinodeInstanceDatabaseRepository repository) {
+    return new LinodeService(serverApi, linodeVolumeService, new RealPrincipal(), repository);
   }
 
   public static LinodeService createNull() {
@@ -38,13 +41,15 @@ public class LinodeService {
 
   public static LinodeService createNull(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
     return new LinodeService(LinodeServerApi.createNull(instances, volumes), LinodeVolumeService.createNull(),
-        new StubPrincipal());
+        new StubPrincipal(), LinodeInstanceDatabaseRepository.createNull());
   }
 
-  private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, Principal principal) {
+  private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, Principal principal,
+      LinodeInstanceDatabaseRepository repository) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
     this.principal = principal;
+    this.repository = repository;
   }
 
   public Optional<LinodeInstance> findInstanceById(LinodeId linodeId) {
@@ -82,7 +87,7 @@ public class LinodeService {
         .map(LinodeVolume::label)
         .toList();
 
-    return new LinodeInstance(null, instance.linodeId(), instance.ip(), instance.status(),
+    return new LinodeInstance(null, instance.linodeId(), instance.ip(), null, instance.status(),
         instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 
@@ -91,7 +96,8 @@ public class LinodeService {
   }
 
   private LinodeInstance createInstance(InstanceDetails instanceDetails) {
-    return serverApi.createInstance(withPrincipalTag(instanceDetails));
+    LinodeInstance instance = serverApi.createInstance(withPrincipalTag(instanceDetails));
+    return repository.save(instance);
   }
 
   InstanceDetails withPrincipalTag(InstanceDetails instanceDetails) {
