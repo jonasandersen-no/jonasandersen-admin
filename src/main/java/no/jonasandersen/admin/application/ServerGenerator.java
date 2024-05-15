@@ -55,7 +55,7 @@ public class ServerGenerator {
         outputListener.track(password);
         LinodeInstance instance = service.createDefaultMinecraftInstance(password);
         try {
-          ConnectionInfo connectionInfo = new ConnectionInfo("root", password.value(),
+          ConnectionInfo connectionInfo = new ConnectionInfo("root", SensitiveString.of(password.value()),
               new Ip(instance.ip().getFirst()), 22);
           log.info("Connecting to {}", connectionInfo);
           FileExecutor fileExecutor = setupConnection.setupConnection(connectionInfo);

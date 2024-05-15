@@ -6,6 +6,10 @@ public record SensitiveString(String value) {
     return new SensitiveString(value);
   }
 
+  public static SensitiveString empty() {
+    return new SensitiveString("");
+  }
+
   public boolean isPresent() {
     return value != null && !value.isEmpty();
   }

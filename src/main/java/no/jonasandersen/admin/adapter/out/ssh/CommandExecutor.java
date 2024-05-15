@@ -69,7 +69,7 @@ public class CommandExecutor {
     log.info("Connecting to {}", connectionInfo);
     session = jsch.getSession(connectionInfo.username(), connectionInfo.ip().value(),
         connectionInfo.port());
-    session.setPassword(connectionInfo.password());
+    session.setPassword(connectionInfo.password().value());
 
     Properties config = new Properties();
     config.put("StrictHostKeyChecking", "no");

@@ -7,6 +7,7 @@ import java.io.IOException;
 import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.core.domain.ConnectionInfo;
 import no.jonasandersen.admin.core.minecraft.domain.Ip;
+import no.jonasandersen.admin.domain.SensitiveString;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class CommandExecutorManualTest {
   void testRealServer() throws JSchException, IOException {
 
     CommandExecutor service = CommandExecutor.create(
-        new ConnectionInfo("gollien", "Jonas123", new Ip("172.18.131.214"), 22));
+        new ConnectionInfo("gollien", SensitiveString.of("Jonas123"), new Ip("172.18.131.214"), 22));
 
     OutputTracker<String> tracker = service.trackOutput();
 
