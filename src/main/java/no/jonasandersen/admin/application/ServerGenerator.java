@@ -77,7 +77,6 @@ public class ServerGenerator {
 
     @Override
     public FileExecutor setupConnection(ConnectionInfo connectionInfo) throws JSchException {
-      log.info("Connecting to {}", connectionInfo);
       CommandExecutor commandExecutor = CommandExecutor.create(connectionInfo);
       return FileExecutor.create(commandExecutor);
     }
@@ -87,10 +86,7 @@ public class ServerGenerator {
 
     @Override
     public FileExecutor setupConnection(ConnectionInfo connectionInfo) throws JSchException {
-      log.info("Connecting to {}", connectionInfo);
       return FileExecutor.createNull();
     }
   }
-
-
 }
