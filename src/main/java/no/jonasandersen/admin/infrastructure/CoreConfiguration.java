@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.infrastructure;
 
 import java.util.List;
+import no.jonasandersen.admin.adapter.DefaultEventPublisher;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
 import no.jonasandersen.admin.adapter.out.linode.JpaLinodeInstanceRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
@@ -22,6 +23,7 @@ import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
 import no.jonasandersen.admin.domain.SensitiveString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -86,5 +88,10 @@ class CoreConfiguration {
   ServerGenerator serverGenerator(LinodeService linodeService, AdminProperties properties) {
     String rootPassword = properties.linode().rootPassword();
     return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword));
+  }
+
+  @Bean
+  DefaultEventPublisher eventPublisher(ApplicationEventPublisher publisher) {
+    return DefaultEventPublisher.create(publisher);
   }
 }
