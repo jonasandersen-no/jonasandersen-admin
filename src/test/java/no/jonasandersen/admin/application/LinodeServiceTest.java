@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Optional;
+import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
@@ -49,5 +50,16 @@ class LinodeServiceTest {
     Optional<LinodeInstance> found = service.findInstanceById(LinodeId.from(1L));
 
     assertThat(found).isEmpty();
+  }
+
+  @Test
+  void creatingInstancePublishesEvent() {
+    LinodeService service = LinodeService.createNull();
+
+    OutputTracker<Object> tracker = service.eventPublisher().track();
+
+    service.createDefaultMinecraftInstance(SensitiveString.of("Password123!"));
+
+    assertThat(tracker.data()).hasSize(1);
   }
 }

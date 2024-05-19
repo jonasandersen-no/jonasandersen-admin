@@ -23,6 +23,7 @@ public class DefaultEventPublisher implements EventPublisher {
     this.publisher = publisher;
   }
 
+  @Override
   public OutputTracker<Object> track() {
     return outputListener.createTracker();
   }

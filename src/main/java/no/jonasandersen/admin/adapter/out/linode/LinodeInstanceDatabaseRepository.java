@@ -8,9 +8,12 @@ import java.util.Optional;
 import no.jonasandersen.admin.adapter.out.linode.model.api.db.LinodeInstanceDbo;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
+import no.jonasandersen.admin.core.domain.LinodeStoredInfo;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.SaveLinodeInstanceEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 
 public class LinodeInstanceDatabaseRepository {
 
@@ -33,7 +36,7 @@ public class LinodeInstanceDatabaseRepository {
     throw new UnsupportedOperationException();
   }
 
-  public List<LinodeInstance> getInstances() {
+  public List<LinodeStoredInfo> getInstances() {
 
     return repository.findAll()
         .stream()
@@ -42,42 +45,46 @@ public class LinodeInstanceDatabaseRepository {
 
   }
 
-  public LinodeInstance getInstanceById(LinodeId linodeId) {
+  public LinodeStoredInfo getInstanceById(LinodeId linodeId) {
     return repository.findById(linodeId.id())
         .map(LinodeInstanceDbo::toDomain)
         .orElseThrow();
   }
 
-  public LinodeInstance save(LinodeInstance linodeInstance) {
-    Long id = linodeInstance.id();
+  @EventListener
+  public void onSaveEvent(SaveLinodeInstanceEvent event) {
+    log.info("Received save event: {}", event);
+    save(event);
+  }
+
+  void save(SaveLinodeInstanceEvent event) {
+    Long id = event.id();
     if (id != null) {
       Optional<LinodeInstanceDbo> found = repository.findById(id);
       if (found.isPresent()) {
         log.info("Updating existing instance with id: {}", id);
         LinodeInstanceDbo dbo = found.get();
-        dbo.setLinodeId(linodeInstance.linodeId().id());
+        dbo.setLinodeId(event.linodeId().id());
         dbo.setSubDomain(null);
         dbo.setServerType(null);
-        dbo.setCreatedBy(linodeInstance.owner());
-        LinodeInstanceDbo saved = repository.save(dbo);
-        return new LinodeInstance(saved.id(), linodeInstance.linodeId(), linodeInstance.ip(), null,
-            linodeInstance.status(),
-            linodeInstance.label(), linodeInstance.tags(), linodeInstance.volumeNames(), linodeInstance.specs());
+        dbo.setCreatedBy(event.createdBy());
+        repository.save(dbo);
+        return;
       }
     }
 
-    log.info("Saving new instance {}", linodeInstance);
+    log.info("Saving new instance {}", event);
     LinodeInstanceDbo dbo = new LinodeInstanceDbo();
-    dbo.setLinodeId(linodeInstance.linodeId().id());
+    dbo.setLinodeId(event.linodeId().id());
     dbo.setCreatedDate(LocalDateTime.now());
     dbo.setSubDomain(null);
     dbo.setServerType(null);
-    dbo.setCreatedBy(linodeInstance.owner());
-    LinodeInstanceDbo saved = repository.save(dbo);
+    dbo.setCreatedBy(event.createdBy());
+    repository.save(dbo);
+  }
 
-    return new LinodeInstance(saved.id(), linodeInstance.linodeId(), linodeInstance.ip(), null, linodeInstance.status(),
-        linodeInstance.label(), linodeInstance.tags(), linodeInstance.volumeNames(), linodeInstance.specs());
-
+  public void deleteAll() {
+    repository.deleteAll();
   }
 
   private interface LinodeInstanceRepository {
@@ -88,6 +95,7 @@ public class LinodeInstanceDatabaseRepository {
 
     LinodeInstanceDbo save(LinodeInstanceDbo dbo);
 
+    void deleteAll();
   }
 
 
@@ -112,6 +120,11 @@ public class LinodeInstanceDatabaseRepository {
     @Override
     public LinodeInstanceDbo save(LinodeInstanceDbo dbo) {
       return repository.save(dbo);
+    }
+
+    @Override
+    public void deleteAll() {
+      repository.deleteAll();
     }
 
   }
@@ -142,6 +155,11 @@ public class LinodeInstanceDatabaseRepository {
       dbo.setId(currentId);
       instances.put(currentId, dbo);
       return dbo;
+    }
+
+    @Override
+    public void deleteAll() {
+      instances.clear();
     }
   }
 

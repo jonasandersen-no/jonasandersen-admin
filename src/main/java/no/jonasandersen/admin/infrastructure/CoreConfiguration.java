@@ -14,6 +14,7 @@ import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
+import no.jonasandersen.admin.application.port.EventPublisher;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
@@ -42,8 +43,8 @@ class CoreConfiguration {
 
   @Bean
   LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      LinodeInstanceDatabaseRepository repository) {
-    return LinodeService.create(serverApi, linodeVolumeService, repository);
+      EventPublisher eventPublisher) {
+    return LinodeService.create(serverApi, linodeVolumeService, eventPublisher);
   }
 
   @Bean

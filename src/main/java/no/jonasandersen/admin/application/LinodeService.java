@@ -4,10 +4,11 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import no.jonasandersen.admin.adapter.out.linode.LinodeInstanceDatabaseRepository;
+import no.jonasandersen.admin.adapter.DefaultEventPublisher;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
+import no.jonasandersen.admin.application.port.EventPublisher;
 import no.jonasandersen.admin.core.domain.InstanceNotFound;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
@@ -15,6 +16,7 @@ import no.jonasandersen.admin.core.domain.LinodeVolume;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.SaveLinodeInstanceEvent;
 import no.jonasandersen.admin.domain.SensitiveString;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -28,11 +30,11 @@ public class LinodeService {
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
   private final Principal principal;
-  private final LinodeInstanceDatabaseRepository repository;
+  private final EventPublisher eventPublisher;
 
   public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      LinodeInstanceDatabaseRepository repository) {
-    return new LinodeService(serverApi, linodeVolumeService, new RealPrincipal(), repository);
+      EventPublisher eventPublisher) {
+    return new LinodeService(serverApi, linodeVolumeService, new RealPrincipal(), eventPublisher);
   }
 
   public static LinodeService createNull() {
@@ -41,15 +43,15 @@ public class LinodeService {
 
   public static LinodeService createNull(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
     return new LinodeService(LinodeServerApi.createNull(instances, volumes), LinodeVolumeService.createNull(),
-        new StubPrincipal(), LinodeInstanceDatabaseRepository.createNull());
+        new StubPrincipal(), DefaultEventPublisher.createNull());
   }
 
   private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, Principal principal,
-      LinodeInstanceDatabaseRepository repository) {
+      EventPublisher eventPublisher) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
     this.principal = principal;
-    this.repository = repository;
+    this.eventPublisher = eventPublisher;
   }
 
   public Optional<LinodeInstance> findInstanceById(LinodeId linodeId) {
@@ -97,7 +99,10 @@ public class LinodeService {
 
   private LinodeInstance createInstance(InstanceDetails instanceDetails) {
     LinodeInstance instance = serverApi.createInstance(withPrincipalTag(instanceDetails));
-    return repository.save(instance);
+    SaveLinodeInstanceEvent event = new SaveLinodeInstanceEvent(null, instance.linodeId(),
+        principal.getName(), null, null);
+    eventPublisher.publishEvent(event);
+    return instance;
   }
 
   InstanceDetails withPrincipalTag(InstanceDetails instanceDetails) {
@@ -116,13 +121,20 @@ public class LinodeService {
         instanceDetails.volume());
   }
 
+  public EventPublisher eventPublisher() {
+    return eventPublisher;
+  }
+
   // NULLABLES
 
   public static class RealPrincipal implements Principal {
 
     @Override
     public String getName() {
-      return SecurityContextHolder.getContext().getAuthentication().getName();
+      if (SecurityContextHolder.getContext().getAuthentication() != null) {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+      }
+      return "unknown";
     }
   }
 

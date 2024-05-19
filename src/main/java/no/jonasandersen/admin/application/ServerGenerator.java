@@ -23,7 +23,8 @@ public class ServerGenerator {
   private final LinodeService service;
   private final SensitiveString defaultPassword;
   private final SetupConnection setupConnection;
-  private final OutputListener<SensitiveString> outputListener = new OutputListener<>();
+  private final OutputListener<SensitiveString> passwordOutputListener = new OutputListener<>();
+  private final OutputListener<LinodeInstance> instanceOutputListener = new OutputListener<>();
 
   public static ServerGenerator create(LinodeService service, SensitiveString defaultPassword) {
     return new ServerGenerator(service, defaultPassword, new RealSetupConnection());
@@ -42,7 +43,11 @@ public class ServerGenerator {
   }
 
   public OutputTracker<SensitiveString> passwordTracker() {
-    return outputListener.createTracker();
+    return passwordOutputListener.createTracker();
+  }
+
+  public OutputTracker<LinodeInstance> instanceTracker() {
+    return instanceOutputListener.createTracker();
   }
 
   public ServerGeneratorResponse generate(ServerType serverType) {
@@ -52,8 +57,9 @@ public class ServerGenerator {
   public ServerGeneratorResponse generate(ServerType serverType, SensitiveString password) {
     switch (serverType) {
       case MINECRAFT -> {
-        outputListener.track(password);
+        passwordOutputListener.track(password);
         LinodeInstance instance = service.createDefaultMinecraftInstance(password);
+        instanceOutputListener.track(instance);
         try {
           ConnectionInfo connectionInfo = new ConnectionInfo("root", SensitiveString.of(password.value()),
               new Ip(instance.ip().getFirst()), 22);

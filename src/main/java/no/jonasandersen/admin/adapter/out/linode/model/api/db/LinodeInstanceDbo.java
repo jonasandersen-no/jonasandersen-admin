@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
+import no.jonasandersen.admin.core.domain.LinodeStoredInfo;
 
 @Entity
 @Table(name = "linode_instance", schema = "admin")
@@ -72,8 +72,8 @@ public class LinodeInstanceDbo {
     this.subDomain = subDomain;
   }
 
-  public LinodeInstance toDomain() {
-    return null;
+  public LinodeStoredInfo toDomain() {
+    return new LinodeStoredInfo(id, linodeId, createdBy, createdDate, serverType, subDomain);
   }
 }
 
