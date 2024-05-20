@@ -1,31 +1,34 @@
-@param no.jonasandersen.admin.adapter.in.web.linode.LinodeDetailViewComponent.LinodeDetailView linodeDetailView
+@param no.jonasandersen.admin.adapter.in.web.linode.LinodeDetailViewComponent.LinodeDetailView view
 
-!{var instance = linodeDetailView.instance();}
 <div class="container w-50">
     <div>
-        <h1>${instance.prettyPrintLabel()}</h1>
-        <p class="small"><strong>ID:</strong> ${instance.linodeId().id()}</p>
+        <h1>${view.prettyPrintLabel()}</h1>
+        <p class="small"><strong>ID:</strong> ${view.linodeId().id()}</p>
     </div>
     <div class="row g-3">
         <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined">person</span>
+            <span>${view.owner()}</span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
             <span class="material-symbols-outlined">wifi</span>
-            <span>${instance.prettyPrintIp()}</span>
+            <span>${view.prettyPrintIp()}</span>
         </div>
         <div class="d-flex align-items-center gap-2">
             <span class="material-symbols-outlined">memory</span>
-            <span>${instance.prettyPrintSpecs()}</span>
+            <span>${view.prettyPrintSpecs()}</span>
         </div>
         <div class="d-flex align-items-center gap-2">
             <span class="material-symbols-outlined">label</span>
-            <span>${instance.prettyPrintTags()}</span>
+            <span>${view.prettyPrintTags()}</span>
         </div>
         <div class="d-flex align-items-center gap-2">
             <span class="material-symbols-outlined">update</span>
-            <span>${instance.prettyPrintStatus()}</span>
+            <span>${view.prettyPrintStatus()}</span>
         </div>
         <div class="d-flex align-items-center gap-2">
             <span class="material-symbols-outlined">save</span>
-            <span>${instance.prettyPrintVolumeNames()}</span>
+            <span>${view.prettyPrintVolumeNames()}</span>
         </div>
     </div>
 

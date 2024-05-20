@@ -24,6 +24,25 @@ class LinodeServiceTest {
   }
 
   @Test
+  void ownerIsPopulatedWhenCreatingInstance() {
+    LinodeService service = LinodeService.createNull();
+
+    LinodeInstance instance = service.createDefaultMinecraftInstance(SensitiveString.of("Password123!"));
+    assertThat(instance.owner()).isNotNull();
+  }
+
+  @Test
+  void ownerExistsWhenFindingInstanceById() {
+
+    LinodeService service = LinodeService.createNull();
+    service.createDefaultMinecraftInstance(SensitiveString.of("Password123!"));
+
+    Optional<LinodeInstance> found = service.findInstanceById(LinodeId.from(1L));
+
+    assertThat(found).get().extracting(LinodeInstance::owner).isNotNull();
+  }
+
+  @Test
   void onlyAutoCreatedInstancesAreReturnedWhenGetInstancesIsCalled() {
     LinodeInstanceApi instance1 = Instancio.of(LinodeInstanceApi.class)
         .set(Select.field(LinodeInstanceApi::tags), List.of("auto-created"))

@@ -36,11 +36,16 @@ public record LinodeInstance(Long id, LinodeId linodeId, List<String> ip, String
   }
 
   public static LinodeInstance createNull() {
-    return new LinodeInstance(null, new LinodeId(0L), List.of(), null, "", "", List.of(), List.of(), new LinodeSpecs(0));
+    return new LinodeInstance(null, new LinodeId(0L), List.of(), null, "", "", List.of(), List.of(),
+        new LinodeSpecs(0));
   }
 
   public static LinodeInstance createNull(String label, List<String> ip) {
     return new LinodeInstance(null, LinodeId.createNull(), List.copyOf(ip), null, "", label, List.of(), List.of(),
         new LinodeSpecs(0));
+  }
+
+  public LinodeInstance withOwner(String name) {
+    return new LinodeInstance(id, linodeId, ip, name, status, label, tags, volumeNames, specs);
   }
 }
