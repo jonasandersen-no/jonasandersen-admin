@@ -45,7 +45,7 @@ public record LinodeInstance(Long id, LinodeId linodeId, List<String> ip, String
         new LinodeSpecs(0));
   }
 
-  public LinodeInstance withOwner(String name) {
-    return new LinodeInstance(id, linodeId, ip, name, status, label, tags, volumeNames, specs);
+  public LinodeInstance withOwner(String owner) {
+    return new LinodeInstance(id, linodeId, ip, owner, status, label, tags, volumeNames, specs);
   }
 }
