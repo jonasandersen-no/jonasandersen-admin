@@ -20,7 +20,7 @@ class LinodeServiceTest {
     LinodeService service = LinodeService.createNull();
 
     LinodeInstance instance = service.createDefaultMinecraftInstance(SensitiveString.of("Password123!"));
-    assertThat(instance.tags()).contains("principalName");
+    assertThat(instance.tags()).contains("owner:principalName");
   }
 
   @Test

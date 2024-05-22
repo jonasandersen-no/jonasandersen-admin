@@ -67,7 +67,7 @@ public class LinodeService {
       return Optional.empty();
     }
 
-    return Optional.of(findVolumeForInstance(instance.get()).withOwner(principal.getName()));
+    return Optional.of(findVolumeForInstance(instance.get()));
   }
 
   public List<LinodeInstance> getInstances() {
@@ -89,7 +89,7 @@ public class LinodeService {
         .map(LinodeVolume::label)
         .toList();
 
-    return new LinodeInstance(null, instance.linodeId(), instance.ip(), null, instance.status(),
+    return new LinodeInstance(null, instance.linodeId(), instance.ip(), instance.status(),
         instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 
@@ -103,11 +103,11 @@ public class LinodeService {
         principal.getName(), null, null);
     eventPublisher.publishEvent(event);
 
-    return instance.withOwner(principal.getName());
+    return instance;
   }
 
   InstanceDetails withPrincipalTag(InstanceDetails instanceDetails) {
-    String name = principal.getName();
+    String name = "owner:" + principal.getName();
 
     List<String> tags = new ArrayList<>(instanceDetails.tags());
     tags.add(name);

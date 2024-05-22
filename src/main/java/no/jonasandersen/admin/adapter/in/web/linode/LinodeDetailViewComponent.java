@@ -50,5 +50,4 @@ public class LinodeDetailViewComponent {
         instance.label(), instance.tags(), instance.volumeNames(), instance.specs());
   }
 
-
 }

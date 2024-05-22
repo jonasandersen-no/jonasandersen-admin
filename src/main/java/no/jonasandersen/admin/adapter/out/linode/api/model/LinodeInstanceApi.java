@@ -44,7 +44,7 @@ public record LinodeInstanceApi(
   }
 
   public LinodeInstance toDomain() {
-    return new LinodeInstance(null, new LinodeId(id), List.copyOf(ipv4), null, status, label, tags, List.of(),
+    return new LinodeInstance(null, new LinodeId(id), List.copyOf(ipv4), status, label, tags, List.of(),
         new LinodeSpecs(specs.memory()));
   }
 
