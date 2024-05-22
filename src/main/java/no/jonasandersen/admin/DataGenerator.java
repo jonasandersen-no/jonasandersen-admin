@@ -5,6 +5,7 @@ import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ServerGenerator.ServerType;
 import no.jonasandersen.admin.domain.SensitiveString;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -26,7 +27,7 @@ public class DataGenerator implements ApplicationListener<ApplicationReadyEvent>
   }
 
   @Override
-  public void onApplicationEvent(ApplicationReadyEvent event) {
+  public void onApplicationEvent(@NotNull ApplicationReadyEvent event) {
     generate();
   }
 

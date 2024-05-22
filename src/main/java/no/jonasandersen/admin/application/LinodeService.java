@@ -54,7 +54,6 @@ public class LinodeService {
     this.eventPublisher = eventPublisher;
   }
 
-  @Deprecated
   public Optional<LinodeInstance> findInstanceById(LinodeId linodeId) {
     Optional<LinodeInstance> instance = serverApi.findInstanceById(linodeId);
 
