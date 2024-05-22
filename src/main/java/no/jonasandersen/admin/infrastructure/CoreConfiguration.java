@@ -20,6 +20,7 @@ import no.jonasandersen.admin.core.shortcut.ShortcutService;
 import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
 import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,6 +29,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 class CoreConfiguration {
@@ -87,4 +91,19 @@ class CoreConfiguration {
   DefaultEventPublisher eventPublisher(ApplicationEventPublisher publisher) {
     return DefaultEventPublisher.create(publisher);
   }
+
+  @Bean
+  LinodeExchange linodeExchange(AdminProperties properties) {
+    Linode linode = properties.linode();
+    RestClient restClient = RestClient.builder()
+        .baseUrl(linode.baseUrl())
+        .requestInitializer(request -> request.getHeaders().setBearerAuth(linode.token()))
+        .build();
+
+    RestClientAdapter adapter = RestClientAdapter.create(restClient);
+    HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+
+    return factory.createClient(LinodeExchange.class);
+  }
+
 }
