@@ -2,7 +2,6 @@ package no.jonasandersen.admin;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import no.jonasandersen.admin.adapter.out.linode.LinodeInstanceDatabaseRepository;
 import no.jonasandersen.admin.application.Feature;
 import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.application.ServerGenerator;
@@ -19,7 +18,7 @@ class DataGeneratorTest {
 
     OutputTracker<LinodeInstance> tracker = serverGenerator.instanceTracker();
 
-    DataGenerator generator = new DataGenerator(serverGenerator, LinodeInstanceDatabaseRepository.createNull());
+    DataGenerator generator = new DataGenerator(serverGenerator);
     generator.generate();
 
     assertThat(tracker.data()).hasSize(5);
@@ -33,7 +32,7 @@ class DataGeneratorTest {
 
     OutputTracker<LinodeInstance> tracker = serverGenerator.instanceTracker();
 
-    DataGenerator generator = new DataGenerator(serverGenerator, LinodeInstanceDatabaseRepository.createNull());
+    DataGenerator generator = new DataGenerator(serverGenerator);
     generator.generate();
 
     assertThat(tracker.data()).isEmpty();

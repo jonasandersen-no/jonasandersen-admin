@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.DefaultEventPublisher;
-import no.jonasandersen.admin.adapter.out.linode.LinodeInstanceDatabaseRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
@@ -32,11 +31,10 @@ public class LinodeService {
   private final LinodeVolumeService linodeVolumeService;
   private final Principal principal;
   private final EventPublisher eventPublisher;
-  private final LinodeInstanceDatabaseRepository repository;
 
   public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, LinodeInstanceDatabaseRepository repository) {
-    return new LinodeService(serverApi, linodeVolumeService, new RealPrincipal(), eventPublisher, repository);
+      EventPublisher eventPublisher) {
+    return new LinodeService(serverApi, linodeVolumeService, new RealPrincipal(), eventPublisher);
   }
 
   public static LinodeService createNull() {
@@ -45,16 +43,15 @@ public class LinodeService {
 
   public static LinodeService createNull(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
     return new LinodeService(LinodeServerApi.createNull(instances, volumes), LinodeVolumeService.createNull(),
-        new StubPrincipal(), DefaultEventPublisher.createNull(), LinodeInstanceDatabaseRepository.createNull());
+        new StubPrincipal(), DefaultEventPublisher.createNull());
   }
 
   private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, Principal principal,
-      EventPublisher eventPublisher, LinodeInstanceDatabaseRepository repository) {
+      EventPublisher eventPublisher) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
     this.principal = principal;
     this.eventPublisher = eventPublisher;
-    this.repository = repository;
   }
 
   @Deprecated

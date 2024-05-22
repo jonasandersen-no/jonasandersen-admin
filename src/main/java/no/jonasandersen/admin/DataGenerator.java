@@ -1,6 +1,5 @@
 package no.jonasandersen.admin;
 
-import no.jonasandersen.admin.adapter.out.linode.LinodeInstanceDatabaseRepository;
 import no.jonasandersen.admin.application.Feature;
 import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.application.ServerGenerator;
@@ -21,11 +20,9 @@ public class DataGenerator implements ApplicationListener<ApplicationReadyEvent>
   public static final int NUMBER_OF_INSTANCES = 5;
 
   private final ServerGenerator serverGenerator;
-  private final LinodeInstanceDatabaseRepository repository;
 
-  public DataGenerator(ServerGenerator serverGenerator, LinodeInstanceDatabaseRepository repository) {
+  public DataGenerator(ServerGenerator serverGenerator) {
     this.serverGenerator = serverGenerator;
-    this.repository = repository;
   }
 
   @Override
@@ -35,7 +32,6 @@ public class DataGenerator implements ApplicationListener<ApplicationReadyEvent>
 
   void generate() {
     if (Features.isEnabled(Feature.LINODE_STUB)) {
-      repository.deleteAll();
       log.info("Creating {} instances", NUMBER_OF_INSTANCES);
       for (int i = 0; i < NUMBER_OF_INSTANCES; i++) {
         serverGenerator.generate(ServerType.MINECRAFT, SensitiveString.of("password"));

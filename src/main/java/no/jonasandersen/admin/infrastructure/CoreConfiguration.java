@@ -3,9 +3,7 @@ package no.jonasandersen.admin.infrastructure;
 import java.util.List;
 import no.jonasandersen.admin.adapter.DefaultEventPublisher;
 import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
-import no.jonasandersen.admin.adapter.out.linode.JpaLinodeInstanceRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
-import no.jonasandersen.admin.adapter.out.linode.LinodeInstanceDatabaseRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
@@ -43,8 +41,8 @@ class CoreConfiguration {
 
   @Bean
   LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, LinodeInstanceDatabaseRepository repository) {
-    return LinodeService.create(serverApi, linodeVolumeService, eventPublisher, repository);
+      EventPublisher eventPublisher) {
+    return LinodeService.create(serverApi, linodeVolumeService, eventPublisher);
   }
 
   @Bean
@@ -77,12 +75,6 @@ class CoreConfiguration {
     }
 
     return LinodeServerApi.create(linodeExchange);
-  }
-
-  @Bean
-  @Transactional
-  LinodeInstanceDatabaseRepository databaseServerApi(JpaLinodeInstanceRepository repository) {
-    return LinodeInstanceDatabaseRepository.create(repository);
   }
 
   @Bean
