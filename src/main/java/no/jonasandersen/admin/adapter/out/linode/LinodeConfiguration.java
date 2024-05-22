@@ -12,20 +12,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 class LinodeConfiguration {
 
   @Bean
-  LinodeBjoggisExchange linodeBjoggisExchange(
-      LinodeBjoggisRequestInterceptor linodeBjoggisRequestInterceptor) {
-    RestClient client = RestClient.builder()
-        .baseUrl("https://api.jonasandersen.no/linode")
-        .requestInterceptor(linodeBjoggisRequestInterceptor)
-        .build();
-
-    HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(
-        RestClientAdapter.create(client)).build();
-
-    return factory.createClient(LinodeBjoggisExchange.class);
-  }
-
-  @Bean
   LinodeExchange linodeExchange(AdminProperties properties) {
     Linode linode = properties.linode();
     RestClient restClient = RestClient.builder()
