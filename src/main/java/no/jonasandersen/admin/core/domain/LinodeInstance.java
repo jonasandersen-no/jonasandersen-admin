@@ -36,7 +36,11 @@ public record LinodeInstance(Long id, LinodeId linodeId, List<String> ip, String
   }
 
   public String owner() {
-    return "owner";
+    return tags.stream()
+        .filter(tag -> tag.startsWith("owner:"))
+        .map(tag -> tag.substring(6))
+        .findFirst()
+        .orElse("unknown");
   }
 
   public static LinodeInstance createNull() {
