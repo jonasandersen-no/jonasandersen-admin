@@ -1,8 +1,6 @@
 package no.jonasandersen.admin.infrastructure;
 
-import java.util.List;
 import no.jonasandersen.admin.adapter.DefaultEventPublisher;
-import no.jonasandersen.admin.adapter.out.database.shortcut.JdbcShortcutRepository;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
@@ -16,9 +14,6 @@ import no.jonasandersen.admin.application.port.EventPublisher;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.core.minecraft.port.ServerApi;
-import no.jonasandersen.admin.core.shortcut.ShortcutService;
-import no.jonasandersen.admin.core.shortcut.port.Broadcaster;
-import no.jonasandersen.admin.core.shortcut.port.ShortcutRepository;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
 import org.slf4j.Logger;
@@ -27,7 +22,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
@@ -47,16 +41,6 @@ class CoreConfiguration {
   LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
       EventPublisher eventPublisher) {
     return LinodeService.create(serverApi, linodeVolumeService, eventPublisher);
-  }
-
-  @Bean
-  ShortcutService shortcutService(ShortcutRepository repository, List<Broadcaster> broadcasters) {
-    return new ShortcutService(repository, broadcasters);
-  }
-
-  @Bean
-  ShortcutRepository shortcutRepository(JdbcClient jdbcClient) {
-    return new JdbcShortcutRepository(jdbcClient);
   }
 
   @Bean

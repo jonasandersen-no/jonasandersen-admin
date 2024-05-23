@@ -18,9 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/ws.js"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.11/dist/ext/debug.js"></script>
     <title>${mainLayoutView.title()}</title>
 </head>
 <body class="sans-regular">
@@ -42,9 +39,6 @@
                         <a class="nav-link" href="/linode">Linode</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/shortcut">Shortcut</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="/settings">Settings</a>
                     </li>
                 </ul>
@@ -54,7 +48,7 @@
     </nav>
 </header>
 
-<main hx-ext="debug">
+<main>
     ${mainLayoutView.mainContent()}
 </main>
 
