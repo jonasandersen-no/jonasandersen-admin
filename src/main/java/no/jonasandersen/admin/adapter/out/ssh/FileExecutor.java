@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import no.jonasandersen.admin.application.Feature;
+import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.core.domain.ConnectionInfo;
 
 public class FileExecutor {
@@ -29,7 +31,11 @@ public class FileExecutor {
 
   public void setup(ConnectionInfo connectionInfo) throws JSchException {
     if (commandExecutor == null) {
-      commandExecutor = CommandExecutor.create(connectionInfo);
+      if (Features.isEnabled(Feature.LINODE_STUB)) {
+        commandExecutor = CommandExecutor.createNull();
+      } else {
+        commandExecutor = CommandExecutor.create(connectionInfo);
+      }
     }
   }
 

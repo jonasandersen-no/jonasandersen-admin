@@ -1,8 +1,10 @@
 package no.jonasandersen.admin.application;
 
 import com.jcraft.jsch.JSchException;
+import java.io.IOException;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
+import no.jonasandersen.admin.adapter.out.ssh.CommandExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.core.domain.ConnectionInfo;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
@@ -64,9 +66,13 @@ public class ServerGenerator {
           log.info("Connecting to {}", connectionInfo);
           fileExecutor.setup(connectionInfo);
           //parse files
+          CommandExecutor commandExecutor = fileExecutor.getCommandExecutor();
+          commandExecutor.connect();
+          commandExecutor.executeCommand("ls -al");
+          commandExecutor.disconnect();
           fileExecutor.cleanup();
 
-        } catch (JSchException e) {
+        } catch (JSchException | IOException e) {
           log.warn("Failed to connect to instance: {}", e.getMessage());
         }
         return ServerGeneratorResponse.from(instance);
