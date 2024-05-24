@@ -26,8 +26,12 @@ public class CommandExecutor {
     return new CommandExecutor(new RealJSchWrapper(), connectionInfo);
   }
 
-  public static CommandExecutor createNull() throws JSchException {
-    return new CommandExecutor(new StubJSchWrapper(), ConnectionInfo.createNull());
+  public static CommandExecutor createNull() {
+    try {
+      return new CommandExecutor(new StubJSchWrapper(), ConnectionInfo.createNull());
+    } catch (JSchException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private CommandExecutor(JSchWrapper jschWrapper, ConnectionInfo connectionInfo) throws JSchException {

@@ -9,24 +9,45 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import no.jonasandersen.admin.core.domain.ConnectionInfo;
 
 public class FileExecutor {
 
-  private final CommandExecutor commandExecutor;
+  private CommandExecutor commandExecutor;
 
   private FileExecutor(CommandExecutor commandExecutor) {
     this.commandExecutor = commandExecutor;
   }
 
-  public static FileExecutor create(CommandExecutor commandExecutor) {
-    return new FileExecutor(commandExecutor);
+  public static FileExecutor create() {
+    return new FileExecutor(null);
   }
 
-  public static FileExecutor createNull() throws JSchException {
+  public static FileExecutor createNull() {
     return new FileExecutor(CommandExecutor.createNull());
   }
 
+  public void setup(ConnectionInfo connectionInfo) throws JSchException {
+    if (commandExecutor == null) {
+      commandExecutor = CommandExecutor.create(connectionInfo);
+    }
+  }
+
+  public void cleanup() {
+    if (hasCommandExecutor()) {
+      commandExecutor = null;
+    }
+  }
+
+  public boolean hasCommandExecutor() {
+    return commandExecutor != null;
+  }
+
   public void parseFile(String file) throws IOException {
+    if (!hasCommandExecutor()) {
+      throw new IllegalStateException("CommandExecutor not set");
+    }
+
     Path path = getPath(file);
 
     try (Stream<String> lines = Files.lines(path)) {
