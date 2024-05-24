@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:attr="data-bs-theme=${currentStoredTheme}">
+<head>
+  <th:block th:insert="~{fragments/main :: baseHead}"></th:block>
+  <title>Index</title>
+</head>
+<body>
+<div th:replace="~{fragments/main :: navigation}"></div>
+<main>
+  <h1>Main content here</h1>
+</main>
+<footer>
+  <div th:replace="~{fragments/main :: footer}"></div>
+</footer>
+</body>
+</html>

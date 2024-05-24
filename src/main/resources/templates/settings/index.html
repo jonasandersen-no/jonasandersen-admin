@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:attr="data-bs-theme=${currentStoredTheme}">
+<head>
+  <th:block th:insert="~{fragments/main :: baseHead}"></th:block>
+  <title>Settings</title>
+</head>
+<body>
+<div th:replace="~{fragments/main :: navigation}"></div>
+<main>
+  <div class="container">
+    <h1>Settings</h1>
+
+    <p>Currently logged in as <span th:text="${loggedInUser}"></span></p>
+
+    <form method="post">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="theme" value="light"
+               id="flexRadioDefault1"
+               th:checked="${currentTheme.value().equals('light')}">
+        <label class="form-check-label" for="flexRadioDefault1">
+          Light
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="theme" value="dark"
+               id="flexRadioDefault2"
+               th:checked="${currentTheme.value().equals('dark')}">
+        <label class="form-check-label" for="flexRadioDefault2">
+          Dark
+        </label>
+      </div>
+      <button class="btn btn-primary">Save</button>
+    </form>
+
+  </div>
+</main>
+<footer>
+  <div th:replace="~{fragments/main :: footer}"></div>
+</footer>
+</body>
+</html>

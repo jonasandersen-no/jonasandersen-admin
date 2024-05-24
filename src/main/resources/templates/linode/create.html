@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:attr="data-bs-theme=${currentStoredTheme}">
+<head>
+  <th:block th:insert="~{fragments/main :: baseHead}"></th:block>
+  <title>Create linode</title>
+</head>
+<body>
+<div th:replace="~{fragments/main :: navigation}"></div>
+<main>
+  <div class="container">
+    <form method="post">
+      <div class="mb-3">
+        <label for="serverType">Choose Server Type</label>
+        <select class="form-select" id="serverType" name="serverType">
+          <option selected disabled>Select one...</option>
+          <option th:each="type: ${serverTypes}" th:value="${type}" th:text="${type}">Option type</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</main>
+<footer>
+  <div th:replace="~{fragments/main :: footer}"></div>
+</footer>
+</body>
+</html>

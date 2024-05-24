@@ -1,21 +1,16 @@
 package no.jonasandersen.admin.adapter.in.web;
 
-import de.tschuehly.spring.viewcomponent.jte.ViewContext;
+import java.util.List;
 import java.util.Optional;
-import no.jonasandersen.admin.adapter.in.web.layout.MainLayoutViewComponent;
-import no.jonasandersen.admin.adapter.in.web.linode.LinodeDetailViewComponent;
-import no.jonasandersen.admin.adapter.in.web.linode.LinodeViewComponent;
-import no.jonasandersen.admin.adapter.in.web.linode.create.CreateFormComponent;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ServerGenerator.ServerType;
-import no.jonasandersen.admin.core.domain.InstanceNotFound;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,48 +22,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LinodeController {
 
   private static final Logger log = LoggerFactory.getLogger(LinodeController.class);
-  private final MainLayoutViewComponent mainLayoutViewComponent;
-  private final LinodeViewComponent linodeViewComponent;
-  private final LinodeDetailViewComponent linodeDetailViewComponent;
-
-  private final CreateFormComponent createFormComponent;
-  private final LinodeService linodeService;
   private final ServerGenerator serverGenerator;
+  private final LinodeService service;
 
-  public LinodeController(MainLayoutViewComponent mainLayoutViewComponent,
-      LinodeViewComponent linodeViewComponent,
-      LinodeDetailViewComponent linodeDetailViewComponent,
-      CreateFormComponent createFormComponent,
-      LinodeService linodeService, ServerGenerator serverGenerator) {
-    this.mainLayoutViewComponent = mainLayoutViewComponent;
-    this.linodeViewComponent = linodeViewComponent;
-    this.linodeDetailViewComponent = linodeDetailViewComponent;
-    this.createFormComponent = createFormComponent;
-    this.linodeService = linodeService;
+  public LinodeController(ServerGenerator serverGenerator, LinodeService service) {
     this.serverGenerator = serverGenerator;
+    this.service = service;
   }
 
-  @GetMapping
-  ViewContext linode() {
-    return mainLayoutViewComponent.render("Linode", linodeViewComponent.render());
+  @GetMapping()
+  String linode(Model model) {
+    model.addAttribute("instances", service.getInstances());
+    return "linode/index";
   }
 
   @GetMapping("/{linodeId}")
-  ViewContext getInstance(@PathVariable Long linodeId) {
-    Optional<LinodeInstance> instance = linodeService.findInstanceById(new LinodeId(linodeId));
+  String getInstance(@PathVariable Long linodeId, Model model) {
+    Optional<LinodeInstance> instance = service.findInstanceById(new LinodeId(linodeId));
 
-    return mainLayoutViewComponent.render("Linode Detail - " + linodeId,
-        linodeDetailViewComponent.render(instance.orElse(null)));
-  }
+    if (instance.isEmpty()) {
+      return "redirect:/linode";
+    }
 
-  @ExceptionHandler(InstanceNotFound.class)
-  public String handleInstanceNotFound() {
-    return "redirect:/linode";
+    model.addAttribute("instance", instance.get());
+    return "linode/linode-detail";
   }
 
   @GetMapping("/create")
-  ViewContext create() {
-    return mainLayoutViewComponent.render("Create Linode", createFormComponent.render());
+  String create(Model model) {
+    model.addAttribute("serverTypes", List.of(ServerType.values()));
+
+    return "linode/create";
   }
 
   @PostMapping("/create")
@@ -78,5 +62,4 @@ public class LinodeController {
     serverGenerator.generate(serverType);
     return "redirect:/linode";
   }
-
 }

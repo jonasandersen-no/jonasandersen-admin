@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:attr="data-bs-theme=${currentStoredTheme}">
+<head>
+  <th:block th:insert="~{fragments/main :: baseHead}"></th:block>
+  <title>Index</title>
+</head>
+<body>
+<div th:replace="~{fragments/main :: navigation}"></div>
+<main>
+  <div class="container w-50">
+    <div>
+      <h1 th:text="${instance.prettyPrintLabel()}"></h1>
+      <p class="small"><strong>ID:</strong> <span th:text="${instance.linodeId().id()}"/></p>
+    </div>
+    <div class="row g-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="material-symbols-outlined">person</span>
+        <span th:text="${instance.owner()}"/>
+      </div>
+      <div class="d-flex">
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined">wifi</span>
+            <span th:text="${instance.prettyPrintIp()}"/>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined">memory</span>
+            <span th:text="${instance.prettyPrintSpecs()}"/>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined">label</span>
+            <span th:text="${instance.prettyPrintTags()}"/>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined">update</span>
+            <span th:text="${instance.prettyPrintStatus()}"/>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined">save</span>
+            <span th:text="${instance.prettyPrintVolumeNames()}"/>
+          </div>
+        </div>
+
+      </div>
+</main>
+<footer>
+  <div th:replace="~{fragments/main :: footer}"></div>
+</footer>
+</body>
+</html>
