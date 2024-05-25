@@ -6,7 +6,6 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
 import no.jonasandersen.admin.application.Feature;
-import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;

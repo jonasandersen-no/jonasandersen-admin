@@ -1,9 +1,9 @@
-package no.jonasandersen.admin.application;
+package no.jonasandersen.admin.infrastructure;
 
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import no.jonasandersen.admin.infrastructure.AdminProperties;
+import no.jonasandersen.admin.application.Feature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;

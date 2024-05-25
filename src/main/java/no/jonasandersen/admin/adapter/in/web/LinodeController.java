@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/linode")
@@ -46,6 +47,14 @@ public class LinodeController {
 
     model.addAttribute("instance", instance.get());
     return "linode/linode-detail";
+  }
+
+  @PostMapping("/{linodeId}")
+  String installMinecraft(@PathVariable Long linodeId, RedirectAttributes redirectAttrs) {
+    serverGenerator.install(LinodeId.from(linodeId), ServerType.MINECRAFT);
+
+    redirectAttrs.addFlashAttribute("message", "Minecraft server is being installed");
+    return "redirect:/linode";
   }
 
   @GetMapping("/create")

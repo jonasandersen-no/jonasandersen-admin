@@ -11,6 +11,12 @@
 
   <div class="container m-auto">
     <div class="container text-center">
+      <th:block th:if="${message}">
+        <div class="alert alert-success" role="alert" th:text="${message}">
+          A simple success alert, check it out!
+        </div>
+      </th:block>
+
       <a class="btn btn-primary" href="/linode/create">Create new instance</a>
 
     </div>

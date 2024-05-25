@@ -2,6 +2,7 @@ package no.jonasandersen.admin.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import no.jonasandersen.admin.infrastructure.Features;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

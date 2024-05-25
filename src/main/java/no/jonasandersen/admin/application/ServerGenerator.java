@@ -1,14 +1,10 @@
 package no.jonasandersen.admin.application;
 
-import com.jcraft.jsch.JSchException;
-import java.io.IOException;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
-import no.jonasandersen.admin.adapter.out.ssh.CommandExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
-import no.jonasandersen.admin.core.domain.ConnectionInfo;
+import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.minecraft.domain.Ip;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerType;
 import org.slf4j.Logger;
@@ -56,25 +52,30 @@ public class ServerGenerator {
       case MINECRAFT -> {
         passwordOutputListener.track(password);
         LinodeInstance instance = service.createDefaultMinecraftInstance(password);
+        log.info("Created instance: {}", instance);
         instanceOutputListener.track(instance);
-        try {
-          ConnectionInfo connectionInfo = new ConnectionInfo("root", SensitiveString.of(password.value()),
-              new Ip(instance.ip().getFirst()), 22);
-          log.info("Connecting to {}", connectionInfo);
-          fileExecutor.setup(connectionInfo);
-          //parse files
-          CommandExecutor commandExecutor = fileExecutor.getCommandExecutor();
-          commandExecutor.connect();
-          commandExecutor.executeCommand("ls -al");
-          commandExecutor.disconnect();
-          fileExecutor.cleanup();
-
-        } catch (JSchException | IOException e) {
-          log.warn("Failed to connect to instance: {}", e.getMessage());
-        }
+//        try {
+//          ConnectionInfo connectionInfo = new ConnectionInfo("root", SensitiveString.of(password.value()),
+//              new Ip(instance.ip().getFirst()), 22);
+//          log.info("Connecting to {}", connectionInfo);
+//          fileExecutor.setup(connectionInfo);
+//          //parse files
+//          CommandExecutor commandExecutor = fileExecutor.getCommandExecutor();
+//          commandExecutor.connect();
+//          commandExecutor.executeCommand("ls -al");
+//          commandExecutor.disconnect();
+//          fileExecutor.cleanup();
+//
+//        } catch (JSchException | IOException e) {
+//          log.warn("Failed to connect to instance: {}", e.getMessage());
+//        }
         return ServerGeneratorResponse.from(instance);
       }
       default -> throw new IllegalStateException("Unexpected value: " + serverType);
     }
+  }
+
+  public void install(LinodeId from, ServerType serverType) {
+
   }
 }

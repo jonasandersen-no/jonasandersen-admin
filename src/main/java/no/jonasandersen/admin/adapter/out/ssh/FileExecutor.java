@@ -10,8 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import no.jonasandersen.admin.application.Feature;
-import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.core.domain.ConnectionInfo;
+import no.jonasandersen.admin.infrastructure.Features;
 
 public class FileExecutor {
 

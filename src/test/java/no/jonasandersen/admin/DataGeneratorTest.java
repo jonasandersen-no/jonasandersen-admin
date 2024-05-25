@@ -3,9 +3,9 @@ package no.jonasandersen.admin;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import no.jonasandersen.admin.application.Feature;
-import no.jonasandersen.admin.application.Features;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
+import no.jonasandersen.admin.infrastructure.Features;
 import org.junit.jupiter.api.Test;
 
 class DataGeneratorTest {
