@@ -3,9 +3,9 @@ package no.jonasandersen.admin.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import no.jonasandersen.admin.OutputTracker;
-import no.jonasandersen.admin.application.ServerGenerator.ServerType;
 import no.jonasandersen.admin.core.minecraft.domain.Ip;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.domain.ServerType;
 import org.junit.jupiter.api.Test;
 
 class ServerGeneratorTest {

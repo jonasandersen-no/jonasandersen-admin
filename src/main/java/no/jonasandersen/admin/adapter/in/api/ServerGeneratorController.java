@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.adapter.in.api;
 
 import no.jonasandersen.admin.application.ServerGenerator;
+import no.jonasandersen.admin.domain.ServerType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,6 @@ public class ServerGeneratorController {
 
   @PostMapping
   public void createLinode() {
-    serverGenerator.generate(ServerGenerator.ServerType.MINECRAFT);
+    serverGenerator.generate(ServerType.MINECRAFT);
   }
 }

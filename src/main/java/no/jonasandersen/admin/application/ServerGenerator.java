@@ -10,16 +10,13 @@ import no.jonasandersen.admin.core.domain.ConnectionInfo;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
 import no.jonasandersen.admin.core.minecraft.domain.Ip;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.domain.ServerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ServerGenerator {
 
   private static final Logger log = LoggerFactory.getLogger(ServerGenerator.class);
-
-  public enum ServerType {
-    MINECRAFT
-  }
 
   private final LinodeService service;
   private final SensitiveString defaultPassword;
