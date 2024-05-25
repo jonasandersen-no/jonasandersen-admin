@@ -3,6 +3,7 @@ package no.jonasandersen.admin.infrastructure;
 import no.jonasandersen.admin.adapter.DefaultEventPublisher;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
+import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
 import no.jonasandersen.admin.application.Feature;
@@ -67,7 +68,7 @@ class CoreConfiguration {
   @Bean
   ServerGenerator serverGenerator(LinodeService linodeService, AdminProperties properties) {
     String rootPassword = properties.linode().rootPassword();
-    return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword));
+    return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword), FileExecutor.create());
   }
 
   @Bean

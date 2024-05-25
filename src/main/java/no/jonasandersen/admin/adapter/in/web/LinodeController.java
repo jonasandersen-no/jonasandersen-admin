@@ -2,11 +2,15 @@ package no.jonasandersen.admin.adapter.in.web;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
+import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerType;
+import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -23,10 +28,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LinodeController {
 
   private static final Logger log = LoggerFactory.getLogger(LinodeController.class);
+  private final AdminProperties properties;
   private final ServerGenerator serverGenerator;
   private final LinodeService service;
 
-  public LinodeController(ServerGenerator serverGenerator, LinodeService service) {
+  public LinodeController(AdminProperties properties, ServerGenerator serverGenerator, LinodeService service) {
+    this.properties = properties;
     this.serverGenerator = serverGenerator;
     this.service = service;
   }
@@ -38,8 +45,16 @@ public class LinodeController {
   }
 
   @GetMapping("/{linodeId}")
-  String getInstance(@PathVariable Long linodeId, Model model) {
-    Optional<LinodeInstance> instance = service.findInstanceById(new LinodeId(linodeId));
+  String getInstance(@PathVariable Long linodeId, Model model, RedirectAttributes redirectAttrs) {
+    Optional<LinodeInstance> instance;
+    try {
+      instance = service.findInstanceById(new LinodeId(linodeId));
+    } catch (HttpClientErrorException e) {
+      log.error("Failed to get instance with id {}", linodeId);
+      log.error(e.getMessage());
+      redirectAttrs.addFlashAttribute("message", "Failed to get instance with id " + linodeId);
+      return "redirect:/linode";
+    }
 
     if (instance.isEmpty()) {
       return "redirect:/linode";
@@ -51,7 +66,11 @@ public class LinodeController {
 
   @PostMapping("/{linodeId}")
   String installMinecraft(@PathVariable Long linodeId, RedirectAttributes redirectAttrs) {
-    serverGenerator.install(LinodeId.from(linodeId), ServerType.MINECRAFT);
+    String password = properties.minecraft().password();
+    CompletableFuture.supplyAsync(() -> {
+      serverGenerator.install(LinodeId.from(linodeId), SensitiveString.of(password), ServerType.MINECRAFT);
+      return null;
+    }, Executors.newVirtualThreadPerTaskExecutor());
 
     redirectAttrs.addFlashAttribute("message", "Minecraft server is being installed");
     return "redirect:/linode";
