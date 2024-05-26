@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, self-hosted ]
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: create-manifest
         run: |
-          docker manifest create bjoggis/jonasandersen-admin:v0.0.0 --amend bjoggis/jonasandersen-admin:v0.0.0-x86_64 --amend bjoggis/jonasandersen-admin:v0.0.0-aarch_64
+          docker manifest create bjoggis/jonasandersen-admin:v0.0.0 --amend bjoggis/jonasandersen-admin:v0.0.0-x86_64
           docker manifest push bjoggis/jonasandersen-admin:v0.0.0
-          docker manifest create bjoggis/jonasandersen-admin:latest --amend bjoggis/jonasandersen-admin:v0.0.0-x86_64 --amend bjoggis/jonasandersen-admin:v0.0.0-aarch_64
+          docker manifest create bjoggis/jonasandersen-admin:latest --amend bjoggis/jonasandersen-admin:v0.0.0-x86_64
           docker manifest push bjoggis/jonasandersen-admin:latest
