@@ -100,6 +100,15 @@ public class LinodeServerApi implements ServerApi {
         .toList();
   }
 
+  @Override
+  public void attachVolume(LinodeId linodeId, VolumeId volumeId) {
+    AttachVolumeRequestBody body = new AttachVolumeRequestBody();
+    body.setLinodeId(linodeId.id());
+    body.setPersistAcrossBoots(false);
+
+    linodeExchange.attach(volumeId.id(), body);
+  }
+
   public OutputTracker<LinodeInstanceApi> track() {
     return outputListener.createTracker();
   }
@@ -141,6 +150,11 @@ public class LinodeServerApi implements ServerApi {
           .toList();
 
       return new Page<>(List.copyOf(filteredList), 0, 1, filteredList.size());
+    }
+
+    @Override
+    public LinodeVolumeDto attach(Long volumeId, AttachVolumeRequestBody body) {
+      return null;
     }
 
     @Override

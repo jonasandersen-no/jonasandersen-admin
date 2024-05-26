@@ -8,6 +8,8 @@ import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
+import no.jonasandersen.admin.core.domain.VolumeId;
+import no.jonasandersen.admin.core.minecraft.LinodeVolumeService;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
@@ -30,11 +32,14 @@ public class LinodeController {
   private static final Logger log = LoggerFactory.getLogger(LinodeController.class);
   private final AdminProperties properties;
   private final ServerGenerator serverGenerator;
+  private final LinodeVolumeService volumeService;
   private final LinodeService service;
 
-  public LinodeController(AdminProperties properties, ServerGenerator serverGenerator, LinodeService service) {
+  public LinodeController(AdminProperties properties, ServerGenerator serverGenerator,
+      LinodeVolumeService volumeService, LinodeService service) {
     this.properties = properties;
     this.serverGenerator = serverGenerator;
+    this.volumeService = volumeService;
     this.service = service;
   }
 
@@ -66,8 +71,17 @@ public class LinodeController {
 
   @PostMapping("/{linodeId}")
   String installMinecraft(@PathVariable Long linodeId, RedirectAttributes redirectAttrs) {
+    LinodeInstance instance = service.findInstanceById(LinodeId.from(linodeId)).orElseThrow();
+
+    if (!instance.status().equals("running")) {
+      redirectAttrs.addFlashAttribute("message", "Instance is not running");
+      return "redirect:/linode";
+    }
+
     String password = properties.minecraft().password();
+    Long volumeId = properties.linode().volumeId();
     CompletableFuture.supplyAsync(() -> {
+      volumeService.attachVolume(LinodeId.from(linodeId), VolumeId.from(volumeId));
       serverGenerator.install(LinodeId.from(linodeId), SensitiveString.of(password), ServerType.MINECRAFT);
       return null;
     }, Executors.newVirtualThreadPerTaskExecutor());

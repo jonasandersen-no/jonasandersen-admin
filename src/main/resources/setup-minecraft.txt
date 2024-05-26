@@ -1,4 +1,5 @@
 curl -fsSL https://raw.githubusercontent.com/NotBjoggisAtAll/minecraft-compose/main/testing/docker-compose.yml -o docker-compose.yml
 mkdir "/mnt/minecraft-volume-02"
+mount "/dev/disk/by-id/scsi-0Linode_Volume_minecraft-volume-02" "/mnt/minecraft-volume-02"
 docker compose up -d
 docker ps -a
