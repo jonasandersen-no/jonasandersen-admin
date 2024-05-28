@@ -1,14 +1,15 @@
 package no.jonasandersen.admin.application;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.DefaultEventPublisher;
+import no.jonasandersen.admin.adapter.DefaultPrincipalNameResolver;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.application.port.EventPublisher;
+import no.jonasandersen.admin.application.port.PrincipalNameResolver;
 import no.jonasandersen.admin.core.domain.InstanceNotFound;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
@@ -21,7 +22,6 @@ import no.jonasandersen.admin.domain.SensitiveString;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 public class LinodeService {
 
@@ -29,28 +29,32 @@ public class LinodeService {
   public static final String AUTO_CREATED = "auto-created";
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
-  private final Principal principal;
+  private final PrincipalNameResolver principalNameResolver;
   private final EventPublisher eventPublisher;
 
   public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
       EventPublisher eventPublisher) {
-    return new LinodeService(serverApi, linodeVolumeService, new RealPrincipal(), eventPublisher);
+    return new LinodeService(serverApi, linodeVolumeService, DefaultPrincipalNameResolver.create(),
+        eventPublisher);
   }
 
   public static LinodeService createNull() {
     return createNull(List.of(), List.of());
   }
 
-  public static LinodeService createNull(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
-    return new LinodeService(LinodeServerApi.createNull(instances, volumes), LinodeVolumeService.createNull(),
-        new StubPrincipal(), DefaultEventPublisher.createNull());
+  public static LinodeService createNull(List<LinodeInstanceApi> instances,
+      List<LinodeVolumeDto> volumes) {
+    return new LinodeService(LinodeServerApi.createNull(instances, volumes),
+        LinodeVolumeService.createNull(),
+        () -> "principalName", DefaultEventPublisher.createNull());
   }
 
-  private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, Principal principal,
+  private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
+      PrincipalNameResolver principalNameResolver,
       EventPublisher eventPublisher) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
-    this.principal = principal;
+    this.principalNameResolver = principalNameResolver;
     this.eventPublisher = eventPublisher;
   }
 
@@ -100,14 +104,14 @@ public class LinodeService {
   private LinodeInstance createInstance(InstanceDetails instanceDetails) {
     LinodeInstance instance = serverApi.createInstance(withPrincipalTag(instanceDetails));
     SaveLinodeInstanceEvent event = new SaveLinodeInstanceEvent(null, instance.linodeId(),
-        principal.getName(), null, null);
+        principalNameResolver.get(), null, null);
     eventPublisher.publishEvent(event);
 
     return instance;
   }
 
   InstanceDetails withPrincipalTag(InstanceDetails instanceDetails) {
-    String name = "owner:" + principal.getName();
+    String name = "owner:" + principalNameResolver.get();
 
     List<String> tags = new ArrayList<>(instanceDetails.tags());
     tags.add(name);
@@ -124,26 +128,5 @@ public class LinodeService {
 
   public EventPublisher eventPublisher() {
     return eventPublisher;
-  }
-
-  // NULLABLES
-
-  public static class RealPrincipal implements Principal {
-
-    @Override
-    public String getName() {
-      if (SecurityContextHolder.getContext().getAuthentication() != null) {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-      }
-      return "unknown";
-    }
-  }
-
-  private static class StubPrincipal implements Principal {
-
-    @Override
-    public String getName() {
-      return "principalName";
-    }
   }
 }
