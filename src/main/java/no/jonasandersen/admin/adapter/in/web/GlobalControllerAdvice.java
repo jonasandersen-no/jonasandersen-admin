@@ -1,9 +1,9 @@
 package no.jonasandersen.admin.adapter.in.web;
 
-import no.jonasandersen.admin.adapter.DefaultPrincipalNameResolver;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.domain.Username;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -12,7 +12,6 @@ public class GlobalControllerAdvice {
 
   private final BuildProperties buildProperties;
   private final ThemeService themeService;
-  private final DefaultPrincipalNameResolver principalNameResolver = DefaultPrincipalNameResolver.create();
 
   public GlobalControllerAdvice(BuildProperties buildProperties, ThemeService themeService) {
     this.buildProperties = buildProperties;
@@ -21,7 +20,10 @@ public class GlobalControllerAdvice {
 
   @ModelAttribute("loggedInUser")
   public String getLoggedInUser() {
-    return principalNameResolver.get();
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    return "unknown";
   }
 
   @ModelAttribute("currentStoredTheme")

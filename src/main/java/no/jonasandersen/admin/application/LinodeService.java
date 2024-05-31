@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.DefaultEventPublisher;
-import no.jonasandersen.admin.adapter.DefaultPrincipalNameResolver;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.application.port.EventPublisher;
-import no.jonasandersen.admin.application.port.PrincipalNameResolver;
 import no.jonasandersen.admin.core.domain.InstanceNotFound;
 import no.jonasandersen.admin.core.domain.LinodeId;
 import no.jonasandersen.admin.core.domain.LinodeInstance;
@@ -29,12 +27,11 @@ public class LinodeService {
   public static final String AUTO_CREATED = "auto-created";
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
-  private final PrincipalNameResolver principalNameResolver;
   private final EventPublisher eventPublisher;
 
   public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
       EventPublisher eventPublisher) {
-    return new LinodeService(serverApi, linodeVolumeService, DefaultPrincipalNameResolver.create(),
+    return new LinodeService(serverApi, linodeVolumeService,
         eventPublisher);
   }
 
@@ -46,15 +43,13 @@ public class LinodeService {
       List<LinodeVolumeDto> volumes) {
     return new LinodeService(LinodeServerApi.createNull(instances, volumes),
         LinodeVolumeService.createNull(),
-        () -> "principalName", DefaultEventPublisher.createNull());
+        DefaultEventPublisher.createNull());
   }
 
   private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      PrincipalNameResolver principalNameResolver,
       EventPublisher eventPublisher) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
-    this.principalNameResolver = principalNameResolver;
     this.eventPublisher = eventPublisher;
   }
 
@@ -97,24 +92,23 @@ public class LinodeService {
         instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 
-  LinodeInstance createDefaultMinecraftInstance(SensitiveString password) {
-    return createInstance(InstanceDetails.createDefaultMinecraft(password));
+  LinodeInstance createDefaultMinecraftInstance(String owner, SensitiveString password) {
+    return createInstance(owner, InstanceDetails.createDefaultMinecraft(password));
   }
 
-  private LinodeInstance createInstance(InstanceDetails instanceDetails) {
-    LinodeInstance instance = serverApi.createInstance(withPrincipalTag(instanceDetails));
+  private LinodeInstance createInstance(String owner, InstanceDetails instanceDetails) {
+    LinodeInstance instance = serverApi.createInstance(withPrincipalTag(owner, instanceDetails));
     SaveLinodeInstanceEvent event = new SaveLinodeInstanceEvent(null, instance.linodeId(),
-        principalNameResolver.get(), null, null);
+        owner, null, null);
     eventPublisher.publishEvent(event);
 
     return instance;
   }
 
-  InstanceDetails withPrincipalTag(InstanceDetails instanceDetails) {
-    String name = "owner:" + principalNameResolver.get();
+  InstanceDetails withPrincipalTag(String owner, InstanceDetails instanceDetails) {
 
     List<String> tags = new ArrayList<>(instanceDetails.tags());
-    tags.add(name);
+    tags.add("owner:" + owner);
 
     return new InstanceDetails(
         instanceDetails.region(),

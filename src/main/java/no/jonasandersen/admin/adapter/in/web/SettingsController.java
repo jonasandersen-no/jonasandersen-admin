@@ -1,9 +1,9 @@
 package no.jonasandersen.admin.adapter.in.web;
 
-import no.jonasandersen.admin.adapter.DefaultPrincipalNameResolver;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.domain.Username;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SettingsController {
 
   private final ThemeService themeService;
-  private final DefaultPrincipalNameResolver principalNameResolver = DefaultPrincipalNameResolver.create();
 
   public SettingsController(ThemeService themeService) {
     this.themeService = themeService;
@@ -25,17 +24,25 @@ public class SettingsController {
   @GetMapping
   String settings(Model model) {
     model.addAttribute("currentTheme",
-        themeService.findTheme(Username.create(principalNameResolver.get())));
+        themeService.findTheme(Username.create(getUsername())));
     return "settings/index";
   }
 
   @PostMapping
   public String saveSettings(@RequestParam String theme) {
-    String userName = principalNameResolver.get();
+    String userName = getUsername();
 
     themeService.saveTheme(Username.create(userName), Theme.from(theme));
 
     return "redirect:/settings";
+  }
+
+  private static String getUsername() {
+    String userName = "unknown";
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      userName = SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    return userName;
   }
 
 }

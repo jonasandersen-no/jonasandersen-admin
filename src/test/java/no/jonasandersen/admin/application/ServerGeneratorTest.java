@@ -22,7 +22,7 @@ class ServerGeneratorTest {
   void createInstanceWhenCalled() {
     ServerGenerator generator = ServerGenerator.createNull();
 
-    var response = generator.generate(ServerType.MINECRAFT);
+    var response = generator.generate("owner", ServerType.MINECRAFT);
 
     assertThat(response).isNotNull();
     assertThat(response.ip()).isEqualTo(new Ip("127.0.0.1"));
@@ -35,7 +35,8 @@ class ServerGeneratorTest {
 
     OutputTracker<SensitiveString> tracker = generator.passwordTracker();
 
-    generator.generate(ServerType.MINECRAFT, SensitiveString.of("providedPassword"));
+    generator.generate("generated", SensitiveString.of("providedPassword"),
+        ServerType.MINECRAFT);
 
     assertThat(tracker.data().getFirst().value()).isEqualTo("providedPassword");
   }
@@ -46,7 +47,7 @@ class ServerGeneratorTest {
 
     OutputTracker<SensitiveString> tracker = generator.passwordTracker();
 
-    generator.generate(ServerType.MINECRAFT);
+    generator.generate("owner", ServerType.MINECRAFT);
 
     assertThat(tracker.data().getFirst().value()).isEqualTo("Password123!");
   }

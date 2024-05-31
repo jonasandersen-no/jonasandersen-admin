@@ -15,6 +15,7 @@ import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,7 +102,15 @@ public class LinodeController {
   String createResponse(@RequestParam ServerType serverType) {
     log.info("Creating server of type {}", serverType);
 
-    serverGenerator.generate(serverType);
+    serverGenerator.generate(getUsername(), serverType);
     return "redirect:/linode";
+  }
+
+  private static String getUsername() {
+    String result = "unknown";
+    if (SecurityContextHolder.getContext().getAuthentication() != null) {
+      result = SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    return result;
   }
 }

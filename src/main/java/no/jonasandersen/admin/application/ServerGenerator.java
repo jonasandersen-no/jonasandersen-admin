@@ -49,15 +49,15 @@ public class ServerGenerator {
     return instanceOutputListener.createTracker();
   }
 
-  public ServerGeneratorResponse generate(ServerType serverType) {
-    return generate(serverType, defaultPassword);
+  public ServerGeneratorResponse generate(String owner, ServerType serverType) {
+    return generate(owner, defaultPassword, serverType);
   }
 
-  public ServerGeneratorResponse generate(ServerType serverType, SensitiveString password) {
+  public ServerGeneratorResponse generate(String owner, SensitiveString password, ServerType serverType) {
     switch (serverType) {
       case MINECRAFT -> {
         passwordOutputListener.track(password);
-        LinodeInstance instance = service.createDefaultMinecraftInstance(password);
+        LinodeInstance instance = service.createDefaultMinecraftInstance(owner, password);
         log.info("Created instance: {}", instance);
         instanceOutputListener.track(instance);
         return ServerGeneratorResponse.from(instance);

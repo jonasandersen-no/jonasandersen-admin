@@ -35,7 +35,8 @@ public class DataGenerator implements ApplicationListener<ApplicationReadyEvent>
     if (Features.isEnabled(Feature.LINODE_STUB)) {
       log.info("Creating {} instances", NUMBER_OF_INSTANCES);
       for (int i = 0; i < NUMBER_OF_INSTANCES; i++) {
-        serverGenerator.generate(ServerType.MINECRAFT, SensitiveString.of("password"));
+        serverGenerator.generate("generated", SensitiveString.of("password"),
+            ServerType.MINECRAFT);
       }
       return;
     }
