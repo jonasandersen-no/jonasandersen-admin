@@ -1,7 +1,7 @@
 package no.jonasandersen.admin;
 
-import no.jonasandersen.admin.application.Feature;
 import no.jonasandersen.admin.application.ServerGenerator;
+import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.infrastructure.Features;

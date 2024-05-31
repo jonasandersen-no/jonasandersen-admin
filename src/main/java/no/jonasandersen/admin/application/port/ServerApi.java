@@ -1,12 +1,12 @@
-package no.jonasandersen.admin.core.minecraft.port;
+package no.jonasandersen.admin.application.port;
 
 import java.util.List;
 import java.util.Optional;
-import no.jonasandersen.admin.core.domain.LinodeId;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.LinodeId;
+import no.jonasandersen.admin.domain.LinodeInstance;
+import no.jonasandersen.admin.domain.LinodeVolume;
+import no.jonasandersen.admin.domain.VolumeId;
 
 public interface ServerApi {
 

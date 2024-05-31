@@ -1,11 +1,11 @@
-package no.jonasandersen.admin.core.minecraft;
+package no.jonasandersen.admin.application;
 
 import java.util.List;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
-import no.jonasandersen.admin.core.domain.LinodeId;
-import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.domain.VolumeId;
-import no.jonasandersen.admin.core.minecraft.port.ServerApi;
+import no.jonasandersen.admin.application.port.ServerApi;
+import no.jonasandersen.admin.domain.LinodeId;
+import no.jonasandersen.admin.domain.LinodeVolume;
+import no.jonasandersen.admin.domain.VolumeId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

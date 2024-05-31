@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
-import no.jonasandersen.admin.core.domain.ConnectionInfo;
+import no.jonasandersen.admin.domain.ConnectionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

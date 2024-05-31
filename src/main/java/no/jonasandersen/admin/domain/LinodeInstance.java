@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.core.domain;
+package no.jonasandersen.admin.domain;
 
 import java.util.List;
 

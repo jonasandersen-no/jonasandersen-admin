@@ -3,8 +3,9 @@ package no.jonasandersen.admin.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.minecraft.domain.Ip;
+import no.jonasandersen.admin.domain.Ip;
+import no.jonasandersen.admin.domain.LinodeInstance;
+import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import org.junit.jupiter.api.Test;
 
 class ServerGeneratorResponseTest {

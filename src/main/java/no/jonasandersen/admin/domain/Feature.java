@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.application;
+package no.jonasandersen.admin.domain;
 
 public enum Feature {
 

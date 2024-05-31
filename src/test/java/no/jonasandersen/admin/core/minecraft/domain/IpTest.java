@@ -4,6 +4,7 @@ package no.jonasandersen.admin.core.minecraft.domain;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import no.jonasandersen.admin.domain.Ip;
 import org.junit.jupiter.api.Test;
 
 class IpTest {

@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.EnumMap;
 import java.util.Map;
-import no.jonasandersen.admin.application.Feature;
+import no.jonasandersen.admin.domain.Feature;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;

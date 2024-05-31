@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import no.jonasandersen.admin.core.domain.LinodeId;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.domain.LinodeVolume;
-import no.jonasandersen.admin.core.domain.VolumeId;
 import no.jonasandersen.admin.domain.InstanceDetails;
+import no.jonasandersen.admin.domain.LinodeId;
+import no.jonasandersen.admin.domain.LinodeInstance;
+import no.jonasandersen.admin.domain.LinodeVolume;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.domain.VolumeId;
 import org.junit.jupiter.api.Test;
 
 class LinodeServerApiTest {

@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.core.domain;
+package no.jonasandersen.admin.domain;
 
 public record LinodeId(Long id) {
 

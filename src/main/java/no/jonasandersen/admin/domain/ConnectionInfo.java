@@ -1,7 +1,4 @@
-package no.jonasandersen.admin.core.domain;
-
-import no.jonasandersen.admin.core.minecraft.domain.Ip;
-import no.jonasandersen.admin.domain.SensitiveString;
+package no.jonasandersen.admin.domain;
 
 public record ConnectionInfo(String username, SensitiveString password, Ip ip, int port) {
 

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import no.jonasandersen.admin.domain.MinecraftInstance;
 import org.junit.jupiter.api.Test;
 
 class MinecraftInstanceTest {

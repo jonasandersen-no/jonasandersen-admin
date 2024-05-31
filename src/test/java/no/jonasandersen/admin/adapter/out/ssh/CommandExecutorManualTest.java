@@ -1,12 +1,12 @@
 package no.jonasandersen.admin.adapter.out.ssh;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import no.jonasandersen.admin.OutputTracker;
-import no.jonasandersen.admin.core.domain.ConnectionInfo;
-import no.jonasandersen.admin.core.minecraft.domain.Ip;
+import no.jonasandersen.admin.domain.ConnectionInfo;
+import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.SensitiveString;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

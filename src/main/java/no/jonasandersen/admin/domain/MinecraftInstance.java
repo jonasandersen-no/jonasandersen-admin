@@ -1,8 +1,7 @@
-package no.jonasandersen.admin.core.minecraft.domain;
+package no.jonasandersen.admin.domain;
 
 
 import jakarta.validation.constraints.NotNull;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
 
 public class MinecraftInstance {
 

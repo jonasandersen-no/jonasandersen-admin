@@ -5,9 +5,9 @@ import java.util.List;
 import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Alerts;
 import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Backups;
 import no.jonasandersen.admin.adapter.out.linode.api.model.instance.Specs;
-import no.jonasandersen.admin.core.domain.LinodeId;
-import no.jonasandersen.admin.core.domain.LinodeInstance;
-import no.jonasandersen.admin.core.domain.LinodeSpecs;
+import no.jonasandersen.admin.domain.LinodeId;
+import no.jonasandersen.admin.domain.LinodeInstance;
+import no.jonasandersen.admin.domain.LinodeSpecs;
 
 public record LinodeInstanceApi(
     long id,
