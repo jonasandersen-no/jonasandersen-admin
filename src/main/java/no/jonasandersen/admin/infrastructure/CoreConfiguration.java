@@ -22,7 +22,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
@@ -49,7 +48,6 @@ class CoreConfiguration {
   }
 
   @Bean
-  @Transactional
   DefaultUserSettingsRepository userSettingsRepository(CrudUserSettingsRepository repository) {
     return DefaultUserSettingsRepository.create(repository);
   }
