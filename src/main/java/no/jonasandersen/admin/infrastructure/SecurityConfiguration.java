@@ -5,7 +5,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
@@ -18,7 +17,6 @@ class SecurityConfiguration {
 
   @Bean
   @Order(1)
-  @Profile("!integration")
   SecurityFilterChain securityFilterChainResourceServer(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .securityMatcher("/api/**")
@@ -31,7 +29,6 @@ class SecurityConfiguration {
 
   @Bean
   @Order(2)
-  @Profile("!integration")
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
     http.csrf(AbstractHttpConfigurer::disable)
