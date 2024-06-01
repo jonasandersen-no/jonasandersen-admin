@@ -17,21 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 class SecurityConfiguration {
 
   @Bean
-  @Order(2)
-  @Profile("prod")
-  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests.anyRequest().authenticated()
-        )
-        .oauth2Login(withDefaults())
-        .oauth2Client(withDefaults());
-    return http.build();
-  }
-
-  @Bean
   @Order(1)
-  @Profile("prod")
+  @Profile("!integration")
   SecurityFilterChain securityFilterChainResourceServer(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .securityMatcher("/api/**")
@@ -43,12 +30,16 @@ class SecurityConfiguration {
   }
 
   @Bean
-  @Profile("dev")
-  SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {
+  @Order(2)
+  @Profile("!integration")
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests.anyRequest().permitAll()
-        );
+            authorizeRequests.anyRequest().authenticated()
+        )
+        .oauth2Login(withDefaults())
+        .oauth2Client(withDefaults());
     return http.build();
   }
 
