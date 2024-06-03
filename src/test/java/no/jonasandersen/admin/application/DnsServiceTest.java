@@ -12,7 +12,7 @@ class DnsServiceTest {
   void failureMessageIfNullIpIsPassed() {
     DnsService service = DnsService.createNull();
 
-    Result<?> result = service.overwriteDnsRecord(null, "owner", "subdomain");
+    Result<?> result = service.createOrReplaceRecord(null, "owner", "subdomain");
     assertThat(result.isFailure()).isTrue();
     assertThat(result.firstError().getMessage()).isEqualTo("ip cannot be null");
   }
@@ -21,11 +21,11 @@ class DnsServiceTest {
   void failureMessageIfNullOrBlankOwnerIsPassed() {
     DnsService service = DnsService.createNull();
 
-    Result<?> result = service.overwriteDnsRecord(Ip.localhostIp(), null, "subdomain");
+    Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), null, "subdomain");
     assertThat(result.isFailure()).isTrue();
     assertThat(result.firstError().getMessage()).isEqualTo("owner cannot be null or blank");
 
-    result = service.overwriteDnsRecord(Ip.localhostIp(), "", "subdomain");
+    result = service.createOrReplaceRecord(Ip.localhostIp(), "", "subdomain");
     assertThat(result.isFailure()).isTrue();
     assertThat(result.firstError().getMessage()).isEqualTo("owner cannot be null or blank");
   }
@@ -34,7 +34,7 @@ class DnsServiceTest {
   void failureMessageIfNullOrBlankSubdomainIsPassed() {
     DnsService service = DnsService.createNull();
 
-    Result<?> result = service.overwriteDnsRecord(Ip.localhostIp(), "owner", null);
+    Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", null);
     assertThat(result.isFailure()).isTrue();
     assertThat(result.firstError().getMessage()).isEqualTo("subdomain cannot be null or blank");
   }
@@ -43,17 +43,17 @@ class DnsServiceTest {
   void failureMessageIfSubdomainContainsInvalidCharacters() {
     DnsService service = DnsService.createNull();
 
-    Result<?> result = service.overwriteDnsRecord(Ip.localhostIp(), "owner", "subdomain!");
+    Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", "subdomain!");
     assertThat(result.isFailure()).isTrue();
     assertThat(result.firstError().getMessage()).isEqualTo(
         "subdomain contains invalid character: !");
 
-    result = service.overwriteDnsRecord(Ip.localhostIp(), "owner", "subdomain@");
+    result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", "subdomain@");
     assertThat(result.isFailure()).isTrue();
     assertThat(result.firstError().getMessage()).isEqualTo(
         "subdomain contains invalid character: @");
 
-    result = service.overwriteDnsRecord(Ip.localhostIp(), "owner", "subdomain.");
+    result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", "subdomain.");
     assertThat(result.isFailure()).isTrue();
     assertThat(result.firstError().getMessage()).isEqualTo(
         "subdomain contains invalid character: .");
@@ -63,11 +63,11 @@ class DnsServiceTest {
   void failureCanContainMultipleErrors() {
     DnsService service = DnsService.createNull();
 
-    Result<?> result = service.overwriteDnsRecord(null, null, null);
+    Result<?> result = service.createOrReplaceRecord(null, null, null);
     assertThat(result.isFailure()).isTrue();
     assertThat(result.errorCount()).isEqualTo(3);
 
-    result = service.overwriteDnsRecord(Ip.localhostIp(), "owner", "s.b.d-m!@");
+    result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", "s.b.d-m!@");
     assertThat(result.isFailure()).isTrue();
     assertThat(result.errorCount()).isEqualTo(4);
   }
@@ -76,7 +76,7 @@ class DnsServiceTest {
   void successIfAllParametersAreValid() {
     DnsService service = DnsService.createNull();
 
-    Result<?> result = service.overwriteDnsRecord(Ip.localhostIp(), "owner", "subdomain");
+    Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", "subdomain");
     assertThat(result.isSuccess()).isTrue();
   }
 }
