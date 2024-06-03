@@ -7,6 +7,7 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
+import no.jonasandersen.admin.application.DnsService;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
@@ -79,6 +80,11 @@ class CoreConfiguration {
   @Bean
   DefaultEventPublisher eventPublisher(ApplicationEventPublisher publisher) {
     return DefaultEventPublisher.create(publisher);
+  }
+
+  @Bean
+  DnsService dnsService(DnsApi dnsApi) {
+    return DnsService.create(dnsApi);
   }
 
   @Bean
