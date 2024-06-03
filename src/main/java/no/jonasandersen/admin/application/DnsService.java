@@ -1,5 +1,10 @@
 package no.jonasandersen.admin.application;
 
+import com.panfutov.result.Error;
+import com.panfutov.result.GenericError;
+import com.panfutov.result.Result;
+import java.util.ArrayList;
+import java.util.List;
 import no.jonasandersen.admin.adapter.out.dns.StubDnsApi;
 import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.domain.Ip;
@@ -26,27 +31,37 @@ public class DnsService {
    * @param ip        The IP to create a DNS record for
    * @param owner     The owner of the DNS record
    * @param subdomain The subdomain to create the DNS record for
+   * @return A Result containing either a list of errors or void
    * @throws InvalidParameterException if any of the parameters are invalid
    */
-  public void overwriteDnsRecord(Ip ip, String owner, String subdomain) {
+  public Result<Void> overwriteDnsRecord(Ip ip, String owner, String subdomain) {
+    List<GenericError> errors = new ArrayList<>();
+
     if (ip == null) {
-      throw new InvalidParameterException("ip cannot be null");
+      errors.add(new Error("ip cannot be null"));
     }
 
     if (owner == null || owner.isBlank()) {
-      throw new InvalidParameterException("owner cannot be null or blank");
+      errors.add(new Error("owner cannot be null or blank"));
     }
 
     if (subdomain == null || subdomain.isBlank()) {
-      throw new InvalidParameterException("subdomain cannot be null or blank");
+      errors.add(new Error("subdomain cannot be null or blank"));
     }
 
-    for (char c : subdomain.toCharArray()) {
-      if (!Character.isLetterOrDigit(c) && c != '-') {
-        throw new InvalidParameterException("subdomain contains invalid characters");
+    if (subdomain != null) {
+      for (char c : subdomain.toCharArray()) {
+        if (!Character.isLetterOrDigit(c) && c != '-') {
+          errors.add(new Error("subdomain contains invalid character: " + c));
+        }
       }
     }
 
+    if (!errors.isEmpty()) {
+      return Result.failure(errors);
+    }
+
     dnsApi.overwriteDnsRecord(ip, owner, subdomain);
+    return Result.successVoid();
   }
 }
