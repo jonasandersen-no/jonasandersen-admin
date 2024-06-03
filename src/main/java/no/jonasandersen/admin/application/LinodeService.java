@@ -98,18 +98,22 @@ public class LinodeService {
         instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 
-  LinodeInstance createDefaultMinecraftInstance(String owner, SensitiveString password, String subdomain) {
+  LinodeInstance createDefaultMinecraftInstance(String owner, SensitiveString password,
+      String subdomain) {
     return createInstance(owner, InstanceDetails.createDefaultMinecraft(password), subdomain);
   }
 
-  private LinodeInstance createInstance(String owner, InstanceDetails instanceDetails, String subdomain) {
+  private LinodeInstance createInstance(String owner, InstanceDetails instanceDetails,
+      String subdomain) {
     LinodeInstance instance = serverApi.createInstance(withPrincipalTag(owner, instanceDetails));
     SaveLinodeInstanceEvent event = new SaveLinodeInstanceEvent(null, instance.linodeId(),
         owner, null, subdomain);
     eventPublisher.publishEvent(event);
 
     if (!Features.isEnabled(Feature.LINODE_STUB)) {
-      dnsApi.overwriteDnsRecord(new Ip(instance.ip().getFirst()), owner, subdomain);
+      if (subdomain != null && !subdomain.isBlank()) {
+        dnsApi.overwriteDnsRecord(new Ip(instance.ip().getFirst()), owner, subdomain);
+      }
     }
 
     return instance;
