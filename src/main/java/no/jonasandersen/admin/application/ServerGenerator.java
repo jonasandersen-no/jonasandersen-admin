@@ -58,7 +58,7 @@ public class ServerGenerator {
     switch (serverType) {
       case MINECRAFT -> {
         passwordOutputListener.track(password);
-        LinodeInstance instance = service.createDefaultMinecraftInstance(owner, password);
+        LinodeInstance instance = service.createDefaultMinecraftInstance(owner, password, "minecraft");
         log.info("Created instance: {}", instance);
         instanceOutputListener.track(instance);
         return ServerGeneratorResponse.from(instance);

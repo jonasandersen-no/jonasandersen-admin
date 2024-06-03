@@ -21,7 +21,8 @@ class LinodeServiceTest {
 
     String owner = "principalName";
 
-    LinodeInstance instance = service.createDefaultMinecraftInstance(owner, SensitiveString.of("Password123!"));
+    LinodeInstance instance = service.createDefaultMinecraftInstance(owner, SensitiveString.of("Password123!"),
+        "minecraft");
     assertThat(instance.tags()).contains("owner:principalName");
   }
 
@@ -30,7 +31,7 @@ class LinodeServiceTest {
     LinodeService service = LinodeService.createNull();
 
     LinodeInstance instance = service.createDefaultMinecraftInstance("principalName",
-        SensitiveString.of("Password123!"));
+        SensitiveString.of("Password123!"), "minecraft");
     assertThat(instance.owner()).isNotNull();
   }
 
@@ -38,7 +39,7 @@ class LinodeServiceTest {
   void ownerExistsWhenFindingInstanceById() {
 
     LinodeService service = LinodeService.createNull();
-    service.createDefaultMinecraftInstance("principalName", SensitiveString.of("Password123!"));
+    service.createDefaultMinecraftInstance("principalName", SensitiveString.of("Password123!"), "minecraft");
 
     Optional<LinodeInstance> found = service.findInstanceById(LinodeId.from(1L));
 
@@ -80,7 +81,7 @@ class LinodeServiceTest {
 
     OutputTracker<Object> tracker = service.eventPublisher().track();
 
-    service.createDefaultMinecraftInstance("principalName", SensitiveString.of("Password123!"));
+    service.createDefaultMinecraftInstance("principalName", SensitiveString.of("Password123!"), "minecraft");
 
     assertThat(tracker.data()).hasSize(1);
   }
