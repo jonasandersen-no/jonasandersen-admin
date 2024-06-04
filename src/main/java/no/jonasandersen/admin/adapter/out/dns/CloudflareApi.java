@@ -10,10 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-@Component
 public class CloudflareApi implements DnsApi {
 
   private final Logger logger = LoggerFactory.getLogger(CloudflareApi.class);

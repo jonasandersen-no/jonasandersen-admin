@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
+import no.jonasandersen.admin.application.DnsService;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
+import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.domain.VolumeId;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
@@ -35,13 +38,15 @@ public class LinodeController {
   private final ServerGenerator serverGenerator;
   private final LinodeVolumeService volumeService;
   private final LinodeService service;
+  private final DnsService dnsService;
 
   public LinodeController(AdminProperties properties, ServerGenerator serverGenerator,
-      LinodeVolumeService volumeService, LinodeService service) {
+      LinodeVolumeService volumeService, LinodeService service, DnsService dnsService) {
     this.properties = properties;
     this.serverGenerator = serverGenerator;
     this.volumeService = volumeService;
     this.service = service;
+    this.dnsService = dnsService;
   }
 
   @GetMapping()
@@ -102,7 +107,12 @@ public class LinodeController {
   String createResponse(@RequestParam ServerType serverType) {
     log.info("Creating server of type {}", serverType);
 
-    serverGenerator.generate(getUsername(), serverType);
+    ServerGeneratorResponse response = serverGenerator.generate(getUsername(),
+        serverType);// If success check here?
+
+
+    dnsService.createOrReplaceRecord(response.ip(), getUsername(), "");
+
     return "redirect:/linode";
   }
 

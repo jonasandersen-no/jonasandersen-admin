@@ -73,4 +73,8 @@ public class DnsService {
     }
     return null;
   }
+
+  protected DnsApi getDnsApi() {
+    return dnsApi;
+  }
 }
