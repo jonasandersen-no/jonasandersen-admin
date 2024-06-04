@@ -4,23 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.DefaultEventPublisher;
-import no.jonasandersen.admin.adapter.out.dns.StubDnsApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
-import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.application.port.EventPublisher;
 import no.jonasandersen.admin.application.port.ServerApi;
-import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.domain.InstanceDetails;
 import no.jonasandersen.admin.domain.InstanceNotFound;
-import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.LinodeVolume;
 import no.jonasandersen.admin.domain.SaveLinodeInstanceEvent;
 import no.jonasandersen.admin.domain.SensitiveString;
-import no.jonasandersen.admin.infrastructure.Features;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +27,11 @@ public class LinodeService {
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
   private final EventPublisher eventPublisher;
-  private final DnsApi dnsApi;
 
   public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, DnsApi dnsApi) {
+      EventPublisher eventPublisher) {
     return new LinodeService(serverApi, linodeVolumeService,
-        eventPublisher, dnsApi);
+        eventPublisher);
   }
 
   public static LinodeService createNull() {
@@ -48,15 +42,14 @@ public class LinodeService {
       List<LinodeVolumeDto> volumes) {
     return new LinodeService(LinodeServerApi.createNull(instances, volumes),
         LinodeVolumeService.createNull(),
-        DefaultEventPublisher.createNull(), new StubDnsApi());
+        DefaultEventPublisher.createNull());
   }
 
   private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, DnsApi dnsApi) {
+      EventPublisher eventPublisher) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
     this.eventPublisher = eventPublisher;
-    this.dnsApi = dnsApi;
   }
 
   public Optional<LinodeInstance> findInstanceById(LinodeId linodeId) {
@@ -109,12 +102,6 @@ public class LinodeService {
     SaveLinodeInstanceEvent event = new SaveLinodeInstanceEvent(null, instance.linodeId(),
         owner, null, subdomain);
     eventPublisher.publishEvent(event);
-
-    if (!Features.isEnabled(Feature.LINODE_STUB)) {
-      if (subdomain != null && !subdomain.isBlank()) {
-        dnsApi.overwriteDnsRecord(new Ip(instance.ip().getFirst()), owner, subdomain);
-      }
-    }
 
     return instance;
   }

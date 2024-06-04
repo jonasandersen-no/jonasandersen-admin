@@ -1,5 +1,8 @@
 package no.jonasandersen.admin.adapter.in.web;
 
+import com.panfutov.result.GenericError;
+import com.panfutov.result.Result;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -8,7 +11,6 @@ import no.jonasandersen.admin.application.DnsService;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
-import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.SensitiveString;
@@ -80,7 +82,7 @@ public class LinodeController {
     LinodeInstance instance = service.findInstanceById(LinodeId.from(linodeId)).orElseThrow();
 
     if (!instance.status().equals("running")) {
-      redirectAttrs.addFlashAttribute("message", "Instance is not running");
+      redirectAttrs.addFlashAttribute("message", RedirectResponse.of("Instance is not running"));
       return "redirect:/linode";
     }
 
@@ -88,11 +90,13 @@ public class LinodeController {
     Long volumeId = properties.linode().volumeId();
     CompletableFuture.supplyAsync(() -> {
       volumeService.attachVolume(LinodeId.from(linodeId), VolumeId.from(volumeId));
-      serverGenerator.install(LinodeId.from(linodeId), SensitiveString.of(password), ServerType.MINECRAFT);
+      serverGenerator.install(LinodeId.from(linodeId), SensitiveString.of(password),
+          ServerType.MINECRAFT);
       return null;
     }, Executors.newVirtualThreadPerTaskExecutor());
 
-    redirectAttrs.addFlashAttribute("message", "Minecraft server is being installed");
+    redirectAttrs.addFlashAttribute("message",
+        RedirectResponse.of("Minecraft server is being installed"));
     return "redirect:/linode";
   }
 
@@ -104,14 +108,26 @@ public class LinodeController {
   }
 
   @PostMapping("/create")
-  String createResponse(@RequestParam ServerType serverType) {
+  String createResponse(@RequestParam ServerType serverType, RedirectAttributes redirectAttrs) {
     log.info("Creating server of type {}", serverType);
 
     ServerGeneratorResponse response = serverGenerator.generate(getUsername(),
         serverType);// If success check here?
 
+    Result<Void> result = dnsService.createOrReplaceRecord(response.ip(), getUsername(), "");
 
-    dnsService.createOrReplaceRecord(response.ip(), getUsername(), "");
+    List<String> messages = new ArrayList<>();
+    if (result.hasErrors()) {
+      messages.add("Server was created but creating/replacing DNS record failed");
+      for (GenericError error : result.getErrors()) {
+        messages.add(error.getMessage());
+        log.warn(error.getMessage());
+      }
+    } else {
+      messages.add("Server was created successfully");
+    }
+
+    redirectAttrs.addFlashAttribute("message", RedirectResponse.of(messages));
 
     return "redirect:/linode";
   }

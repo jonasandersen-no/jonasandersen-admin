@@ -40,9 +40,9 @@ class CoreConfiguration {
   }
 
   @Bean
-  LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, DnsApi dnsApi) {
-    return LinodeService.create(serverApi, linodeVolumeService, eventPublisher, dnsApi);
+  LinodeService linodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
+      EventPublisher eventPublisher) {
+    return LinodeService.create(serverApi, linodeVolumeService, eventPublisher);
   }
 
   @Bean
