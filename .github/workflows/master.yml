@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - java22
 
 jobs:
   build:
@@ -18,7 +19,7 @@ jobs:
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.12.0
         with:
-          java-version: 21
+          java-version: 22
           java-distribution: liberica
           checkout-persist-credentials: true
           cache-enabled: false
@@ -29,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn clean package -Pnative
 
       - name: Push Images to Docker Registry
         run: docker push -a bjoggis/jonasandersen-admin
