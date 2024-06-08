@@ -111,9 +111,21 @@ public class LinodeController {
   String createResponse(@RequestParam ServerType serverType, RedirectAttributes redirectAttrs) {
     log.info("Creating server of type {}", serverType);
 
-    ServerGeneratorResponse response = serverGenerator.generate(getUsername(),
-        serverType);// If success check here?
+    Result<ServerGeneratorResponse> serverGeneratorresult = serverGenerator.generate(getUsername(), serverType);
 
+    if (serverGeneratorresult.isFailure()) {
+      List<String> messages = new ArrayList<>();
+      log.warn("Failed to create server of type {}", serverType);
+      messages.add("Failed to create server of type " + serverType);
+      for (GenericError error : serverGeneratorresult.getErrors()) {
+        messages.add(error.getMessage());
+        log.warn(error.getMessage());
+      }
+      redirectAttrs.addFlashAttribute("message", RedirectResponse.of(messages));
+      return "redirect:/linode";
+    }
+
+    ServerGeneratorResponse response = serverGeneratorresult.getObject();
     Result<Void> result = dnsService.createOrReplaceRecord(response.ip(), getUsername(), "");
 
     List<String> messages = new ArrayList<>();

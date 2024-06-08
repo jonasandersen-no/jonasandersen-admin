@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.application;
 
 import com.jcraft.jsch.JSchException;
+import com.panfutov.result.Result;
 import java.io.IOException;
 import java.time.Duration;
 import no.jonasandersen.admin.OutputListener;
@@ -50,8 +51,8 @@ public class ServerGenerator {
     return instanceOutputListener.createTracker();
   }
 
-  public ServerGeneratorResponse generate(String owner, ServerType serverType) {
-    return generate(owner, defaultPassword, serverType);
+  public Result<ServerGeneratorResponse> generate(String owner, ServerType serverType) {
+    return Result.success(generate(owner, defaultPassword, serverType));
   }
 
   public ServerGeneratorResponse generate(String owner, SensitiveString password, ServerType serverType) {

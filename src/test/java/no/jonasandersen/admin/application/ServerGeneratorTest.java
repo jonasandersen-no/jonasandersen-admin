@@ -22,7 +22,7 @@ class ServerGeneratorTest {
   void createInstanceWhenCalled() {
     ServerGenerator generator = ServerGenerator.createNull();
 
-    var response = generator.generate("owner", ServerType.MINECRAFT);
+    var response = generator.generate("owner", ServerType.MINECRAFT).getNonNullObject();
 
     assertThat(response).isNotNull();
     assertThat(response.ip()).isEqualTo(new Ip("127.0.0.1"));
