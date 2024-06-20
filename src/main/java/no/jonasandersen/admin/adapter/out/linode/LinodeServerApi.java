@@ -20,6 +20,7 @@ import no.jonasandersen.admin.domain.LinodeVolume;
 import no.jonasandersen.admin.domain.VolumeId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 
 public class LinodeServerApi implements ServerApi {
 
@@ -35,7 +36,12 @@ public class LinodeServerApi implements ServerApi {
     return new LinodeServerApi(new StubLinodeExchange());
   }
 
-  public static LinodeServerApi createNull(List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
+  public static LinodeServerApi createNull(List<LinodeInstanceApi> instances) {
+    return createNull(instances, List.of());
+  }
+
+  public static LinodeServerApi createNull(List<LinodeInstanceApi> instances,
+      List<LinodeVolumeDto> volumes) {
     return new LinodeServerApi(new StubLinodeExchange(instances, volumes));
   }
 
@@ -47,7 +53,8 @@ public class LinodeServerApi implements ServerApi {
   public LinodeInstance createInstance(InstanceDetails instanceDetails) {
     logger.info("Creating instance with details: {}", instanceDetails);
 
-    LinodeInstanceApi linodeInstanceApi = linodeExchange.createInstance(CreateInstanceRequest.from(instanceDetails));
+    LinodeInstanceApi linodeInstanceApi = linodeExchange.createInstance(
+        CreateInstanceRequest.from(instanceDetails));
     outputListener.track(linodeInstanceApi);
     return linodeInstanceApi.toDomain();
   }
@@ -107,6 +114,13 @@ public class LinodeServerApi implements ServerApi {
     body.setPersistAcrossBoots(false);
 
     linodeExchange.attach(volumeId.id(), body);
+  }
+
+  @Override
+  public boolean deleteInstance(LinodeId linodeId) {
+    ResponseEntity<Void> response = linodeExchange.deleteInstance(linodeId.id());
+
+    return response.getStatusCode().is2xxSuccessful();
   }
 
   public OutputTracker<LinodeInstanceApi> track() {
@@ -191,6 +205,15 @@ public class LinodeServerApi implements ServerApi {
 
       instances.add(instance);
       return instance;
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteInstance(Long linodeId) {
+      boolean deleted = instances.removeIf(instance -> instance.id() == linodeId);
+      if (deleted) {
+        return ResponseEntity.ok(null);
+      }
+      return ResponseEntity.badRequest().build();
     }
   }
 

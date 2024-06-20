@@ -3,8 +3,10 @@ package no.jonasandersen.admin.adapter.out.linode;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.adapter.out.linode.api.model.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
@@ -27,4 +29,7 @@ public interface LinodeExchange {
 
   @PostExchange("/linode/instances")
   LinodeInstanceApi createInstance(@RequestBody CreateInstanceRequest request);
+
+  @DeleteExchange("/linode/instances/{linodeId}")
+  ResponseEntity<Void> deleteInstance(@PathVariable Long linodeId);
 }
