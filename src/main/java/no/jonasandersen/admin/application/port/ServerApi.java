@@ -21,4 +21,6 @@ public interface ServerApi {
   List<LinodeVolume> getVolumesByInstance(LinodeId linodeId);
 
   void attachVolume(LinodeId linodeId, VolumeId volumeId);
+
+  boolean deleteInstance(LinodeId linodeId);
 }
