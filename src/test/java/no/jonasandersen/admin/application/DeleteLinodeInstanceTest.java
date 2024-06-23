@@ -2,8 +2,6 @@ package no.jonasandersen.admin.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.domain.LinodeId;
 import org.instancio.Instancio;
@@ -17,10 +15,16 @@ class DeleteLinodeInstanceTest {
     LinodeInstanceApi instanceApi = Instancio.of(LinodeInstanceApi.class)
         .set(Select.field("id"), 1L)
         .create();
-    LinodeServerApi api = LinodeServerApi.createNull(List.of(instanceApi));
-    DeleteLinodeInstance usecase = new DeleteLinodeInstance(api);
-
+    DeleteLinodeInstance usecase = DeleteLinodeInstance.configureForTest(
+        config -> config.addInstance(instanceApi));
     boolean deleted = usecase.delete(LinodeId.from(1L));
     assertThat(deleted).isTrue();
+  }
+
+  @Test
+  void deleteReturnsFalseWhenInstanceNotFound() {
+    DeleteLinodeInstance usecase = DeleteLinodeInstance.configureForTest();
+    boolean deleted = usecase.delete(LinodeId.from(1L));
+    assertThat(deleted).isFalse();
   }
 }
