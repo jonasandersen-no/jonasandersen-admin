@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
@@ -30,6 +31,15 @@ public class LinodeServerApi implements ServerApi {
 
   public static LinodeServerApi create(LinodeExchange linodeExchange) {
     return new LinodeServerApi(linodeExchange);
+  }
+
+  public static LinodeServerApi configureForTest(Function<Config, Config> configure) {
+    Config config = configure.apply(new Config());
+    return configureForTest(config);
+  }
+
+  public static LinodeServerApi configureForTest(Config config) {
+    return createNull(config.linodeInstances);
   }
 
   public static LinodeServerApi createNull() {
@@ -128,6 +138,16 @@ public class LinodeServerApi implements ServerApi {
   }
 
   // NULLABLES
+
+  public static class Config {
+
+    private final List<LinodeInstanceApi> linodeInstances = new ArrayList<>();
+
+    public Config addInstance(LinodeInstanceApi... linodeInstance) {
+      this.linodeInstances.addAll(List.of(linodeInstance));
+      return this;
+    }
+  }
 
   private static class StubLinodeExchange implements LinodeExchange {
 
