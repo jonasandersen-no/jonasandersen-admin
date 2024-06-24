@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - java22
 
 jobs:
   build:
