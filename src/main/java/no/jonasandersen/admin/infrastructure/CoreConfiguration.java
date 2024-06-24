@@ -7,6 +7,7 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
+import no.jonasandersen.admin.application.DeleteLinodeInstance;
 import no.jonasandersen.admin.application.DnsService;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.LinodeVolumeService;
@@ -99,6 +100,11 @@ class CoreConfiguration {
     HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
 
     return factory.createClient(LinodeExchange.class);
+  }
+
+  @Bean
+  DeleteLinodeInstance deleteLinodeInstance(ServerApi serverApi) {
+    return DeleteLinodeInstance.create(serverApi);
   }
 
 }

@@ -19,3 +19,9 @@
     - [ ] Create a linode4j implementation of the MinecraftFetcher
     - The server info is fetched by checking if the linode4j service have a server running with
       the label `minecraft-auto-config-TIMESTAMP`
+
+- [ ] Delete instance
+    - [ ] Delete button in the UI
+    - [ ] Controller method for deleting the instance
+    - [ ] Delete calls shutdown script on the instance
+    - [ ] Delete calls linode4j delete instance
