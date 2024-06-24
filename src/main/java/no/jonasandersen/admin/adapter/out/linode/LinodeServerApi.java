@@ -151,6 +151,8 @@ public class LinodeServerApi implements ServerApi {
 
   private static class StubLinodeExchange implements LinodeExchange {
 
+    private final static Logger logger = LoggerFactory.getLogger(StubLinodeExchange.class);
+
     private final List<LinodeInstanceApi> instances;
     private final List<LinodeVolumeDto> volumes;
     private Long id = 1L;
@@ -188,6 +190,7 @@ public class LinodeServerApi implements ServerApi {
 
     @Override
     public LinodeVolumeDto attach(Long volumeId, AttachVolumeRequestBody body) {
+      logger.info("STUB: Attaching volume {} to linode {}", volumeId, body.getLinodeId());
       return null;
     }
 

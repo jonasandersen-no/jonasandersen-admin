@@ -7,15 +7,17 @@ import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.application.port.ServerApi;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
-import org.springframework.stereotype.Service;
 
-@Service
 public class DeleteLinodeInstance {
 
   private final ServerApi api;
 
   private DeleteLinodeInstance(ServerApi api) {
     this.api = api;
+  }
+
+  public static DeleteLinodeInstance create(ServerApi api) {
+    return new DeleteLinodeInstance(api);
   }
 
   public boolean delete(LinodeId linodeId) {
@@ -34,7 +36,7 @@ public class DeleteLinodeInstance {
 
   public static DeleteLinodeInstance configureForTest(Function<Config, Config> configure) {
     Config config = configure.apply(new Config());
-    return new DeleteLinodeInstance(LinodeServerApi.configureForTest(config.linodeServerApiConfig));
+    return create(LinodeServerApi.configureForTest(config.linodeServerApiConfig));
   }
 
   public static class Config {
