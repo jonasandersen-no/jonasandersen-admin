@@ -1,4 +1,4 @@
-name: Build latest master and deploy
+name: Build tag
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       packages: write
     steps:
       - name: Setup Maven Action
-        uses: s4u/setup-maven-action@v1.11.0
+        uses: s4u/setup-maven-action@v1.12.0
         with:
           java-version: 22
           java-distribution: liberica
@@ -29,7 +29,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn clean package -Pnative
 
       - name: Push Images to Docker Registry
         run: docker push -a bjoggis/jonasandersen-admin
