@@ -1,6 +1,5 @@
 package no.jonasandersen.admin.infrastructure;
 
-import no.jonasandersen.admin.adapter.DefaultEventPublisher;
 import no.jonasandersen.admin.adapter.out.dns.CloudflareApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
@@ -14,7 +13,6 @@ import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.application.port.DnsApi;
-import no.jonasandersen.admin.application.port.EventPublisher;
 import no.jonasandersen.admin.application.port.ServerApi;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.domain.Feature;
@@ -22,7 +20,6 @@ import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -41,9 +38,8 @@ class CoreConfiguration {
   }
 
   @Bean
-  LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, DnsApi dnsApi) {
-    return LinodeService.create(serverApi, linodeVolumeService, eventPublisher, dnsApi);
+  LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, DnsApi dnsApi) {
+    return LinodeService.create(serverApi, linodeVolumeService, dnsApi);
   }
 
   @Bean
@@ -76,11 +72,6 @@ class CoreConfiguration {
   ServerGenerator serverGenerator(LinodeService linodeService, AdminProperties properties) {
     String rootPassword = properties.linode().rootPassword();
     return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword), FileExecutor.create());
-  }
-
-  @Bean
-  DefaultEventPublisher eventPublisher(ApplicationEventPublisher publisher) {
-    return DefaultEventPublisher.create(publisher);
   }
 
   @Bean

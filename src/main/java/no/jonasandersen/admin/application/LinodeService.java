@@ -1,15 +1,12 @@
 package no.jonasandersen.admin.application;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import no.jonasandersen.admin.adapter.DefaultEventPublisher;
 import no.jonasandersen.admin.adapter.out.dns.StubDnsApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeVolumeDto;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.application.port.DnsApi;
-import no.jonasandersen.admin.application.port.EventPublisher;
 import no.jonasandersen.admin.application.port.ServerApi;
 import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.domain.InstanceDetails;
@@ -18,8 +15,8 @@ import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.LinodeVolume;
-import no.jonasandersen.admin.domain.SaveLinodeInstanceEvent;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.infrastructure.Features;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -31,13 +28,10 @@ public class LinodeService {
   public static final String AUTO_CREATED = "auto-created";
   private final ServerApi serverApi;
   private final LinodeVolumeService linodeVolumeService;
-  private final EventPublisher eventPublisher;
   private final DnsApi dnsApi;
 
-  public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, DnsApi dnsApi) {
-    return new LinodeService(serverApi, linodeVolumeService,
-        eventPublisher, dnsApi);
+  public static LinodeService create(ServerApi serverApi, LinodeVolumeService linodeVolumeService, DnsApi dnsApi) {
+    return new LinodeService(serverApi, linodeVolumeService, dnsApi);
   }
 
   public static LinodeService createNull() {
@@ -47,15 +41,13 @@ public class LinodeService {
   public static LinodeService createNull(List<LinodeInstanceApi> instances,
       List<LinodeVolumeDto> volumes) {
     return new LinodeService(LinodeServerApi.createNull(instances, volumes),
-        LinodeVolumeService.createNull(),
-        DefaultEventPublisher.createNull(), new StubDnsApi());
+        LinodeVolumeService.createNull(), new StubDnsApi());
   }
 
   private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService,
-      EventPublisher eventPublisher, DnsApi dnsApi) {
+      DnsApi dnsApi) {
     this.serverApi = serverApi;
     this.linodeVolumeService = linodeVolumeService;
-    this.eventPublisher = eventPublisher;
     this.dnsApi = dnsApi;
   }
 
@@ -98,17 +90,14 @@ public class LinodeService {
         instance.label(), instance.tags(), volumeNames, instance.specs());
   }
 
-  LinodeInstance createDefaultMinecraftInstance(String owner, SensitiveString password,
-      String subdomain) {
-    return createInstance(owner, InstanceDetails.createDefaultMinecraft(password), subdomain);
+  LinodeInstance createDefaultMinecraftInstance(String owner, SensitiveString password, String subdomain) {
+    return createInstance(owner, InstanceDetails.createDefaultMinecraft(password), subdomain, ServerType.MINECRAFT);
   }
 
   private LinodeInstance createInstance(String owner, InstanceDetails instanceDetails,
-      String subdomain) {
-    LinodeInstance instance = serverApi.createInstance(withPrincipalTag(owner, instanceDetails));
-    SaveLinodeInstanceEvent event = new SaveLinodeInstanceEvent(null, instance.linodeId(),
-        owner, null, subdomain);
-    eventPublisher.publishEvent(event);
+      String subdomain, ServerType serverType) {
+    InstanceDetails withTags = instanceDetails.withPrincipalTag(owner).withServerType(serverType);
+    LinodeInstance instance = serverApi.createInstance(withTags);
 
     if (!Features.isEnabled(Feature.LINODE_STUB)) {
       if (subdomain != null && !subdomain.isBlank()) {
@@ -117,24 +106,5 @@ public class LinodeService {
     }
 
     return instance;
-  }
-
-  InstanceDetails withPrincipalTag(String owner, InstanceDetails instanceDetails) {
-
-    List<String> tags = new ArrayList<>(instanceDetails.tags());
-    tags.add("owner:" + owner);
-
-    return new InstanceDetails(
-        instanceDetails.region(),
-        instanceDetails.image(),
-        instanceDetails.label(),
-        instanceDetails.type(),
-        List.copyOf(tags),
-        instanceDetails.rootPassword(),
-        instanceDetails.volume());
-  }
-
-  public EventPublisher eventPublisher() {
-    return eventPublisher;
   }
 }
