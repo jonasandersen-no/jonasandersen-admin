@@ -43,6 +43,15 @@ public record LinodeInstance(Long id, LinodeId linodeId, List<String> ip, String
         .orElse("unknown");
   }
 
+  public ServerType serverType() {
+    return tags.stream()
+        .filter(tag -> tag.startsWith("server-type:"))
+        .map(tag -> tag.substring(12))
+        .map(ServerType::valueOf)
+        .findFirst()
+        .orElse(null);
+  }
+
   public static LinodeInstance createNull() {
     return new LinodeInstance(null, new LinodeId(0L), List.of(), "", "", List.of(), List.of(),
         new LinodeSpecs(0));

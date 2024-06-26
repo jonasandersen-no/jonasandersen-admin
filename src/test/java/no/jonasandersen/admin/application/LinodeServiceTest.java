@@ -5,11 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
+import no.jonasandersen.admin.domain.InstanceDetails;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.domain.ServerType;
 import org.instancio.Instancio;
 import org.instancio.Select;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class LinodeServiceTest {
@@ -72,6 +75,32 @@ class LinodeServiceTest {
     Optional<LinodeInstance> found = service.findInstanceById(LinodeId.from(1L));
 
     assertThat(found).isEmpty();
+  }
+
+  @Nested
+  class Tags {
+
+    @Test
+    void defaultInstanceHasServerTypeDefault() {
+      LinodeService service = LinodeService.createNull();
+
+      LinodeInstance instance = service.createInstance("principalName",
+          InstanceDetails.createDefaultMinecraft(SensitiveString.of("Password123!")),
+          "minecraft", ServerType.DEFAULT);
+
+      assertThat(instance.serverType()).isEqualTo(ServerType.DEFAULT);
+    }
+
+    @Test
+    void containsServerTypeTagWhenCreated() {
+      LinodeService service = LinodeService.createNull();
+
+      LinodeInstance instance = service.createDefaultMinecraftInstance("principalName",
+          SensitiveString.of("Password123!"),
+          "minecraft");
+
+      assertThat(instance.serverType()).isEqualTo(ServerType.MINECRAFT);
+    }
   }
 
 }

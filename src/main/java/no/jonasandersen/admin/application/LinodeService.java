@@ -94,7 +94,7 @@ public class LinodeService {
     return createInstance(owner, InstanceDetails.createDefaultMinecraft(password), subdomain, ServerType.MINECRAFT);
   }
 
-  private LinodeInstance createInstance(String owner, InstanceDetails instanceDetails,
+  LinodeInstance createInstance(String owner, InstanceDetails instanceDetails,
       String subdomain, ServerType serverType) {
     InstanceDetails withTags = instanceDetails.withPrincipalTag(owner).withServerType(serverType);
     LinodeInstance instance = serverApi.createInstance(withTags);
