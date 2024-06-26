@@ -4,8 +4,9 @@ import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.domain.InstanceCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.modulith.events.ApplicationModuleListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
 public class LinodeVolumeServiceListener {
@@ -17,7 +18,8 @@ public class LinodeVolumeServiceListener {
     this.linodeVolumeService = linodeVolumeService;
   }
 
-  @ApplicationModuleListener
+  @Async
+  @TransactionalEventListener
   public void onInstanceCreated(InstanceCreatedEvent event) {
     log.info("Received instance created event: {}", event);
     linodeVolumeService.attachVolume(event.linodeId(), event.volumeId());

@@ -6,8 +6,9 @@ import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.modulith.events.ApplicationModuleListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
 public class ServerGeneratorListener {
@@ -21,7 +22,8 @@ public class ServerGeneratorListener {
     this.properties = properties;
   }
 
-  @ApplicationModuleListener
+  @Async
+  @TransactionalEventListener
   public void onInstanceCreated(InstanceCreatedEvent event) {
     log.info("Received instance created event: {}", event);
     String password = properties.minecraft().password();
