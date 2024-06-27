@@ -37,7 +37,7 @@ class SecurityConfiguration {
         .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests.anyRequest().authenticated()
         )
-        .addFilterBefore(new CustomFilter(permittedUsers), AuthorizationFilter.class)
+        .addFilterBefore(new PermittedUserFilter(permittedUsers), AuthorizationFilter.class)
         .oauth2Login(withDefaults())
         .oauth2Client(withDefaults());
     return http.build();

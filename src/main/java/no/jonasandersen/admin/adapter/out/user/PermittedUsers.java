@@ -1,10 +1,7 @@
 package no.jonasandersen.admin.adapter.out.user;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import no.jonasandersen.admin.domain.Feature;
-import no.jonasandersen.admin.domain.PermittedUser;
 import no.jonasandersen.admin.infrastructure.Features;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PermittedUsers implements Supplier<List<PermittedUser>> {
+public class PermittedUsers {
 
   private final Logger log = LoggerFactory.getLogger(PermittedUsers.class);
   private final JdbcClient jdbcClient;
@@ -45,8 +42,4 @@ public class PermittedUsers implements Supplier<List<PermittedUser>> {
   public void clearCache() {
   }
 
-  @Override
-  public List<PermittedUser> get() {
-    return List.of();
-  }
 }
