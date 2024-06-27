@@ -39,4 +39,22 @@ public record InstanceDetails(String region, String image, String label, String 
         rootPassword(),
         volume());
   }
+
+  public InstanceDetails withSubdomain(Subdomain subdomain) {
+    if (subdomain == null) {
+      return this;
+    }
+
+    List<String> tags = new ArrayList<>(tags());
+    tags.add("subdomain:" + subdomain.value());
+
+    return new InstanceDetails(
+        region(),
+        image(),
+        label(),
+        type(),
+        List.copyOf(tags),
+        rootPassword(),
+        volume());
+  }
 }

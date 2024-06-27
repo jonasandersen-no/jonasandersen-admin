@@ -38,8 +38,8 @@ class CoreConfiguration {
   }
 
   @Bean
-  LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService, DnsApi dnsApi) {
-    return LinodeService.create(serverApi, linodeVolumeService, dnsApi);
+  LinodeService minecraftService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
+    return LinodeService.create(serverApi, linodeVolumeService);
   }
 
   @Bean

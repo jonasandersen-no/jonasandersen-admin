@@ -14,6 +14,7 @@ import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import no.jonasandersen.admin.domain.ServerType;
+import no.jonasandersen.admin.domain.Subdomain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,14 +52,23 @@ public class ServerGenerator {
   }
 
   public ServerGeneratorResponse generate(String owner, ServerType serverType) {
-    return generate(owner, defaultPassword, serverType);
+    return generate(owner, defaultPassword, serverType, Subdomain.generate());
+  }
+
+  public ServerGeneratorResponse generate(String owner, ServerType serverType, Subdomain subdomain) {
+    return generate(owner, defaultPassword, serverType, subdomain);
   }
 
   public ServerGeneratorResponse generate(String owner, SensitiveString password, ServerType serverType) {
+    return generate(owner, password, serverType, Subdomain.generate());
+  }
+
+  public ServerGeneratorResponse generate(String owner, SensitiveString password, ServerType serverType,
+      Subdomain subdomain) {
     switch (serverType) {
       case MINECRAFT -> {
         passwordOutputListener.track(password);
-        LinodeInstance instance = service.createDefaultMinecraftInstance(owner, password, "");
+        LinodeInstance instance = service.createDefaultMinecraftInstance(owner, password, subdomain);
         log.info("Created instance: {}", instance);
         instanceOutputListener.track(instance);
         return ServerGeneratorResponse.from(instance);

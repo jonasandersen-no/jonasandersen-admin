@@ -10,6 +10,7 @@ import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerType;
+import no.jonasandersen.admin.domain.Subdomain;
 import org.instancio.Instancio;
 import org.instancio.Select;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,7 @@ class LinodeServiceTest {
     String owner = "principalName";
 
     LinodeInstance instance = service.createDefaultMinecraftInstance(owner, SensitiveString.of("Password123!"),
-        "minecraft");
+        Subdomain.of("minecraft"));
     assertThat(instance.tags()).contains("owner:principalName");
   }
 
@@ -35,7 +36,7 @@ class LinodeServiceTest {
     LinodeService service = LinodeService.createNull();
 
     LinodeInstance instance = service.createDefaultMinecraftInstance("principalName",
-        SensitiveString.of("Password123!"), "minecraft");
+        SensitiveString.of("Password123!"), Subdomain.of("minecraft"));
     assertThat(instance.owner()).isNotNull();
   }
 
@@ -43,7 +44,8 @@ class LinodeServiceTest {
   void ownerExistsWhenFindingInstanceById() {
 
     LinodeService service = LinodeService.createNull();
-    service.createDefaultMinecraftInstance("principalName", SensitiveString.of("Password123!"), "minecraft");
+    service.createDefaultMinecraftInstance("principalName", SensitiveString.of("Password123!"),
+        Subdomain.of("minecraft"));
 
     Optional<LinodeInstance> found = service.findInstanceById(LinodeId.from(1L));
 
@@ -79,6 +81,16 @@ class LinodeServiceTest {
     assertThat(found).isEmpty();
   }
 
+  @Test
+  void subdomainAddedAsTagWhenCreatingInstance() {
+    LinodeService service = LinodeService.createNull();
+
+    LinodeInstance instance = service.createDefaultMinecraftInstance("principalName",
+        SensitiveString.of("Password123!"), Subdomain.of("mysubdomain"));
+
+    assertThat(instance.tags()).contains("subdomain:mysubdomain");
+  }
+
   @ParameterizedTest
   @EnumSource(ServerType.class)
   void defaultInstanceHasServerTypeDefault(@NotNull ServerType serverType) {
@@ -88,10 +100,10 @@ class LinodeServiceTest {
     switch (serverType) {
       case DEFAULT -> instance = service.createInstance("principalName",
           InstanceDetails.createDefaultMinecraft(SensitiveString.of("Password123!")),
-          "minecraft", ServerType.DEFAULT);
+          Subdomain.of("minecraft"), ServerType.DEFAULT);
       case MINECRAFT -> instance = service.createDefaultMinecraftInstance("principalName",
           SensitiveString.of("Password123!"),
-          "minecraft");
+          Subdomain.of("minecraft"));
       default -> throw new IllegalStateException("Unexpected value: " + serverType);
     }
 

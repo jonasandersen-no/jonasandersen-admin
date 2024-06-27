@@ -16,6 +16,12 @@
           <option th:each="type: ${serverTypes}" th:value="${type}" th:text="${type}">Option type</option>
         </select>
       </div>
+      <div class="mb-3">
+        <label for="subdomain" class="form-label">
+          Subdomain (before .jonasandersen.no)
+        </label>
+        <input id="subdomain" name="subdomain" placeholder="minecraft" class="form-control"/>
+      </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>

@@ -10,6 +10,7 @@ import no.jonasandersen.admin.domain.InstanceCreatedEvent;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.ServerType;
+import no.jonasandersen.admin.domain.Subdomain;
 import no.jonasandersen.admin.domain.VolumeId;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.slf4j.Logger;
@@ -99,10 +100,15 @@ public class LinodeController {
   }
 
   @PostMapping("/create")
-  String createResponse(@RequestParam ServerType serverType) {
-    log.info("Creating server of type {}", serverType);
+  String createResponse(@RequestParam ServerType serverType, @RequestParam String subdomain) {
+    log.info("Creating server of type {} with subdomain '{}'", serverType, subdomain);
 
-    serverGenerator.generate(UsernameResolver.getUsername(), serverType);
+    if (subdomain == null || subdomain.isBlank()) {
+      log.info("Creating server of type {} with auto generated subdomain", serverType);
+      serverGenerator.generate(UsernameResolver.getUsername(), serverType);
+    } else {
+      serverGenerator.generate(UsernameResolver.getUsername(), serverType, Subdomain.of(subdomain));
+    }
     return "redirect:/linode";
   }
 

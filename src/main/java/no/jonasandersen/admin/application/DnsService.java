@@ -8,6 +8,7 @@ import java.util.List;
 import no.jonasandersen.admin.adapter.out.dns.StubDnsApi;
 import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.domain.Ip;
+import no.jonasandersen.admin.domain.Subdomain;
 import org.jetbrains.annotations.Nullable;
 
 public class DnsService {
@@ -18,7 +19,7 @@ public class DnsService {
     return new DnsService(dnsApi);
   }
 
-  public static DnsService createNull() {
+  public static DnsService configureForTest() {
     return new DnsService(new StubDnsApi());
   }
 
@@ -34,7 +35,7 @@ public class DnsService {
    * @param subdomain The subdomain to create the DNS record for
    * @return A Result containing either a list of errors or void
    */
-  public Result<Void> createOrReplaceRecord(Ip ip, String owner, String subdomain) {
+  public Result<Void> createOrReplaceRecord(Ip ip, String owner, Subdomain subdomain) {
     Result<Void> errors = validate(ip, owner, subdomain);
 
     if (errors != null) {
@@ -45,7 +46,7 @@ public class DnsService {
     return Result.successVoid();
   }
 
-  private static @Nullable Result<Void> validate(Ip ip, String owner, String subdomain) {
+  private static @Nullable Result<Void> validate(Ip ip, String owner, Subdomain subdomain) {
     List<GenericError> errors = new ArrayList<>();
 
     if (ip == null) {
@@ -56,16 +57,8 @@ public class DnsService {
       errors.add(new Error("owner cannot be null or blank"));
     }
 
-    if (subdomain == null || subdomain.isBlank()) {
-      errors.add(new Error("subdomain cannot be null or blank"));
-    }
-
-    if (subdomain != null) {
-      for (char c : subdomain.toCharArray()) {
-        if (!Character.isLetterOrDigit(c) && c != '-') {
-          errors.add(new Error("subdomain contains invalid character: " + c));
-        }
-      }
+    if (subdomain == null) {
+      errors.add(new Error("subdomain cannot be null"));
     }
 
     if (!errors.isEmpty()) {

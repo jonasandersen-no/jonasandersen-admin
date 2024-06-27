@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.domain.Ip;
+import no.jonasandersen.admin.domain.Subdomain;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class CloudflareApi implements DnsApi {
   }
 
   @Override
-  public void overwriteDnsRecord(Ip ip, String owner, String subdomain) {
+  public void overwriteDnsRecord(Ip ip, String owner, Subdomain subdomain) {
     List<DnsRecord> dnsRecords = listExistingDnsRecords();
 
     Optional<DnsRecord> existing = dnsRecords.stream()
@@ -47,9 +48,9 @@ public class CloudflareApi implements DnsApi {
     }
   }
 
-  private void createNewDnsRecord(Ip ip, String owner, String subdomain) {
+  private void createNewDnsRecord(Ip ip, String owner, Subdomain subdomain) {
     restTemplate.postForObject("/zones/%s/dns_records".formatted(properties.cloudflare().zoneId()),
-        new Request(ip.value(), subdomain, false, "A", "Created by " + owner, List.of("auto-created"), 60),
+        new Request(ip.value(), subdomain.value(), false, "A", "Created by " + owner, List.of("auto-created"), 60),
         Response.class);
   }
 
@@ -65,9 +66,9 @@ public class CloudflareApi implements DnsApi {
     return result.result();
   }
 
-  private void updateExistingDnsRecord(Ip ip, String subdomain, String owner) {
+  private void updateExistingDnsRecord(Ip ip, Subdomain subdomain, String owner) {
     restTemplate.put("/zones/%s/dns_records/%s".formatted(properties.cloudflare().zoneId(),
-        properties.cloudflare().dnsRecordId()), new Request(ip.value(), subdomain,
+        properties.cloudflare().dnsRecordId()), new Request(ip.value(), subdomain.value(),
         false, "A", "auto-created:" + owner, List.of(), 60));
   }
 
