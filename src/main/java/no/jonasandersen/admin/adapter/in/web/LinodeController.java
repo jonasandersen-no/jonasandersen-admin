@@ -2,6 +2,7 @@ package no.jonasandersen.admin.adapter.in.web;
 
 import java.util.List;
 import java.util.Optional;
+import no.jonasandersen.admin.adapter.UsernameResolver;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
@@ -14,7 +15,6 @@ import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -102,15 +102,8 @@ public class LinodeController {
   String createResponse(@RequestParam ServerType serverType) {
     log.info("Creating server of type {}", serverType);
 
-    serverGenerator.generate(getUsername(), serverType);
+    serverGenerator.generate(UsernameResolver.getUsername(), serverType);
     return "redirect:/linode";
   }
 
-  private static String getUsername() {
-    String result = "unknown";
-    if (SecurityContextHolder.getContext().getAuthentication() != null) {
-      result = SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-    return result;
-  }
 }

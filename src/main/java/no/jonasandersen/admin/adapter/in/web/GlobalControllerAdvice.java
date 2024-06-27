@@ -1,9 +1,9 @@
 package no.jonasandersen.admin.adapter.in.web;
 
+import no.jonasandersen.admin.adapter.UsernameResolver;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.domain.Username;
 import org.springframework.boot.info.BuildProperties;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -20,10 +20,7 @@ public class GlobalControllerAdvice {
 
   @ModelAttribute("loggedInUser")
   public String getLoggedInUser() {
-    if (SecurityContextHolder.getContext().getAuthentication() != null) {
-      return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-    return "unknown";
+    return UsernameResolver.getUsername();
   }
 
   @ModelAttribute("currentStoredTheme")

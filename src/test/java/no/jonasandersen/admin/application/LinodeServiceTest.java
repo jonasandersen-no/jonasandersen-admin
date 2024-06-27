@@ -12,8 +12,10 @@ import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerType;
 import org.instancio.Instancio;
 import org.instancio.Select;
-import org.junit.jupiter.api.Nested;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 class LinodeServiceTest {
 
@@ -77,30 +79,23 @@ class LinodeServiceTest {
     assertThat(found).isEmpty();
   }
 
-  @Nested
-  class Tags {
+  @ParameterizedTest
+  @EnumSource(ServerType.class)
+  void defaultInstanceHasServerTypeDefault(@NotNull ServerType serverType) {
+    LinodeService service = LinodeService.createNull();
 
-    @Test
-    void defaultInstanceHasServerTypeDefault() {
-      LinodeService service = LinodeService.createNull();
-
-      LinodeInstance instance = service.createInstance("principalName",
+    LinodeInstance instance;
+    switch (serverType) {
+      case DEFAULT -> instance = service.createInstance("principalName",
           InstanceDetails.createDefaultMinecraft(SensitiveString.of("Password123!")),
           "minecraft", ServerType.DEFAULT);
-
-      assertThat(instance.serverType()).isEqualTo(ServerType.DEFAULT);
-    }
-
-    @Test
-    void containsServerTypeTagWhenCreated() {
-      LinodeService service = LinodeService.createNull();
-
-      LinodeInstance instance = service.createDefaultMinecraftInstance("principalName",
+      case MINECRAFT -> instance = service.createDefaultMinecraftInstance("principalName",
           SensitiveString.of("Password123!"),
           "minecraft");
-
-      assertThat(instance.serverType()).isEqualTo(ServerType.MINECRAFT);
+      default -> throw new IllegalStateException("Unexpected value: " + serverType);
     }
+
+    assertThat(instance.serverType()).isEqualTo(serverType);
   }
 
 }

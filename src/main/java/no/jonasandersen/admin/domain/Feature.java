@@ -2,7 +2,8 @@ package no.jonasandersen.admin.domain;
 
 public enum Feature {
 
-  LINODE_STUB(true);
+  LINODE_STUB(true),
+  ALLOW_ALL_USERS(false);
 
   private final boolean defaultValue;
 

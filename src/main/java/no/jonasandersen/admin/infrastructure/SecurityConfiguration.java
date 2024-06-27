@@ -2,6 +2,7 @@ package no.jonasandersen.admin.infrastructure;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import no.jonasandersen.admin.adapter.out.user.PermittedUsers;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
 class SecurityConfiguration {
@@ -29,12 +31,13 @@ class SecurityConfiguration {
 
   @Bean
   @Order(2)
-  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  SecurityFilterChain securityFilterChain(HttpSecurity http, PermittedUsers permittedUsers) throws Exception {
 
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests.anyRequest().authenticated()
         )
+        .addFilterBefore(new CustomFilter(permittedUsers), AuthorizationFilter.class)
         .oauth2Login(withDefaults())
         .oauth2Client(withDefaults());
     return http.build();
