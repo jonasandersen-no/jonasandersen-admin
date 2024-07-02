@@ -104,7 +104,7 @@ public class LinodeController {
     subdomain = subdomain.replaceAll("[\n\r]", "_");
     log.info("Creating server of type {} with subdomain '{}'", serverType, subdomain);
 
-    if (subdomain == null || subdomain.isBlank()) {
+    if (subdomain.isBlank()) {
       log.info("Creating server of type {} with auto generated subdomain", serverType);
       serverGenerator.generate(UsernameResolver.getUsername(), serverType);
     } else {
