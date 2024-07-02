@@ -101,6 +101,7 @@ public class LinodeController {
 
   @PostMapping("/create")
   String createResponse(@RequestParam ServerType serverType, @RequestParam String subdomain) {
+    subdomain = subdomain.replaceAll("[\n\r]", "_");
     log.info("Creating server of type {} with subdomain '{}'", serverType, subdomain);
 
     if (subdomain == null || subdomain.isBlank()) {
