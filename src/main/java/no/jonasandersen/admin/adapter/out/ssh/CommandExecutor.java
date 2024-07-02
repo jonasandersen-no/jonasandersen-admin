@@ -29,8 +29,8 @@ public class CommandExecutor {
   public static CommandExecutor createNull() {
     try {
       return new CommandExecutor(new StubJSchWrapper(), ConnectionInfo.createNull());
-    } catch (JSchException e) {
-      throw new RuntimeException(e);
+    } catch (JSchException _) {
+      throw new IllegalStateException("Failed to create CommandExecutor");
     }
   }
 
@@ -51,7 +51,7 @@ public class CommandExecutor {
     session.disconnect();
   }
 
-  public void executeCommand(String command) throws JSchException, IOException {
+  public void executeCommand(String command) throws JSchException, IOException, InterruptedException {
     if (session == null || !session.isConnected()) {
       throw new IllegalStateException("Session is not connected");
     }
@@ -81,7 +81,7 @@ public class CommandExecutor {
   }
 
 
-  private String getChannelOutput(ChannelExecWrapper channel, InputStream in) throws IOException {
+  private String getChannelOutput(ChannelExecWrapper channel, InputStream in) throws IOException, InterruptedException {
 
     byte[] buffer = new byte[1024];
     StringBuilder strBuilder = new StringBuilder();
@@ -94,7 +94,7 @@ public class CommandExecutor {
           break;
         }
         strBuilder.append(new String(buffer, 0, i));
-        System.out.println(line);
+        log.info(line);
       }
 
       if (line.contains("logout")) {
@@ -104,10 +104,7 @@ public class CommandExecutor {
       if (channel.isClosed()) {
         break;
       }
-      try {
-        Thread.sleep(1000);
-      } catch (Exception ee) {
-      }
+      Thread.sleep(1000);
     }
 
     return strBuilder.toString();

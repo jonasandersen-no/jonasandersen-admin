@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 class CommandExecutorManualTest {
 
   @Test
-  void testRealServer() throws JSchException, IOException {
+  void testRealServer() throws JSchException, IOException, InterruptedException {
 
     CommandExecutor service = CommandExecutor.create(
         new ConnectionInfo("gollien", SensitiveString.of("Jonas123"), new Ip("172.18.131.214"), 22));

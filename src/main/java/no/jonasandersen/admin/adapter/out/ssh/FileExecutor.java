@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import no.jonasandersen.admin.domain.CommandExecutionFailedException;
 import no.jonasandersen.admin.domain.ConnectionInfo;
 import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.infrastructure.Features;
@@ -62,8 +63,8 @@ public class FileExecutor {
       lines.forEach(line -> {
         try {
           commandExecutor.executeCommand(line);
-        } catch (JSchException | IOException e) {
-          throw new RuntimeException(e);
+        } catch (JSchException | IOException | InterruptedException e) {
+          throw new CommandExecutionFailedException(e);
         }
       });
       commandExecutor.disconnect();

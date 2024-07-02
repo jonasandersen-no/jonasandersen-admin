@@ -7,6 +7,7 @@ import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.Retryer;
+import no.jonasandersen.admin.domain.CommandExecutionFailedException;
 import no.jonasandersen.admin.domain.ConnectionInfo;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.LinodeId;
@@ -98,7 +99,7 @@ public class ServerGenerator {
         log.info("Done executing file");
       } catch (JSchException | IOException e) {
         log.warn("Failed to connect to instance: {}", e.getMessage());
-        throw new RuntimeException(e);
+        throw new CommandExecutionFailedException(e);
       } finally {
         fileExecutor.cleanup();
       }

@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 class CommandExecutorTest {
 
   @Test
-  void outputTrackerTracksEchoHelloWorldWhenCommandIsExecuted() throws JSchException, IOException {
+  void outputTrackerTracksEchoHelloWorldWhenCommandIsExecuted()
+      throws JSchException, IOException, InterruptedException {
     CommandExecutor executor = CommandExecutor.createNull();
     OutputTracker<String> tracker = executor.trackOutput();
 
@@ -24,7 +25,7 @@ class CommandExecutorTest {
   }
 
   @Test
-  void illegalStateExceptionWhenSessionIsNotConnected() throws JSchException {
+  void illegalStateExceptionWhenSessionIsNotConnected() {
     CommandExecutor service = CommandExecutor.createNull();
 
     assertThatThrownBy(() -> service.executeCommand("echo \" Hello World\" >> file.txt"))
