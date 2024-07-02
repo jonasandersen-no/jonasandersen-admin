@@ -32,8 +32,7 @@ class SecurityConfiguration {
   @Bean
   @Order(2)
   SecurityFilterChain securityFilterChain(HttpSecurity http, PermittedUsers permittedUsers) throws Exception {
-
-    http.csrf(AbstractHttpConfigurer::disable)
+    http
         .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests.anyRequest().authenticated()
         )

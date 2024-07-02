@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,7 +74,8 @@ public class LinodeController {
   }
 
   @PostMapping("/{linodeId}")
-  String installMinecraft(@PathVariable Long linodeId, RedirectAttributes redirectAttrs) {
+  @Transactional
+  public String installMinecraft(@PathVariable Long linodeId, RedirectAttributes redirectAttrs) {
     LinodeInstance instance = service.findInstanceById(LinodeId.from(linodeId)).orElseThrow();
 
     if (!instance.status().equals("running")) {

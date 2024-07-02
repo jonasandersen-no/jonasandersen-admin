@@ -8,7 +8,7 @@
 <div th:replace="~{fragments/main :: navigation}"></div>
 <main>
   <div class="container">
-    <form method="post">
+    <form method="post" th:action>
       <div class="mb-3">
         <label for="serverType">Choose Server Type</label>
         <select class="form-select" id="serverType" name="serverType">
