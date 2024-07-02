@@ -97,7 +97,7 @@ public class ServerGenerator {
         fileExecutor.setup(connectionInfo);
         fileExecutor.parseFile(file);
         log.info("Done executing file");
-      } catch (JSchException | IOException e) {
+      } catch (JSchException | IOException | InterruptedException e) {
         log.warn("Failed to connect to instance: {}", e.getMessage());
         throw new CommandExecutionFailedException(e);
       } finally {

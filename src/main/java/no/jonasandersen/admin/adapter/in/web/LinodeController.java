@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import no.jonasandersen.admin.adapter.UsernameResolver;
 import no.jonasandersen.admin.application.LinodeService;
-import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.domain.InstanceCreatedEvent;
 import no.jonasandersen.admin.domain.LinodeId;
@@ -34,15 +33,13 @@ public class LinodeController {
   private static final Logger log = LoggerFactory.getLogger(LinodeController.class);
   private final AdminProperties properties;
   private final ServerGenerator serverGenerator;
-  private final LinodeVolumeService volumeService;
   private final LinodeService service;
   private final ApplicationEventPublisher events;
 
   public LinodeController(AdminProperties properties, ServerGenerator serverGenerator,
-      LinodeVolumeService volumeService, LinodeService service, ApplicationEventPublisher events) {
+      LinodeService service, ApplicationEventPublisher events) {
     this.properties = properties;
     this.serverGenerator = serverGenerator;
-    this.volumeService = volumeService;
     this.service = service;
     this.events = events;
   }

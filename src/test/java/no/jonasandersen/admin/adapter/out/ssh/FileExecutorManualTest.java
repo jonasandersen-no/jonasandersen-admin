@@ -1,6 +1,6 @@
 package no.jonasandersen.admin.adapter.out.ssh;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 class FileExecutorManualTest {
 
   @Test
-  void testRunningFile() throws JSchException, IOException {
+  void testRunningFile() throws JSchException, IOException, InterruptedException {
 
     FileExecutor executor = FileExecutor.createNull();
 

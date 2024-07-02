@@ -8,14 +8,18 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Stream;
 import no.jonasandersen.admin.domain.CommandExecutionFailedException;
 import no.jonasandersen.admin.domain.ConnectionInfo;
 import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.infrastructure.Features;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileExecutor {
 
+  private static final Logger log = LoggerFactory.getLogger(FileExecutor.class);
   private CommandExecutor commandExecutor;
 
   private FileExecutor(CommandExecutor commandExecutor) {
@@ -50,7 +54,7 @@ public class FileExecutor {
     return commandExecutor != null;
   }
 
-  public void parseFile(String file) throws IOException {
+  public void parseFile(String file) throws IOException, InterruptedException {
     if (!hasCommandExecutor()) {
       throw new IllegalStateException("CommandExecutor not set");
     }
@@ -60,13 +64,18 @@ public class FileExecutor {
     try (Stream<String> lines = Files.lines(path)) {
       commandExecutor.connect();
 
-      lines.forEach(line -> {
+      List<String> list = lines.toList();
+
+      for (String line : list) {
         try {
           commandExecutor.executeCommand(line);
-        } catch (JSchException | IOException | InterruptedException e) {
+        } catch (JSchException | IOException e) {
           throw new CommandExecutionFailedException(e);
+        } catch (InterruptedException e) {
+          log.error("Interrupted while executing command: {}", line);
+          throw e;
         }
-      });
+      }
       commandExecutor.disconnect();
     } catch (JSchException e) {
       throw new IOException(e);
