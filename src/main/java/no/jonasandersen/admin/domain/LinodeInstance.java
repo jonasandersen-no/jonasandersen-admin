@@ -9,7 +9,11 @@ public record LinodeInstance(LinodeId linodeId, List<String> ip, String status, 
     if (tags.isEmpty()) {
       return "-";
     }
-    return String.join(", ", tags);
+
+    return tags.stream()
+        .filter(tag -> !tag.contains(":"))
+        .reduce((tag1, tag2) -> tag1 + ", " + tag2)
+        .orElse("-");
   }
 
   public String prettyPrintVolumeNames() {
