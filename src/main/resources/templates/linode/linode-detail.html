@@ -8,40 +8,68 @@
 <div th:replace="~{fragments/main :: navigation}"></div>
 <main>
   <div class="container w-50">
-    <div>
-      <h1 th:text="${instance.prettyPrintLabel()}"></h1>
-      <p class="small"><strong>ID:</strong> <span th:text="${instance.linodeId().id()}"/></p>
-    </div>
-    <div class="row g-3">
-      <div class="d-flex align-items-center gap-2">
-        <span class="material-symbols-outlined">person</span>
-        <span th:text="${instance.owner()}"/>
-      </div>
-      <div class="d-flex">
-        <div class="flex-grow-1">
-          <div class="d-flex align-items-center gap-2">
-            <span class="material-symbols-outlined">wifi</span>
-            <span th:text="${instance.prettyPrintIp()}"/>
+    <h1 th:text="${instance.prettyPrintLabel()}"></h1>
+    <div class="row container row-gap-2">
+      <div class="row g-3 row-cols-2">
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">circle</span>
+          <div>
+            <h4>Linode Id</h4>
+            <p th:text="${instance.linodeId().id()}"></p>
           </div>
-          <div class="d-flex align-items-center gap-2">
-            <span class="material-symbols-outlined">memory</span>
-            <span th:text="${instance.prettyPrintSpecs()}"/>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">person</span>
+          <div>
+            <h4>Owner</h4>
+            <p th:text="${instance.owner()}"></p>
           </div>
-          <div class="d-flex align-items-center gap-2">
-            <span class="material-symbols-outlined">label</span>
-            <span th:text="${instance.prettyPrintTags()}"/>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">wifi</span>
+          <div>
+            <h4>Ip</h4>
+            <p th:text="${instance.prettyPrintIp()}"></p>
           </div>
-          <div class="d-flex align-items-center gap-2">
-            <span class="material-symbols-outlined">update</span>
-            <span th:text="${instance.prettyPrintStatus()}"/>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">memory</span>
+          <div>
+            <h4>Memory</h4>
+            <p th:text="${instance.prettyPrintSpecs()}"></p>
           </div>
-          <div class="d-flex align-items-center gap-2">
-            <span class="material-symbols-outlined">save</span>
-            <span th:text="${instance.prettyPrintVolumeNames()}"/>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">label</span>
+          <div>
+            <h4>Tags</h4>
+            <p th:text="${instance.prettyPrintTags()}"></p>
+          </div>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">update</span>
+          <div>
+            <h4>Status</h4>
+            <p th:text="${instance.prettyPrintStatus()}"></p>
+          </div>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">save</span>
+          <div>
+            <h4>Volumes</h4>
+            <p th:text="${instance.prettyPrintVolumeNames()}"></p>
+          </div>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">dns</span>
+          <div>
+            <h4>Server Type</h4>
+            <p th:text="${instance.serverType()}"></p>
           </div>
         </div>
       </div>
     </div>
+
     <div class="d-flex gap-2">
       <form method="post" th:action>
         <button type="submit" class="btn btn-primary">Install and setup minecraft</button>
@@ -51,6 +79,7 @@
       </button>
     </div>
   </div>
+
 
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
