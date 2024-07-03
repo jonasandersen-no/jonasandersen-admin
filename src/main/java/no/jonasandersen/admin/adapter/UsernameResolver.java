@@ -7,6 +7,9 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 
 public class UsernameResolver {
 
+  private UsernameResolver() {
+  }
+
   public static String getUsername() {
     String result = "unknown";
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

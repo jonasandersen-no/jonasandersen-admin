@@ -13,3 +13,31 @@ mvn clean package
 
 java -jar -Dspring.profiles.active=dev admin-app/target/admin-app-
 ```
+
+Docker image configuration. Use to toggle between native image and jvm image.
+
+```xml
+
+<plugin>
+  <groupId>org.graalvm.buildtools</groupId>
+  <artifactId>native-maven-plugin</artifactId>
+</plugin>
+  ...
+<configuration>
+<image>
+  <builder>paketobuildpacks/builder-jammy-buildpackless-tiny</builder>
+  <name>bjoggis/${project.artifactId}:v${project.version}-${os.detected.arch}</name>
+  <buildpacks>
+    <!--              <buildpack>paketobuildpacks/java-native-image</buildpack>-->
+    <buildpack>paketobuildpacks/java</buildpack>
+  </buildpacks>
+  <env>
+    <!--              <BPL_SPRING_AOT_ENABLED>true</BPL_SPRING_AOT_ENABLED>-->
+    <!--              <BP_JVM_CDS_ENABLED>true</BP_JVM_CDS_ENABLED>-->
+    <BP_JVM_VERSION>22</BP_JVM_VERSION>
+    <!--              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:-AddAllFileSystemProviders</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-->
+    <!--              <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>-->
+  </env>
+</image>
+</configuration>
+```
