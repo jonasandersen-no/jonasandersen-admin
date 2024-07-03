@@ -1,7 +1,7 @@
 package no.jonasandersen.admin.application;
 
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.application.port.ServerApi;
@@ -31,10 +31,10 @@ public class DeleteLinodeInstance {
   }
 
   public static DeleteLinodeInstance configureForTest() {
-    return configureForTest(Function.identity());
+    return configureForTest(UnaryOperator.identity());
   }
 
-  public static DeleteLinodeInstance configureForTest(Function<Config, Config> configure) {
+  public static DeleteLinodeInstance configureForTest(UnaryOperator<Config> configure) {
     Config config = configure.apply(new Config());
     return create(LinodeServerApi.configureForTest(config.linodeServerApiConfig));
   }
