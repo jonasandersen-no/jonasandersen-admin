@@ -12,7 +12,7 @@ class LinodeInstanceTest {
 
   @Test
   void ownerReturnsOwnerNameFromTag() {
-    LinodeInstance instance = new LinodeInstance(null, new LinodeId(0L), List.of(), "", "",
+    LinodeInstance instance = new LinodeInstance(new LinodeId(0L), List.of(), "", "",
         List.of("owner:principalName"), List.of(), new LinodeSpecs(0));
 
     assertThat(instance.owner()).isEqualTo("principalName");
