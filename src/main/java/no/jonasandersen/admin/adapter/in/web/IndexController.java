@@ -14,4 +14,9 @@ public class IndexController {
     return "index";
   }
 
+  @GetMapping("/swagger-ui")
+  String swaggerUi() {
+    return "redirect:/swagger-ui/index.html";
+  }
+
 }
