@@ -175,7 +175,7 @@
         <configuration>
           <image>
             <builder>paketobuildpacks/builder-jammy-buildpackless-tiny</builder>
-            <name>bjoggis/${project.artifactId}:v${project.version}-${os.detected.arch}</name>
+            <name>bjoggis/jonasandersen-admin:v${project.version}-${os.detected.arch}</name>
             <buildpacks>
               <buildpack>paketobuildpacks/java</buildpack>
             </buildpacks>
