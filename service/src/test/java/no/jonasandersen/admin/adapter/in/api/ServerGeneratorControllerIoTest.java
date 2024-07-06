@@ -18,7 +18,9 @@ class ServerGeneratorControllerIoTest extends IoBasedTest {
 
   @Test
   void name() throws Exception {
-    mockMvc.perform(post("/api/server-generator").with(csrf()))
+    mockMvc.perform(post("/api/server-generator").with(csrf())
+            .content("{\"serverType\":\"MINECRAFT\"}")
+            .contentType("application/json"))
         .andExpect(status().isOk());
 
   }
