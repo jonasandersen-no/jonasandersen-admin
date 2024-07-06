@@ -81,7 +81,7 @@ public class LinodeController {
   @Transactional
   public String deleteInstance(@PathVariable Long linodeId, RedirectAttributes redirectAttrs) {
     if (deleteLinodeInstance.delete(LinodeId.from(linodeId))) {
-      redirectAttrs.addFlashAttribute("message", "Instance deleted");
+      redirectAttrs.addFlashAttribute(INFO_MESSAGE_VARIABLE, "Instance deleted");
       // Remove subdomain from DNS?
     }
 
@@ -94,7 +94,7 @@ public class LinodeController {
     LinodeInstance instance = service.findInstanceById(LinodeId.from(linodeId)).orElseThrow();
 
     if (!instance.status().equals("running")) {
-      redirectAttrs.addFlashAttribute("message", "Instance is not running");
+      redirectAttrs.addFlashAttribute(INFO_MESSAGE_VARIABLE, "Instance is not running");
       return REDIRECT_LINODE;
     }
 
@@ -103,7 +103,7 @@ public class LinodeController {
     events.publishEvent(
         new InstanceCreatedEvent(LinodeId.from(linodeId), VolumeId.from(volumeId), ServerType.MINECRAFT));
 
-    redirectAttrs.addFlashAttribute("message", "Minecraft server is being installed");
+    redirectAttrs.addFlashAttribute(INFO_MESSAGE_VARIABLE, "Minecraft server is being installed");
     return REDIRECT_LINODE;
   }
 
