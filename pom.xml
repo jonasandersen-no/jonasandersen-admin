@@ -9,7 +9,8 @@
     <version>3.3.1</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>no.jonasandersen</groupId>
+
+  <groupId>no.jonasandersen.admin</groupId>
   <artifactId>jonasandersen-admin-parent</artifactId>
   <version>0</version>
   <packaging>pom</packaging>
@@ -34,7 +35,49 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>no.jonasandersen.admin</groupId>
+        <artifactId>api-contract</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <repositories>
+    <repository>
+      <id>reposilite-releases</id>
+      <name>Reposilite Releases</name>
+      <url>https://maven.bjoggis.com/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>reposilite-snapshots</id>
+      <name>Reposilite Snapshots</name>
+      <url>https://maven.bjoggis.com/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  <distributionManagement>
+    <repository>
+      <id>reposilite-releases</id>
+      <name>Reposilite Releases</name>
+      <url>https://maven.bjoggis.com/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>reposilite-snapshots</id>
+      <name>Reposilite Snapshots</name>
+      <url>https://maven.bjoggis.com/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 
 </project>

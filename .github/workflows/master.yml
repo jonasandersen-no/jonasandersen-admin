@@ -22,6 +22,17 @@ jobs:
           java-distribution: liberica
           checkout-persist-credentials: true
           cache-enabled: false
+          settings-servers: |
+            [{
+                "id": "reposilite-releases",
+                "username": "${{ secrets.REPOSILITE_USERNAME }}",
+                "password": "${{ secrets.REPOSILITE_PASSWORD }}"
+            },
+            {
+                "id": "reposilite-snapshots",
+                "username": "${{ secrets.REPOSILITE_USERNAME }}",
+                "password": "${{ secrets.REPOSILITE_PASSWORD }}"
+            }]
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
