@@ -24,13 +24,13 @@ public class SettingsController {
   @GetMapping
   String settings(Model model) {
     model.addAttribute("currentTheme",
-        themeService.findTheme(Username.create(UsernameResolver.getUsername())));
+        themeService.findTheme(Username.create(UsernameResolver.getUsernameAsString())));
     return "settings/index";
   }
 
   @PostMapping
   public String saveSettings(@RequestParam String theme) {
-    String userName = UsernameResolver.getUsername();
+    String userName = UsernameResolver.getUsernameAsString();
 
     themeService.saveTheme(Username.create(userName), Theme.from(theme));
 

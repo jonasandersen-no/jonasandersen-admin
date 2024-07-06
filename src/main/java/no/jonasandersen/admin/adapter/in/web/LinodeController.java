@@ -121,9 +121,9 @@ public class LinodeController {
 
     if (subdomain.isBlank()) {
       log.info("Creating server of type {} with auto generated subdomain", serverType);
-      serverGenerator.generate(UsernameResolver.getUsername(), serverType);
+      serverGenerator.generate(UsernameResolver.getUsernameAsString(), serverType);
     } else {
-      serverGenerator.generate(UsernameResolver.getUsername(), serverType, Subdomain.of(subdomain));
+      serverGenerator.generate(UsernameResolver.getUsernameAsString(), serverType, Subdomain.of(subdomain));
     }
     return REDIRECT_LINODE;
   }

@@ -16,6 +16,7 @@ import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.domain.Subdomain;
+import no.jonasandersen.admin.domain.Username;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +51,10 @@ public class ServerGenerator {
 
   public OutputTracker<LinodeInstance> instanceTracker() {
     return instanceOutputListener.createTracker();
+  }
+
+  public ServerGeneratorResponse generate(Username owner, ServerType serverType) {
+    return generate(owner.value(), serverType);
   }
 
   public ServerGeneratorResponse generate(String owner, ServerType serverType) {

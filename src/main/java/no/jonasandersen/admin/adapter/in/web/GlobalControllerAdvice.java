@@ -24,7 +24,7 @@ public class GlobalControllerAdvice {
 
   @ModelAttribute("loggedInUser")
   public String getLoggedInUser() {
-    return UsernameResolver.getUsername();
+    return UsernameResolver.getUsernameAsString();
   }
 
   @ModelAttribute("currentStoredTheme")
