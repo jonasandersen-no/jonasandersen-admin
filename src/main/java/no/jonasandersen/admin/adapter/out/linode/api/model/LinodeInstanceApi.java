@@ -45,18 +45,6 @@ public record LinodeInstanceApi(
 
   public LinodeInstance toDomain() {
     return new LinodeInstance(new LinodeId(id), List.copyOf(ipv4), status, label, tags, List.of(),
-        new LinodeSpecs(specs.memory()));
+        new LinodeSpecs(specs.memory(), specs.vcpus()));
   }
-
-//  public Instance toDomain() {
-//    final Instance instance = new Instance();
-//
-//    instance.setId(LinodeId.of(id));
-//    instance.setLabel(label);
-//    instance.setIp(ipv4.getFirst());
-//    instance.setStatus(status);
-//    instance.setCreated(created);
-//
-//    return instance;
-//  }
 }

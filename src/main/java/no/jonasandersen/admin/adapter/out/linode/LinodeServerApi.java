@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
@@ -33,7 +33,7 @@ public class LinodeServerApi implements ServerApi {
     return new LinodeServerApi(linodeExchange);
   }
 
-  public static LinodeServerApi configureForTest(Function<Config, Config> configure) {
+  public static LinodeServerApi configureForTest(UnaryOperator<Config> configure) {
     Config config = configure.apply(new Config());
     return configureForTest(config);
   }

@@ -36,7 +36,7 @@ public record LinodeInstance(LinodeId linodeId, List<String> ip, String status, 
   }
 
   public String prettyPrintSpecs() {
-    return specs.memory() + " MB";
+    return specs.memory() + " MB" + System.lineSeparator() + specs.cpu() + " CPU cores";
   }
 
   public String owner() {
@@ -58,12 +58,12 @@ public record LinodeInstance(LinodeId linodeId, List<String> ip, String status, 
 
   public static LinodeInstance createNull() {
     return new LinodeInstance(new LinodeId(0L), List.of(), "", "", List.of(), List.of(),
-        new LinodeSpecs(0));
+        new LinodeSpecs(0, 0));
   }
 
   public static LinodeInstance createNull(String label, List<String> ip) {
     return new LinodeInstance(LinodeId.createNull(), List.copyOf(ip), "", label, List.of(), List.of(),
-        new LinodeSpecs(0));
+        new LinodeSpecs(0, 0));
   }
 
 }
