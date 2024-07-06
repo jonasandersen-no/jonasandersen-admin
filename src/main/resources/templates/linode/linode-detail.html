@@ -42,6 +42,13 @@
         <div class="col d-flex gap-1">
           <span class="material-symbols-outlined font-size-32">label</span>
           <div>
+            <h4>Subdomain</h4>
+            <p th:text="${instance.subdomain()}"></p>
+          </div>
+        </div>
+        <div class="col d-flex gap-1">
+          <span class="material-symbols-outlined font-size-32">label</span>
+          <div>
             <h4>Tags</h4>
             <p th:text="${instance.prettyPrintTags()}"></p>
           </div>

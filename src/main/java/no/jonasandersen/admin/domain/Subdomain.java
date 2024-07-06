@@ -35,4 +35,9 @@ public record Subdomain(String value) {
       throw new IllegalArgumentException("value can not be shorter than 3 characters");
     }
   }
+
+  @Override
+  public String toString() {
+    return value;
+  }
 }

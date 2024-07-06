@@ -56,6 +56,15 @@ public record LinodeInstance(LinodeId linodeId, List<String> ip, String status, 
         .orElse(null);
   }
 
+  public Subdomain subdomain() {
+    return tags.stream()
+        .filter(tag -> tag.startsWith("subdomain:"))
+        .map(tag -> tag.substring(10))
+        .map(Subdomain::new)
+        .findFirst()
+        .orElse(null);
+  }
+
   public static LinodeInstance createNull() {
     return new LinodeInstance(new LinodeId(0L), List.of(), "", "", List.of(), List.of(),
         new LinodeSpecs(0, 0));
