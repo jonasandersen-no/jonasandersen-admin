@@ -13,6 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("integration")
 @Tag("integration")
 @WithMockUser
-public class IoBasedTest {
+public abstract class IoBasedTest {
 
 }
