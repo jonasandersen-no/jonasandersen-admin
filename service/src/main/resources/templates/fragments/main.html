@@ -39,6 +39,10 @@
                href="/linode">Linode</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" th:classappend="${currentPath.startsWith('/control-center')} ? 'active' : ''"
+               href="/control-center">Control Center</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" th:classappend="${currentPath.startsWith('/menu')} ? 'active' : ''"
                href="/menu">Menu</a>
           </li>

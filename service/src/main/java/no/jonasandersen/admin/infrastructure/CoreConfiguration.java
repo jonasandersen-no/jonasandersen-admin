@@ -1,11 +1,13 @@
 package no.jonasandersen.admin.infrastructure;
 
+import com.jcraft.jsch.JSchException;
 import no.jonasandersen.admin.adapter.out.dns.CloudflareApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.adapter.out.theme.CrudUserSettingsRepository;
 import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
+import no.jonasandersen.admin.application.ControlCenterProperties;
 import no.jonasandersen.admin.application.DeleteLinodeInstance;
 import no.jonasandersen.admin.application.DnsService;
 import no.jonasandersen.admin.application.LinodeService;
@@ -17,6 +19,7 @@ import no.jonasandersen.admin.application.port.ServerApi;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.infrastructure.AdminProperties.ControlCenter;
 import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,9 +72,11 @@ class CoreConfiguration {
   }
 
   @Bean
-  ServerGenerator serverGenerator(LinodeService linodeService, AdminProperties properties) {
+  ServerGenerator serverGenerator(LinodeService linodeService, AdminProperties properties,
+      ControlCenterProperties controlCenterProperties) throws JSchException {
     String rootPassword = properties.linode().rootPassword();
-    return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword), FileExecutor.create());
+    return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword), FileExecutor.create(),
+        controlCenterProperties);
   }
 
   @Bean
@@ -98,4 +103,14 @@ class CoreConfiguration {
     return DeleteLinodeInstance.create(serverApi);
   }
 
+  @Bean
+  ControlCenterProperties controlCenterProperties(AdminProperties properties) {
+    ControlCenter controlCenter = properties.controlCenter();
+    return ControlCenterProperties.withKey(
+        controlCenter.username(),
+        SensitiveString.of(controlCenter.privateKeyString()),
+        controlCenter.ip(),
+        controlCenter.port()
+    );
+  }
 }

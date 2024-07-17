@@ -1,8 +1,12 @@
 package no.jonasandersen.admin.domain;
 
-public record ConnectionInfo(String username, SensitiveString password, Ip ip, int port) {
+public sealed interface ConnectionInfo permits PasswordConnectionInfo, PrivateKeyConnectionInfo {
 
-  public static ConnectionInfo createNull() {
-    return new ConnectionInfo("", SensitiveString.empty(), new Ip("0.0.0.0"), 0);
-  }
+  String username();
+
+  SensitiveString credentials();
+
+  Ip ip();
+
+  int port();
 }

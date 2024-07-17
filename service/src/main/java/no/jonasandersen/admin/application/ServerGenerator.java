@@ -3,15 +3,18 @@ package no.jonasandersen.admin.application;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.function.UnaryOperator;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
+import no.jonasandersen.admin.adapter.out.ssh.CommandExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.Retryer;
 import no.jonasandersen.admin.domain.CommandExecutionFailedException;
-import no.jonasandersen.admin.domain.ConnectionInfo;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
+import no.jonasandersen.admin.domain.PasswordConnectionInfo;
+import no.jonasandersen.admin.domain.PrivateKeyConnectionInfo;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import no.jonasandersen.admin.domain.ServerType;
@@ -27,22 +30,42 @@ public class ServerGenerator {
   private final LinodeService service;
   private final SensitiveString defaultPassword;
   private final FileExecutor fileExecutor;
+  private final CommandExecutor commandExecutor;
+  private final ControlCenterProperties controlCenterProperties;
   private final OutputListener<SensitiveString> passwordOutputListener = new OutputListener<>();
   private final OutputListener<LinodeInstance> instanceOutputListener = new OutputListener<>();
 
-  public static ServerGenerator create(LinodeService service, SensitiveString defaultPassword, FileExecutor executor) {
-    return new ServerGenerator(service, defaultPassword, executor);
+
+  public static ServerGenerator create(LinodeService service, SensitiveString defaultPassword, FileExecutor executor,
+      ControlCenterProperties controlCenterProperties)
+      throws JSchException {
+    return new ServerGenerator(service, defaultPassword, executor, CommandExecutor.create(), controlCenterProperties);
   }
 
   public static ServerGenerator createNull() {
     return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
-        FileExecutor.createNull());
+        FileExecutor.createNull(), CommandExecutor.createNull(), ControlCenterProperties.configureForTest());
   }
 
-  private ServerGenerator(LinodeService service, SensitiveString defaultPassword, FileExecutor fileExecutor) {
+  public static ServerGenerator configureForTest(UnaryOperator<Config> configure) {
+    Config config = configure.apply(new Config());
+    return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
+        FileExecutor.createNull(), config.commandExecutor, ControlCenterProperties.configureForTest());
+
+  }
+
+  public static ServerGenerator configureForTest() {
+    return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
+        FileExecutor.createNull(), CommandExecutor.createNull(), ControlCenterProperties.configureForTest());
+  }
+
+  private ServerGenerator(LinodeService service, SensitiveString defaultPassword, FileExecutor fileExecutor,
+      CommandExecutor commandExecutor, ControlCenterProperties controlCenterProperties) {
     this.service = service;
     this.defaultPassword = defaultPassword;
     this.fileExecutor = fileExecutor;
+    this.commandExecutor = commandExecutor;
+    this.controlCenterProperties = controlCenterProperties;
   }
 
   public OutputTracker<SensitiveString> passwordTracker() {
@@ -87,7 +110,7 @@ public class ServerGenerator {
     LinodeInstance instance = service.findInstanceById(from)
         .orElseThrow(() -> new IllegalArgumentException("Instance not found"));
 
-    ConnectionInfo connectionInfo = new ConnectionInfo("root", SensitiveString.of(password.value()),
+    PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("root", SensitiveString.of(password.value()),
         new Ip(instance.ip().getFirst()), 22);
 
     runFile(connectionInfo, "install-docker.txt");
@@ -95,7 +118,23 @@ public class ServerGenerator {
 
   }
 
-  private void runFile(ConnectionInfo connectionInfo, String file) {
+  public String generateViaAnsible(String command) throws JSchException, IOException, InterruptedException {
+    String privateKey = controlCenterProperties.privateKeyFilePath();
+    String username = controlCenterProperties.username();
+    String ip = controlCenterProperties.ip();
+    Integer port = controlCenterProperties.port();
+
+    PrivateKeyConnectionInfo controlCenter =
+        new PrivateKeyConnectionInfo(username, SensitiveString.of(privateKey), new Ip(ip), port);
+
+    CommandExecutor commandExecutor = CommandExecutor.create(controlCenter);
+    commandExecutor.connect();
+    String result = commandExecutor.executeCommand(command);
+    commandExecutor.disconnect();
+    return result;
+  }
+
+  private void runFile(PasswordConnectionInfo connectionInfo, String file) {
     Retryer.retry(() -> {
       try {
         log.info("Executing file: {}", file);
@@ -109,5 +148,15 @@ public class ServerGenerator {
         fileExecutor.cleanup();
       }
     }, 20, Duration.ofMinutes(1));
+  }
+
+  public static class Config {
+
+    private CommandExecutor commandExecutor;
+
+    public Config setCommandExecutor(CommandExecutor commandExecutor) {
+      this.commandExecutor = commandExecutor;
+      return this;
+    }
   }
 }

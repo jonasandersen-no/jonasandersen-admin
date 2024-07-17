@@ -11,8 +11,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Stream;
 import no.jonasandersen.admin.domain.CommandExecutionFailedException;
-import no.jonasandersen.admin.domain.ConnectionInfo;
 import no.jonasandersen.admin.domain.Feature;
+import no.jonasandersen.admin.domain.PasswordConnectionInfo;
 import no.jonasandersen.admin.infrastructure.Features;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class FileExecutor {
     return new FileExecutor(CommandExecutor.createNull());
   }
 
-  public void setup(ConnectionInfo connectionInfo) throws JSchException {
+  public void setup(PasswordConnectionInfo connectionInfo) throws JSchException {
     if (commandExecutor == null) {
       if (Features.isEnabled(Feature.LINODE_STUB)) {
         commandExecutor = CommandExecutor.createNull();
