@@ -1,13 +1,17 @@
 package no.jonasandersen.admin.adapter.out.user;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 
 @Entity
+@Table(name = "permitted_users")
 class PermittedUserDbo {
 
   @Id
+  @GeneratedValue
   private Long id;
 
   private String subject;

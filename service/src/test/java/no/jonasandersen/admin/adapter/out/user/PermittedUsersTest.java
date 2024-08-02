@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import no.jonasandersen.admin.config.IoBasedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.simple.JdbcClient;
 
 class PermittedUsersTest extends IoBasedTest {
 
@@ -13,13 +12,15 @@ class PermittedUsersTest extends IoBasedTest {
   private PermittedUsers permittedUsers;
 
   @Autowired
-  private JdbcClient jdbcClient;
+  private CrudPermittedUserRepository repository;
 
   @Test
   void userIsAllowedWhenInPermittedList() {
-    jdbcClient.sql("insert into permitted_users (subject, email) values (?, ?)")
-        .params("12345678", "some@email.com")
-        .update();
+
+    PermittedUserDbo user = new PermittedUserDbo();
+    user.setSubject("12345678");
+    user.setEmail("some@email.com");
+    repository.save(user);
 
     boolean allowed = permittedUsers.isAllowed("12345678", "some@email.com");
 

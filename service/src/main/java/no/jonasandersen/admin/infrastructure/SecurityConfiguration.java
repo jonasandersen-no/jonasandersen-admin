@@ -3,6 +3,7 @@ package no.jonasandersen.admin.infrastructure;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import no.jonasandersen.admin.adapter.out.user.PermittedUsers;
+import no.jonasandersen.admin.infrastructure.security.DefaultOidcUserService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,20 +34,26 @@ class SecurityConfiguration {
 
   @Bean
   @Order(2)
-  SecurityFilterChain securityFilterChain(HttpSecurity http, PermittedUsers permittedUsers) throws Exception {
+  SecurityFilterChain securityFilterChain(HttpSecurity http, PermittedUsers permittedUsers,
+      DefaultOidcUserService defaultOidcUserService) throws Exception {
     http
         .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests.anyRequest().authenticated()
+            authorizeRequests.requestMatchers("/control-center").hasRole("ADMIN")
+                .anyRequest().authenticated()
         )
         .addFilterBefore(new PermittedUserFilter(permittedUsers), AuthorizationFilter.class)
-        .oauth2Login(withDefaults())
+        .oauth2Login(c ->
+            c.userInfoEndpoint(userInfo ->
+                userInfo.oidcUserService(defaultOidcUserService)))
         .oauth2Client(withDefaults());
     return http.build();
   }
+
 
   @Bean
   AuthenticationEventPublisher authenticationEventPublisher
       (ApplicationEventPublisher applicationEventPublisher) {
     return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
   }
+
 }

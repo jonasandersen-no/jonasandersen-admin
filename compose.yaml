@@ -1,10 +1,9 @@
 services:
-  mariadb-dev:
-    image: mariadb:10.11
+  postgres-dev:
+    image: postgres:15
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: admin
-      MYSQL_USER: dev
-      MYSQL_PASSWORD: dev
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: admin
     ports:
-      - "3306:3306"
+      - "5432:5432"

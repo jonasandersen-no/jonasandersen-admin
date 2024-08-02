@@ -2,16 +2,15 @@ package no.jonasandersen.admin.adapter.out.theme;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user_settings", schema = "admin")
+@Table(name = "user_settings")
 public class UserSettingsDbo {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   private Long id;
 
   private String username;

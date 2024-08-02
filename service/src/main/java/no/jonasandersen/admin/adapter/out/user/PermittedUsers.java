@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +14,10 @@ import org.springframework.stereotype.Service;
 public class PermittedUsers {
 
   private final Logger log = LoggerFactory.getLogger(PermittedUsers.class);
-  private final JdbcClient jdbcClient;
+  private final CrudPermittedUserRepository repository;
 
-  public PermittedUsers(JdbcClient jdbcClient) {
-    this.jdbcClient = jdbcClient;
+  public PermittedUsers(CrudPermittedUserRepository repository) {
+    this.repository = repository;
   }
 
   @Cacheable("permittedUsers")
@@ -28,13 +27,7 @@ public class PermittedUsers {
       return true;
     }
 
-    Integer count = jdbcClient.sql(
-            "select count(*) from permitted_users where subject = ? and email = ?")
-        .params(subject, email)
-        .query(Integer.class)
-        .single();
-
-    return count == 1;
+    return repository.existsBySubjectAndEmail(subject, email);
   }
 
   @Scheduled(fixedDelay = 30, timeUnit = TimeUnit.SECONDS)
