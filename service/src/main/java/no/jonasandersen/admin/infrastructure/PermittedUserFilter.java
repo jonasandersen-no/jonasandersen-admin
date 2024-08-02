@@ -9,7 +9,7 @@ import no.jonasandersen.admin.adapter.out.user.PermittedUsers;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 class PermittedUserFilter extends OncePerRequestFilter {
@@ -25,7 +25,7 @@ class PermittedUserFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication instanceof OAuth2AuthenticationToken token
-        && token.getPrincipal() instanceof DefaultOidcUser user) {
+        && token.getPrincipal() instanceof OidcUser user) {
       String subject = user.getSubject();
       String email = user.getEmail();
 
