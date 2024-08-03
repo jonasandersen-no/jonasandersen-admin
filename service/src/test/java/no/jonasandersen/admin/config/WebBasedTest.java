@@ -27,7 +27,7 @@ public abstract class WebBasedTest {
 
     @Bean
     ThemeService themeService() {
-      return ThemeService.createNull();
+      return ThemeService.configureForTest();
     }
   }
 }

@@ -1,8 +1,9 @@
 package no.jonasandersen.admin.application;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import no.jonasandersen.admin.adapter.out.user.DefaultUserSettingsRepository;
-import no.jonasandersen.admin.adapter.out.user.UserSettingsDbo;
+import java.util.function.UnaryOperator;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.domain.Username;
@@ -23,8 +24,19 @@ public class ThemeService {
     return new ThemeService(userSettingsRepository);
   }
 
-  public static ThemeService createNull(UserSettingsDbo... defaultSettings) {
-    return new ThemeService(DefaultUserSettingsRepository.createNull(defaultSettings));
+  public static ThemeService configureForTest() {
+    return configureForTest(UnaryOperator.identity());
+  }
+
+  public static ThemeService configureForTest(UnaryOperator<Config> configure) {
+    Config config = configure.apply(new Config());
+
+    UserSettingsRepository repository = UserSettingsRepository.configureForTest(config1 -> {
+      config.themes.forEach(config1::addTheme);
+      return config1;
+    });
+
+    return new ThemeService(repository);
   }
 
   public Theme findTheme(Username username) {
@@ -43,5 +55,15 @@ public class ThemeService {
   public void saveTheme(Username username, Theme theme) {
     log.info("Setting theme for user: {} to: {}", username, theme);
     userSettingsRepository.saveTheme(username, theme);
+  }
+
+  public static class Config {
+
+    private final Map<Username, Theme> themes = new HashMap<>();
+
+    public Config addTheme(Username username, Theme theme) {
+      themes.put(username, theme);
+      return this;
+    }
   }
 }
