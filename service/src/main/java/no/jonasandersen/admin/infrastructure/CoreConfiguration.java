@@ -5,8 +5,6 @@ import no.jonasandersen.admin.adapter.out.dns.CloudflareApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
-import no.jonasandersen.admin.adapter.out.user.CrudUserSettingsRepository;
-import no.jonasandersen.admin.adapter.out.user.DefaultUserSettingsRepository;
 import no.jonasandersen.admin.application.ControlCenterProperties;
 import no.jonasandersen.admin.application.DeleteLinodeInstance;
 import no.jonasandersen.admin.application.DnsService;
@@ -53,11 +51,6 @@ class CoreConfiguration {
   @Bean
   LinodeVolumeService linodeVolumeService(ServerApi serverApi) {
     return LinodeVolumeService.create(serverApi);
-  }
-
-  @Bean
-  DefaultUserSettingsRepository userSettingsRepository(CrudUserSettingsRepository repository) {
-    return DefaultUserSettingsRepository.create(repository);
   }
 
   @Bean

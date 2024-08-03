@@ -4,15 +4,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import no.jonasandersen.admin.application.port.UserRepository;
 import no.jonasandersen.admin.domain.User;
-import org.springframework.stereotype.Service;
 
-@Service
 class DefaultUserRepository implements UserRepository {
 
   private final CrudUserDboRepository repository;
 
-  public DefaultUserRepository(CrudUserDboRepository repository) {
+  private DefaultUserRepository(CrudUserDboRepository repository) {
     this.repository = repository;
+  }
+
+  public static DefaultUserRepository create(CrudUserDboRepository repository) {
+    return new DefaultUserRepository(repository);
   }
 
   @Override
