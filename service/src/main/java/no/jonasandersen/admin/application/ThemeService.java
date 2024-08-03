@@ -1,8 +1,8 @@
 package no.jonasandersen.admin.application;
 
 import java.util.Optional;
-import no.jonasandersen.admin.adapter.out.theme.DefaultUserSettingsRepository;
-import no.jonasandersen.admin.adapter.out.theme.UserSettingsDbo;
+import no.jonasandersen.admin.adapter.out.user.DefaultUserSettingsRepository;
+import no.jonasandersen.admin.adapter.out.user.UserSettingsDbo;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.domain.Username;

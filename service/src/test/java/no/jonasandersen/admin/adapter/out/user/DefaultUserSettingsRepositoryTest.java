@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.adapter.out.theme;
+package no.jonasandersen.admin.adapter.out.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

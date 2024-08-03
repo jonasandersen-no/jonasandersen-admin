@@ -2,7 +2,7 @@ package no.jonasandersen.admin.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import no.jonasandersen.admin.adapter.out.theme.UserSettingsDbo;
+import no.jonasandersen.admin.adapter.out.user.UserSettingsDbo;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.domain.Username;
 import org.junit.jupiter.api.Test;
