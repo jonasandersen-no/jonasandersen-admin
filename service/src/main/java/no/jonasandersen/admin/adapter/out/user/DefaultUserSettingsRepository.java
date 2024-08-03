@@ -4,20 +4,23 @@ import java.util.Optional;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.domain.Username;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 class DefaultUserSettingsRepository implements UserSettingsRepository {
 
+  private final Logger log = LoggerFactory.getLogger(DefaultUserSettingsRepository.class);
   private final CrudUserSettingsRepository repository;
+  private final CrudUserDboRepository userRepository;
 
-  private DefaultUserSettingsRepository(CrudUserSettingsRepository repository) {
+  public DefaultUserSettingsRepository(CrudUserSettingsRepository repository, CrudUserDboRepository userRepository) {
     this.repository = repository;
-  }
-
-  public static DefaultUserSettingsRepository create(CrudUserSettingsRepository repository) {
-    return new DefaultUserSettingsRepository(repository);
+    this.userRepository = userRepository;
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<Theme> findTheme(Username username) {
     Optional<UserSettingsDbo> userSettingsDbo = repository.findByUsername(username.value());
 
@@ -26,15 +29,23 @@ class DefaultUserSettingsRepository implements UserSettingsRepository {
   }
 
   @Override
+  @Transactional
   public void saveTheme(Username username, Theme theme) {
-    Optional<UserSettingsDbo> settings = repository.findByUsername(username.value());
+    Optional<UserSettingsDbo> settingsOpt = repository.findByUsername(username.value());
 
-    if (settings.isPresent()) {
-      UserSettingsDbo userSettingsDbo = settings.get();
-      userSettingsDbo.setTheme(theme.value());
-      repository.save(userSettingsDbo);
+    if (settingsOpt.isPresent()) {
+      UserSettingsDbo settings = settingsOpt.get();
+      settings.setTheme(theme.value());
+      repository.save(settings);
     } else {
-      repository.save(new UserSettingsDbo(username.value(), theme.value()));
+      Optional<UserDbo> user = userRepository.findByUsername(username.value());
+      if (user.isPresent()) {
+        UserDbo userDbo = user.get();
+        UserSettingsDbo settings = new UserSettingsDbo(userDbo, theme.value());
+        repository.save(settings);
+        return;
+      }
+      log.warn("User not found: {}", username);
     }
   }
 

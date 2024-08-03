@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
 
   @Bean
-  UserSettingsRepository userSettingsRepository(CrudUserSettingsRepository repository) {
-    return DefaultUserSettingsRepository.create(repository);
+  UserSettingsRepository userSettingsRepository(CrudUserSettingsRepository repository,
+      CrudUserDboRepository userRepository) {
+    return new DefaultUserSettingsRepository(repository, userRepository);
   }
 
   @Bean

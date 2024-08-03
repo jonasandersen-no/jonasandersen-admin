@@ -3,26 +3,30 @@ package no.jonasandersen.admin.adapter.out.user;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_settings")
-public class UserSettingsDbo {
+class UserSettingsDbo {
 
   @Id
   @GeneratedValue
   private Long id;
 
-  private String username;
+  @OneToOne(mappedBy = "settings")
+  private UserDbo user;
 
   private String theme;
 
   public UserSettingsDbo() {
   }
 
-  public UserSettingsDbo(String username, String theme) {
-    this.username = username;
-    this.theme = theme;
+  public UserSettingsDbo(UserDbo userDbo, String value) {
+    this.user = userDbo;
+    this.theme = value;
+
+    userDbo.setSettings(this);
   }
 
   public Long getId() {
@@ -33,12 +37,12 @@ public class UserSettingsDbo {
     this.id = id;
   }
 
-  public String getUsername() {
-    return username;
+  public UserDbo getUser() {
+    return user;
   }
 
-  public void setUsername(String username) {
-    this.username = username;
+  public void setUser(UserDbo user) {
+    this.user = user;
   }
 
   public String getTheme() {
@@ -53,7 +57,7 @@ public class UserSettingsDbo {
   public String toString() {
     return "UserSettingsDbo{" +
         "id=" + id +
-        ", username='" + username + '\'' +
+        ", user=" + user +
         ", theme='" + theme + '\'' +
         '}';
   }
