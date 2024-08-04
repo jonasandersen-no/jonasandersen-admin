@@ -39,6 +39,7 @@ class SecurityConfiguration {
     http
         .authorizeHttpRequests(authorizeRequests ->
             authorizeRequests.requestMatchers("/control-center").hasRole("ADMIN")
+                .requestMatchers("/actuator/prometheus").permitAll()
                 .anyRequest().authenticated()
         )
         .addFilterBefore(new PermittedUserFilter(permittedUsers), AuthorizationFilter.class)

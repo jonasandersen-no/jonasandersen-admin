@@ -3,7 +3,7 @@
     <option name="ACTIVE_PROFILES" value="dev,intellij" />
     <module name="service"/>
     <option name="SPRING_BOOT_MAIN_CLASS" value="no.jonasandersen.admin.AdminApplication" />
-    <option name="VM_PARAMETERS" value="-Xms128M -Xmx128M" />
+    <option name="VM_PARAMETERS" value="-Xms1G -Xmx1G"/>
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="no.jonasandersen.admin.*" />

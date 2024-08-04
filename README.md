@@ -41,3 +41,14 @@ Docker image configuration. Use to toggle between native image and jvm image.
 </image>
 </configuration>
 ```
+
+# First time setup
+
+Create docker volumes for grafana and prometheus to avoid having to set up the configuration every time the containers
+are recreated.
+
+```bash
+docker volume create grafana-storage
+docker volume create prometheus-storage
+docker volume create alertmanager-storage
+```
