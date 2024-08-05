@@ -37,16 +37,17 @@ class SecurityConfiguration {
   SecurityFilterChain securityFilterChain(HttpSecurity http, PermittedUsers permittedUsers,
       DefaultOidcUserService defaultOidcUserService) throws Exception {
     http
-        .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests.requestMatchers("/control-center").hasRole("ADMIN")
-                .requestMatchers("/actuator/prometheus").permitAll()
-                .anyRequest().authenticated()
+        .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+            .requestMatchers("/control-center").hasRole("ADMIN")
+            .requestMatchers("/actuator/**").hasRole("ACTUATOR")
+            .anyRequest().authenticated()
         )
         .addFilterBefore(new PermittedUserFilter(permittedUsers), AuthorizationFilter.class)
         .oauth2Login(c ->
             c.userInfoEndpoint(userInfo ->
                 userInfo.oidcUserService(defaultOidcUserService)))
-        .oauth2Client(withDefaults());
+        .oauth2Client(withDefaults())
+        .httpBasic(withDefaults());
     return http.build();
   }
 

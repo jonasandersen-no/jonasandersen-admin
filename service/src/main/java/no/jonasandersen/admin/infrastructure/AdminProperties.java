@@ -13,7 +13,8 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public record AdminProperties(@Valid Minecraft minecraft, @Valid Cloudflare cloudflare,
                               @Valid Linode linode, @Valid ControlCenter controlCenter, @NotNull String defaultTheme,
-                              Map<Feature, Boolean> features) {
+                              Map<Feature, Boolean> features,
+                              @Valid Actuator actuator) {
 
   public AdminProperties {
 
@@ -42,6 +43,11 @@ public record AdminProperties(@Valid Minecraft minecraft, @Valid Cloudflare clou
 
   @Valid
   public record ControlCenter(String username, String privateKeyString, String ip, @DefaultValue("22") Integer port) {
+
+  }
+
+  @Valid
+  public record Actuator(@NotNull String username, @NotNull String password) {
 
   }
 }
