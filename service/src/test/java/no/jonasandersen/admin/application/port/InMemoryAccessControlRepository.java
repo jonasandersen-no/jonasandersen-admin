@@ -25,4 +25,9 @@ public class InMemoryAccessControlRepository implements AccessControlRepository 
     return List.copyOf(users);
   }
 
+  @Override
+  public void removeUser(User user) {
+    users.remove(user);
+  }
+
 }

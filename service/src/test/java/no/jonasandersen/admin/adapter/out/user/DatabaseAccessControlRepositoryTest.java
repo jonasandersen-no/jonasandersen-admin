@@ -49,4 +49,15 @@ class DatabaseAccessControlRepositoryTest extends IoBasedTest {
 
     assertThat(user).isNotNull();
   }
+
+  @Test
+  void removeUser() {
+    PermittedUserDbo entity = new PermittedUserDbo();
+    entity.setEmail("email@example.com");
+    db.save(entity);
+
+    repository.removeUser(User.createUser("email@example.com"));
+
+    assertThat(db.findByEmail("email@example.com")).isNull();
+  }
 }

@@ -10,4 +10,6 @@ public interface AccessControlRepository {
   User findUser(String email);
 
   List<User> findAll();
+
+  void removeUser(User user);
 }

@@ -4,8 +4,10 @@ import java.util.List;
 import no.jonasandersen.admin.application.port.AccessControlRepository;
 import no.jonasandersen.admin.domain.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 class DatabaseAccessControlRepository implements AccessControlRepository {
 
   private final CrudPermittedUserRepository repository;
@@ -38,5 +40,10 @@ class DatabaseAccessControlRepository implements AccessControlRepository {
         .stream()
         .map(PermittedUserDbo::toUser)
         .toList();
+  }
+
+  @Override
+  public void removeUser(User user) {
+    repository.deleteByEmail(user.username().value());
   }
 }

@@ -9,6 +9,7 @@ import no.jonasandersen.admin.domain.User;
 import no.jonasandersen.admin.domain.Username;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +49,12 @@ public class SettingsController {
   @PostMapping("/allow-user")
   String addUserToAccessControl(@RequestParam String email) {
     accessControl.allowUser(email);
+    return "redirect:/settings";
+  }
+
+  @DeleteMapping("/revoke-user")
+  String removeUserFromAccessControl(@RequestParam String email) {
+    accessControl.revokeUser(email);
     return "redirect:/settings";
   }
 

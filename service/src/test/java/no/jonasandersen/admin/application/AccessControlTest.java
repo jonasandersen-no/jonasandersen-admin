@@ -8,6 +8,7 @@ import no.jonasandersen.admin.application.port.InMemoryAccessControlRepository;
 import no.jonasandersen.admin.domain.Roles;
 import no.jonasandersen.admin.domain.User;
 import no.jonasandersen.admin.domain.UserAlreadyExistsException;
+import no.jonasandersen.admin.domain.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 
 public class AccessControlTest {
@@ -88,6 +89,25 @@ public class AccessControlTest {
     boolean allowed = accessControl.isUserAllowed("email2@example.com");
 
     assertThat(allowed).isFalse();
+  }
+
+  @Test
+  void revokeAccessOfUser() {
+    AccessControl accessControl = createAccessControl();
+    accessControl.allowUser("email@example.com");
+    assertThat(accessControl.isUserAllowed("email@example.com")).isTrue();
+
+    accessControl.revokeUser("email@example.com");
+
+    assertThat(accessControl.isUserAllowed("email@example.com")).isFalse();
+  }
+
+  @Test
+  void canNotRevokeDisallowedUser() {
+    AccessControl accessControl = createAccessControl();
+
+    assertThatThrownBy(() -> accessControl.revokeUser("email@example.com"))
+        .isInstanceOf(UserNotFoundException.class);
   }
 
   private static AccessControl createAccessControl() {

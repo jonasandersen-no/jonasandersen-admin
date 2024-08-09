@@ -11,4 +11,6 @@ public interface CrudPermittedUserRepository extends JpaRepository<PermittedUser
   boolean existsByEmail(String email);
 
   PermittedUserDbo findByEmail(String email);
+
+  long deleteByEmail(String email);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import no.jonasandersen.admin.application.port.AccessControlRepository;
 import no.jonasandersen.admin.domain.User;
 import no.jonasandersen.admin.domain.UserAlreadyExistsException;
+import no.jonasandersen.admin.domain.UserNotFoundException;
 
 public class AccessControl {
 
@@ -34,5 +35,15 @@ public class AccessControl {
 
   public boolean isUserAllowed(String email) {
     return doesUserExist(email);
+  }
+
+  public void revokeUser(String email) {
+    User user = repository.findUser(email);
+
+    if (user == null) {
+      throw new UserNotFoundException();
+    }
+
+    repository.removeUser(user);
   }
 }
