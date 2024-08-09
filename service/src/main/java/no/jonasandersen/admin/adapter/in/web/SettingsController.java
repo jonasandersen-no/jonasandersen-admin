@@ -1,8 +1,11 @@
 package no.jonasandersen.admin.adapter.in.web;
 
+import java.util.List;
 import no.jonasandersen.admin.adapter.UsernameResolver;
+import no.jonasandersen.admin.application.AccessControl;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.domain.Theme;
+import no.jonasandersen.admin.domain.User;
 import no.jonasandersen.admin.domain.Username;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,24 +19,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SettingsController {
 
   private final ThemeService themeService;
+  private final AccessControl accessControl;
 
-  public SettingsController(ThemeService themeService) {
+  public SettingsController(ThemeService themeService, AccessControl accessControl) {
     this.themeService = themeService;
+    this.accessControl = accessControl;
   }
 
   @GetMapping
   String settings(Model model) {
     model.addAttribute("currentTheme",
         themeService.findTheme(Username.create(UsernameResolver.getUsernameAsString())));
+
+    List<User> allowedUsers = accessControl.getAllowedUsers();
+    model.addAttribute("allowedUsers", allowedUsers);
     return "settings/index";
   }
 
   @PostMapping
-  public String saveSettings(@RequestParam String theme) {
+  String saveSettings(@RequestParam String theme) {
     String userName = UsernameResolver.getUsernameAsString();
 
     themeService.saveTheme(Username.create(userName), Theme.from(theme));
 
+    return "redirect:/settings";
+  }
+
+  @PostMapping("/allow-user")
+  String addUserToAccessControl(@RequestParam String email) {
+    accessControl.allowUser(email);
     return "redirect:/settings";
   }
 

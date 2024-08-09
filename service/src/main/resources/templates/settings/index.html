@@ -32,6 +32,22 @@
       <button class="btn btn-primary">Save</button>
     </form>
 
+    <div class="container mt-5">
+      <h3>Access control</h3>
+      <p>Allowed users</p>
+      <ul>
+        <li th:each="user: ${allowedUsers}" th:text="${user.username().value()}"></li>
+      </ul>
+
+      <form method="post" th:action="@{/settings/allow-user}">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input class="form-control" id="email" type="email" name="email" placeholder="email@example.com"/>
+        </div>
+        <button class="btn btn-primary">Allow user</button>
+      </form>
+    </div>
+
   </div>
 </main>
 <footer>

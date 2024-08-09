@@ -5,6 +5,7 @@ import no.jonasandersen.admin.adapter.out.dns.CloudflareApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
+import no.jonasandersen.admin.application.AccessControl;
 import no.jonasandersen.admin.application.ControlCenterProperties;
 import no.jonasandersen.admin.application.DeleteLinodeInstance;
 import no.jonasandersen.admin.application.DnsService;
@@ -12,6 +13,7 @@ import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
+import no.jonasandersen.admin.application.port.AccessControlRepository;
 import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.application.port.ServerApi;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
@@ -105,5 +107,10 @@ class CoreConfiguration {
         controlCenter.ip(),
         controlCenter.port()
     );
+  }
+
+  @Bean
+  AccessControl accessControl(AccessControlRepository accessControlRepository) {
+    return new AccessControl(accessControlRepository);
   }
 }

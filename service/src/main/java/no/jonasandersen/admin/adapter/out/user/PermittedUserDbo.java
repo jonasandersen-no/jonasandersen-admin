@@ -5,10 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import no.jonasandersen.admin.domain.User;
 
 @Entity
 @Table(name = "permitted_users")
-class PermittedUserDbo {
+public class PermittedUserDbo {
 
   @Id
   @GeneratedValue
@@ -40,5 +41,9 @@ class PermittedUserDbo {
 
   public void setEmail(@Email String email) {
     this.email = email;
+  }
+
+  public User toUser() {
+    return User.createUser(this.email);
   }
 }
