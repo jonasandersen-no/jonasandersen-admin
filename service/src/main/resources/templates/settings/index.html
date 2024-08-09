@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:attr="data-bs-theme=${currentStoredTheme}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:attr="data-bs-theme=${currentStoredTheme}">
 <head>
   <th:block th:insert="~{fragments/main :: baseHead}"></th:block>
   <title>Settings</title>
@@ -32,21 +34,24 @@
       <button class="btn btn-primary">Save</button>
     </form>
 
-    <div class="container mt-5">
-      <h3>Access control</h3>
-      <p>Allowed users</p>
-      <ul>
-        <li th:each="user: ${allowedUsers}" th:text="${user.username().value()}"></li>
-      </ul>
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+      <div class="container mt-5">
+        <h3>Access control</h3>
+        <p>Allowed users</p>
+        <ul>
+          <li th:each="user: ${allowedUsers}" th:text="${user.username().value()}"></li>
+        </ul>
 
-      <form method="post" th:action="@{/settings/allow-user}">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input class="form-control" id="email" type="email" name="email" placeholder="email@example.com"/>
-        </div>
-        <button class="btn btn-primary">Allow user</button>
-      </form>
-    </div>
+        <form method="post" th:action="@{/settings/allow-user}">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input class="form-control" id="email" type="email" name="email"
+                   placeholder="email@example.com"/>
+          </div>
+          <button class="btn btn-primary">Allow user</button>
+        </form>
+      </div>
+    </th:block>
 
   </div>
 </main>
