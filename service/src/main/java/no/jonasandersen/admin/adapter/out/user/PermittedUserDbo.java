@@ -15,8 +15,6 @@ public class PermittedUserDbo {
   @GeneratedValue
   private Long id;
 
-  private String subject;
-
   private String email;
 
   public Long id() {
@@ -25,14 +23,6 @@ public class PermittedUserDbo {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public String subject() {
-    return subject;
-  }
-
-  public void setSubject(String subject) {
-    this.subject = subject;
   }
 
   public @Email String email() {
