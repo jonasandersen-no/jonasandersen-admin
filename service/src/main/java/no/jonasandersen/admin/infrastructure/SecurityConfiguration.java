@@ -2,7 +2,7 @@ package no.jonasandersen.admin.infrastructure;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import no.jonasandersen.admin.adapter.out.user.PermittedUsers;
+import no.jonasandersen.admin.application.AccessControl;
 import no.jonasandersen.admin.infrastructure.security.DefaultOidcUserService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +34,7 @@ class SecurityConfiguration {
 
   @Bean
   @Order(2)
-  SecurityFilterChain securityFilterChain(HttpSecurity http, PermittedUsers permittedUsers,
+  SecurityFilterChain securityFilterChain(HttpSecurity http, AccessControl accessControl,
       DefaultOidcUserService defaultOidcUserService) throws Exception {
     http
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
@@ -42,7 +42,7 @@ class SecurityConfiguration {
             .requestMatchers("/actuator/**").hasRole("ACTUATOR")
             .anyRequest().authenticated()
         )
-        .addFilterBefore(new PermittedUserFilter(permittedUsers), AuthorizationFilter.class)
+        .addFilterBefore(new PermittedUserFilter(accessControl), AuthorizationFilter.class)
         .oauth2Login(c ->
             c.userInfoEndpoint(userInfo ->
                 userInfo.oidcUserService(defaultOidcUserService)))
