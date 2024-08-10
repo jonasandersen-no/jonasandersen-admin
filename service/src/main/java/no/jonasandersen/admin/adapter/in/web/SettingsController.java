@@ -7,6 +7,7 @@ import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.domain.User;
 import no.jonasandersen.admin.domain.Username;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,12 +48,14 @@ public class SettingsController {
   }
 
   @PostMapping("/allow-user")
+  @Secured("ROLE_ADMIN")
   String addUserToAccessControl(@RequestParam String email) {
     accessControl.allowUser(email);
     return "redirect:/settings";
   }
 
   @DeleteMapping("/revoke-user")
+  @Secured("ROLE_ADMIN")
   String removeUserFromAccessControl(@RequestParam String email) {
     accessControl.revokeUser(email);
     return "redirect:/settings";

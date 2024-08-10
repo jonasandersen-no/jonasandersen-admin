@@ -17,8 +17,10 @@ import no.jonasandersen.admin.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+@WithMockUser
 class SettingsControllerTest extends IoBasedTest {
 
   @Autowired
@@ -28,6 +30,7 @@ class SettingsControllerTest extends IoBasedTest {
   private CrudPermittedUserRepository repository;
 
   @Test
+  @WithMockUser(roles = "ADMIN")
   void addUserToAccessControl() throws Exception {
 
     mockMvc.perform(post("/settings/allow-user")
@@ -36,6 +39,14 @@ class SettingsControllerTest extends IoBasedTest {
         .andExpect(status().is3xxRedirection());
 
     assertThat(repository.count()).isEqualTo(1);
+  }
+
+  @Test
+  void nonAdminCanNotAllowUser() throws Exception {
+    mockMvc.perform(post("/settings/allow-user")
+            .with(csrf())
+            .param("email", "email@example.com"))
+        .andExpect(status().isForbidden());
   }
 
   @Test
@@ -50,6 +61,15 @@ class SettingsControllerTest extends IoBasedTest {
   }
 
   @Test
+  void nonAdminCanNotRevokeAccess() throws Exception {
+    mockMvc.perform(delete("/settings/revoke-user")
+            .with(csrf())
+            .param("email", "email@example.com"))
+        .andExpect(status().isForbidden());
+  }
+
+  @Test
+  @WithMockUser(roles = "ADMIN")
   void revokeAccessOfAllowedUser() throws Exception {
     PermittedUserDbo entity = new PermittedUserDbo();
     entity.setEmail("email@example.com");

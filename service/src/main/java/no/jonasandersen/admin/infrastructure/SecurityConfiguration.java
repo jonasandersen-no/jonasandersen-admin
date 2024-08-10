@@ -19,7 +19,6 @@ import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
 @Profile("!integration")
-@EnableMethodSecurity
 class SecurityConfiguration {
 
   @Bean
