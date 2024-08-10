@@ -3,12 +3,13 @@ package no.jonasandersen.admin.adapter.out.user;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import no.jonasandersen.admin.domain.User;
 
 @Entity
-@Table(name = "permitted_users")
+@Table(name = "permitted_users", indexes = @Index(columnList = "email"))
 public class PermittedUserDbo {
 
   @Id

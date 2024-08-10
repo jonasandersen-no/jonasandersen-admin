@@ -1,0 +1,1 @@
+CREATE INDEX idx_e1a7cc5cc799fe95ca80696d3 ON permitted_users (email);
