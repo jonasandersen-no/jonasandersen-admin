@@ -1,49 +1,15 @@
 package no.jonasandersen.admin.application;
 
 import java.util.List;
-import no.jonasandersen.admin.application.port.AccessControlRepository;
 import no.jonasandersen.admin.domain.User;
-import no.jonasandersen.admin.domain.UserAlreadyExistsException;
-import no.jonasandersen.admin.domain.UserNotFoundException;
 
-public class AccessControl {
+public interface AccessControl {
 
-  private final AccessControlRepository repository;
+  User allowUser(String email);
 
-  public AccessControl(AccessControlRepository repository) {
-    this.repository = repository;
-  }
+  List<User> getAllowedUsers();
 
-  public User allowUser(String email) {
-    if (doesUserExist(email)) {
-      throw new UserAlreadyExistsException();
-    }
+  boolean isUserAllowed(String email);
 
-    User user = User.createUser(email);
-    repository.addUser(user);
-    return user;
-  }
-
-  private boolean doesUserExist(String email) {
-    User user = repository.findUser(email);
-    return user != null;
-  }
-
-  public List<User> getAllowedUsers() {
-    return List.copyOf(repository.findAll());
-  }
-
-  public boolean isUserAllowed(String email) {
-    return doesUserExist(email);
-  }
-
-  public void revokeUser(String email) {
-    User user = repository.findUser(email);
-
-    if (user == null) {
-      throw new UserNotFoundException();
-    }
-
-    repository.removeUser(user);
-  }
+  void revokeUser(String email);
 }

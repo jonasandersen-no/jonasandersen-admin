@@ -111,6 +111,6 @@ public class AccessControlTest {
   }
 
   private static AccessControl createAccessControl() {
-    return new AccessControl(new InMemoryAccessControlRepository());
+    return new DefaultAccessControl(new InMemoryAccessControlRepository());
   }
 }

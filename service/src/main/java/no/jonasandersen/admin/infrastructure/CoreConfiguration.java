@@ -7,6 +7,7 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.application.AccessControl;
 import no.jonasandersen.admin.application.ControlCenterProperties;
+import no.jonasandersen.admin.application.DefaultAccessControl;
 import no.jonasandersen.admin.application.DeleteLinodeInstance;
 import no.jonasandersen.admin.application.DnsService;
 import no.jonasandersen.admin.application.LinodeService;
@@ -111,6 +112,6 @@ class CoreConfiguration {
 
   @Bean
   AccessControl accessControl(AccessControlRepository accessControlRepository) {
-    return new AccessControl(accessControlRepository);
+    return new DefaultAccessControl(accessControlRepository);
   }
 }
