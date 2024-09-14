@@ -22,7 +22,7 @@ public class TemperatureController {
     this.storeMeasurement = storeMeasurement;
   }
 
-  public record Sensor(String sensortag, int sensorvalue) {
+  public record Sensor(String sensortag, String sensorvalue) {
 
   }
 
@@ -43,9 +43,6 @@ public class TemperatureController {
     Sensor humidity = device.sensors().stream().filter(sensor -> sensor.sensortag().equals("Humidity"))
         .findFirst().orElseThrow(() -> new IllegalArgumentException("No sensor with tag Humidity"));
 
-    storeMeasurement.store(
-        new Measurement(String.valueOf(temperature.sensorvalue()), String.valueOf(humidity.sensorvalue())));
+    storeMeasurement.store(new Measurement(temperature.sensorvalue(), humidity.sensorvalue()));
   }
-
-
 }

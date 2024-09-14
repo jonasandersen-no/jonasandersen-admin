@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/settings")
 public class SettingsController {
 
+  public static final String REDIRECT_SETTINGS = "redirect:/settings";
   private final ThemeService themeService;
   private final AccessControl accessControl;
 
@@ -44,21 +45,21 @@ public class SettingsController {
 
     themeService.saveTheme(Username.create(userName), Theme.from(theme));
 
-    return "redirect:/settings";
+    return REDIRECT_SETTINGS;
   }
 
   @PostMapping("/allow-user")
   @Secured("ROLE_ADMIN")
   String addUserToAccessControl(@RequestParam String email) {
     accessControl.allowUser(email);
-    return "redirect:/settings";
+    return REDIRECT_SETTINGS;
   }
 
   @DeleteMapping("/revoke-user")
   @Secured("ROLE_ADMIN")
   String removeUserFromAccessControl(@RequestParam String email) {
     accessControl.revokeUser(email);
-    return "redirect:/settings";
+    return REDIRECT_SETTINGS;
   }
 
 }

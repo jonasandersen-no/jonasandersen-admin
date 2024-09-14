@@ -9,6 +9,7 @@ import no.jonasandersen.admin.domain.Measurement;
 import no.jonasandersen.admin.domain.Measurement.Celsius;
 import no.jonasandersen.admin.domain.Measurement.Humidity;
 import org.assertj.core.data.TemporalUnitWithinOffset;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +21,10 @@ class DefaultStoreMeasurementTest extends IoBasedTest {
   @Autowired
   private StoreMeasurement storeMeasurement;
 
+  @BeforeEach
+  void setUp() {
+    repository.deleteAll();
+  }
 
   @Test
   void shouldStoreMeasurement() {

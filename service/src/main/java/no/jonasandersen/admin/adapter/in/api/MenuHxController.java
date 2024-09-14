@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MenuHxController {
 
+  public static final String MENU_ITEM_HTML = """
+      <div class="input-group mb-3">
+        <span class="input-group-text">%s</span>
+      <input type="text" class="form-control" value="%s" name='%s'/>
+      </div>
+      """;
   private final MenuService menuService;
 
   public MenuHxController(MenuService menuService) {
@@ -23,12 +29,7 @@ public class MenuHxController {
   @GetMapping(value = "/api/hx/menu/edit", headers = "Hx-Request")
   String editMenu() {
     List<String> descriptions = menuService.listMenu().stream()
-        .map(i -> """
-            <div class="input-group mb-3">
-              <span class="input-group-text">%s</span>
-            <input type="text" class="form-control" value="%s" name='%s'/>
-            </div>
-            """.formatted(i.formattedDate(), i.description(), i.date())
+        .map(i -> MENU_ITEM_HTML.formatted(i.formattedDate(), i.description(), i.date())
         )
         .toList();
 
@@ -52,12 +53,7 @@ public class MenuHxController {
   @GetMapping(value = "/api/hx/menu/new-line", headers = "Hx-Request")
   String newLine() {
     var i = new MenuItem(LocalDate.now().plusDays(counter++), "Laks");
-    return """
-        <div class="input-group mb-3">
-          <span class="input-group-text">%s</span>
-        <input type="text" class="form-control" value="%s" name='%s'/>
-        </div>
-        """.formatted(i.formattedDate(), i.description(), i.date());
+    return MENU_ITEM_HTML.formatted(i.formattedDate(), i.description(), i.date());
 
   }
 
@@ -66,13 +62,14 @@ public class MenuHxController {
 
     menuService.update(data);
 
+    String htmlItem = """
+        <div>
+          <h3>%s</h3>
+          <p>%s</p>
+        </div>
+        """;
     List<String> html = menuService.listMenu().stream()
-        .map(item -> """
-            <div>
-              <h3>%s</h3>
-              <p>%s</p>
-            </div>
-            """.formatted(item.formattedDate(), item.description()))
+        .map(item -> htmlItem.formatted(item.formattedDate(), item.description()))
         .toList();
 
     String button = """
