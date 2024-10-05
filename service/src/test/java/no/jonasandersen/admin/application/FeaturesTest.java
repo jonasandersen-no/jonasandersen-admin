@@ -2,17 +2,13 @@ package no.jonasandersen.admin.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import fixtures.ResetFeatures;
 import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.infrastructure.Features;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@ResetFeatures
 class FeaturesTest {
-
-  @BeforeEach
-  void setUp() {
-    Features.reset();
-  }
 
   @Test
   void featureIsEnabledWhenDefaultIsEnabledAndNoOverrideExists() {
