@@ -38,4 +38,8 @@ public class Features {
   public static void reset() {
     features.clear();
   }
+
+  public static Map<Feature, Boolean> getAllFeatures() {
+    return Map.copyOf(features);
+  }
 }

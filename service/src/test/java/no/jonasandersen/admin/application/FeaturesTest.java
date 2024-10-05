@@ -20,4 +20,11 @@ class FeaturesTest {
     Features.setFeature(Feature.LINODE_STUB, false);
     assertThat(Features.isEnabled(Feature.LINODE_STUB)).isFalse();
   }
+
+  @Test
+  void listAllFeatures() {
+    assertThat(Features.isEnabled(Feature.LINODE_STUB)).isTrue();
+    Features.setFeature(Feature.LINODE_STUB, false);
+    assertThat(Features.getAllFeatures()).hasSize(1);
+  }
 }
