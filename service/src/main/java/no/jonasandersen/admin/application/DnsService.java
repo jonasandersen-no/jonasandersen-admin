@@ -5,8 +5,10 @@ import com.panfutov.result.GenericError;
 import com.panfutov.result.Result;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import no.jonasandersen.admin.adapter.out.dns.StubDnsApi;
 import no.jonasandersen.admin.application.port.DnsApi;
+import no.jonasandersen.admin.domain.DnsRecord;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
 import org.jetbrains.annotations.Nullable;
@@ -65,5 +67,16 @@ public class DnsService {
       return Result.failure(errors);
     }
     return null;
+  }
+
+  public List<DnsRecord> listExistingDnsRecords() {
+    return listExistingDnsRecords(dnsRecord -> true);
+  }
+
+  public List<DnsRecord> listExistingDnsRecords(Predicate<DnsRecord> filter) {
+    List<DnsRecord> dnsRecords = dnsApi.listExistingDnsRecords();
+    return dnsRecords.stream()
+        .filter(filter)
+        .toList();
   }
 }

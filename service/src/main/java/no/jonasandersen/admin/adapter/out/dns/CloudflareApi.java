@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import no.jonasandersen.admin.application.port.DnsApi;
+import no.jonasandersen.admin.domain.DnsRecord;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
@@ -32,11 +33,11 @@ public class CloudflareApi implements DnsApi {
 
   @Override
   public void overwriteDnsRecord(Ip ip, String owner, Subdomain subdomain) {
-    List<DnsRecord> dnsRecords = listExistingDnsRecords();
+    List<CloudflareDnsRecord> cloudflareDnsRecords = listExistingDnsRecordsInternal();
 
-    Optional<DnsRecord> existing = dnsRecords.stream()
+    Optional<CloudflareDnsRecord> existing = cloudflareDnsRecords.stream()
         .filter(createdByApplication())
-        .filter(dnsRecord -> dnsRecord.name.equals(subdomain + ".jonasandersen.no"))
+        .filter(cloudflareDnsRecord -> cloudflareDnsRecord.name.equals(subdomain + ".jonasandersen.no"))
         .findFirst();
 
     if (existing.isPresent()) {
@@ -54,7 +55,7 @@ public class CloudflareApi implements DnsApi {
         Response.class);
   }
 
-  private List<DnsRecord> listExistingDnsRecords() {
+  private List<CloudflareDnsRecord> listExistingDnsRecordsInternal() {
     Response result = restTemplate.getForObject("/zones/%s/dns_records".formatted(properties.cloudflare().zoneId()),
         Response.class);
 
@@ -66,13 +67,29 @@ public class CloudflareApi implements DnsApi {
     return result.result();
   }
 
+
+  @Override
+  public List<DnsRecord> listExistingDnsRecords() {
+    Response result = restTemplate.getForObject("/zones/%s/dns_records".formatted(properties.cloudflare().zoneId()),
+        Response.class);
+
+    if (result == null) {
+      logger.warn("Failed to list existing DNS records. Returning empty list.");
+      return List.of();
+    }
+
+    return result.result()
+        .stream().map(CloudflareDnsRecord::toDomain)
+        .toList();
+  }
+
   private void updateExistingDnsRecord(Ip ip, Subdomain subdomain, String owner) {
     restTemplate.put("/zones/%s/dns_records/%s".formatted(properties.cloudflare().zoneId(),
         properties.cloudflare().dnsRecordId()), new Request(ip.value(), subdomain.value(),
         false, "A", "auto-created:" + owner, List.of(), 60));
   }
 
-  static @NotNull Predicate<DnsRecord> createdByApplication() {
+  static @NotNull Predicate<CloudflareDnsRecord> createdByApplication() {
     return result -> (result.comment()) != null && (result.comment()
         .equalsIgnoreCase("Updated by Spillhuset") || result.comment().contains("auto-created:"));
   }
@@ -82,11 +99,14 @@ public class CloudflareApi implements DnsApi {
 
   }
 
-  record DnsRecord(String id, String name, String content, List<String> tags, String comment) {
+  record CloudflareDnsRecord(String id, String name, String content, List<String> tags, String comment, String type) {
 
+    DnsRecord toDomain() {
+      return new DnsRecord(name, content, type);
+    }
   }
 
-  record Response(List<DnsRecord> result) {
+  record Response(List<CloudflareDnsRecord> result) {
 
   }
 
