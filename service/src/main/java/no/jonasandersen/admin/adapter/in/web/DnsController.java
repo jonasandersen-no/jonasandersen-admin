@@ -1,8 +1,7 @@
 package no.jonasandersen.admin.adapter.in.web;
 
-import java.util.List;
 import no.jonasandersen.admin.application.DnsService;
-import no.jonasandersen.admin.domain.DnsRecord;
+import no.jonasandersen.admin.domain.DnsRecords;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +20,9 @@ public class DnsController {
   @GetMapping
   public String getDnsRecords(Model model) {
 
-    List<DnsRecord> dnsRecords = service.listExistingDnsRecords(
+    DnsRecords dnsRecords = service.listExistingDnsRecords(
         dnsRecord -> dnsRecord.content().endsWith("cfargotunnel.com"));
-    model.addAttribute("dnsRecords", dnsRecords);
+    model.addAttribute("dnsRecords", dnsRecords.sortByContent().records());
     return "dns/index";
   }
 }

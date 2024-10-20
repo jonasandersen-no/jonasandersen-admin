@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import no.jonasandersen.admin.adapter.out.dns.StubDnsApi;
 import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.domain.DnsRecord;
+import no.jonasandersen.admin.domain.DnsRecords;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
 import org.jetbrains.annotations.Nullable;
@@ -69,14 +70,14 @@ public class DnsService {
     return null;
   }
 
-  public List<DnsRecord> listExistingDnsRecords() {
+  public DnsRecords listExistingDnsRecords() {
     return listExistingDnsRecords(dnsRecord -> true);
   }
 
-  public List<DnsRecord> listExistingDnsRecords(Predicate<DnsRecord> filter) {
+  public DnsRecords listExistingDnsRecords(Predicate<DnsRecord> filter) {
     List<DnsRecord> dnsRecords = dnsApi.listExistingDnsRecords();
-    return dnsRecords.stream()
+    return new DnsRecords(dnsRecords.stream()
         .filter(filter)
-        .toList();
+        .toList());
   }
 }
