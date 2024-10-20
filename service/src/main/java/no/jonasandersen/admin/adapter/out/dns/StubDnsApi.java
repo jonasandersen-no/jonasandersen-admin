@@ -5,8 +5,16 @@ import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.domain.DnsRecord;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StubDnsApi implements DnsApi {
+
+  private static final Logger log = LoggerFactory.getLogger(StubDnsApi.class);
+
+  public StubDnsApi() {
+    log.info("Initializing StubDnsApi");
+  }
 
   @Override
   public void overwriteDnsRecord(Ip ip, String owner, Subdomain subdomain) {

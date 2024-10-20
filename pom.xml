@@ -22,6 +22,7 @@
 
   <properties>
     <java.version>23</java.version>
+    <spring-framework.version>6.2.0-RC2</spring-framework.version>
     <spring-cloud.version>2023.0.3</spring-cloud.version>
     <jte.version>3.1.10</jte.version>
   </properties>
@@ -66,7 +67,43 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
   <distributionManagement>
     <repository>
       <id>reposilite-releases</id>
