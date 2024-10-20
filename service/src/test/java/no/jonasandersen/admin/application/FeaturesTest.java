@@ -27,4 +27,15 @@ class FeaturesTest {
     Features.setFeature(Feature.LINODE_STUB, false);
     assertThat(Features.getAllFeatures()).hasSize(1);
   }
+
+  @Test
+  void toggleFeature() {
+    assertThat(Features.getAllFeatures()).hasSize(0);
+    Features.setFeature(Feature.LINODE_STUB, false);
+    assertThat(Features.getAllFeatures()).hasSize(1);
+    assertThat(Features.getAllFeatures()).containsKey(Feature.LINODE_STUB).containsValue(false);
+    Features.setFeature(Feature.LINODE_STUB, true);
+    assertThat(Features.getAllFeatures()).containsKey(Feature.LINODE_STUB).containsValue(true);
+    assertThat(Features.getAllFeatures()).hasSize(1);
+  }
 }
