@@ -1,10 +1,10 @@
-package no.jonasandersen.admin.adapter.out.dns;
+package no.jonasandersen.admin.dns.cloudflare.internal;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import no.jonasandersen.admin.application.port.DnsApi;
-import no.jonasandersen.admin.domain.DnsRecord;
+import no.jonasandersen.admin.dns.api.DnsRecord;
+import no.jonasandersen.admin.dns.cloudflare.api.DnsApi;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-public class CloudflareApi implements DnsApi {
+class CloudflareApi implements DnsApi {
 
   private final Logger logger = LoggerFactory.getLogger(CloudflareApi.class);
   private final AdminProperties properties;

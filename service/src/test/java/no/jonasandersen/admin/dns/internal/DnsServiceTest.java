@@ -1,8 +1,12 @@
-package no.jonasandersen.admin.application;
+package no.jonasandersen.admin.dns.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.panfutov.result.Result;
+import java.util.UUID;
+import no.jonasandersen.admin.dns.api.DnsManager;
+import no.jonasandersen.admin.dns.api.DnsRecord;
+import no.jonasandersen.admin.dns.api.DnsRecords;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
 import org.junit.jupiter.api.Test;
@@ -11,7 +15,7 @@ class DnsServiceTest {
 
   @Test
   void failureMessageIfNullIpIsPassed() {
-    DnsService service = DnsService.configureForTest();
+    DnsManager service = DnsService.configureForTest();
 
     Result<?> result = service.createOrReplaceRecord(null, "owner", Subdomain.of("subdomain"));
     assertThat(result.isFailure()).isTrue();
@@ -20,7 +24,7 @@ class DnsServiceTest {
 
   @Test
   void failureMessageIfNullOrBlankOwnerIsPassed() {
-    DnsService service = DnsService.configureForTest();
+    DnsManager service = DnsService.configureForTest();
 
     Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), null, Subdomain.of("subdomain"));
     assertThat(result.isFailure()).isTrue();
@@ -33,7 +37,7 @@ class DnsServiceTest {
 
   @Test
   void failureMessageIfNullSubdomainIsPassed() {
-    DnsService service = DnsService.configureForTest();
+    DnsManager service = DnsService.configureForTest();
 
     Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", null);
     assertThat(result.isFailure()).isTrue();
@@ -42,7 +46,7 @@ class DnsServiceTest {
 
   @Test
   void failureCanContainMultipleErrors() {
-    DnsService service = DnsService.configureForTest();
+    DnsManager service = DnsService.configureForTest();
 
     Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), null, null);
     assertThat(result.isFailure()).isTrue();
@@ -55,9 +59,18 @@ class DnsServiceTest {
 
   @Test
   void successIfAllParametersAreValid() {
-    DnsService service = DnsService.configureForTest();
+    DnsManager service = DnsService.configureForTest();
 
     Result<?> result = service.createOrReplaceRecord(Ip.localhostIp(), "owner", Subdomain.of("subdomain"));
     assertThat(result.isSuccess()).isTrue();
+  }
+
+  @Test
+  void listExistingRecords() {
+    DnsManager service = DnsService.configureForTest(
+        config -> config.addDnsRecord(new DnsRecord("test", UUID.randomUUID().toString(), "CNAME")));
+
+    DnsRecords dnsRecords = service.listExistingDnsRecords();
+    assertThat(dnsRecords.records()).hasSize(1);
   }
 }

@@ -1,7 +1,7 @@
-package no.jonasandersen.admin.domain;
+package no.jonasandersen.admin.dns.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;

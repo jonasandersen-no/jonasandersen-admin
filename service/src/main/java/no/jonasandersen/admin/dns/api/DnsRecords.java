@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.domain;
+package no.jonasandersen.admin.dns.api;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,7 +1,7 @@
-package no.jonasandersen.admin.application.port;
+package no.jonasandersen.admin.dns.cloudflare.api;
 
 import java.util.List;
-import no.jonasandersen.admin.domain.DnsRecord;
+import no.jonasandersen.admin.dns.api.DnsRecord;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
 

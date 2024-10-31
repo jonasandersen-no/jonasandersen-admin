@@ -1,7 +1,6 @@
 package no.jonasandersen.admin.infrastructure;
 
 import com.jcraft.jsch.JSchException;
-import no.jonasandersen.admin.adapter.out.dns.CloudflareApi;
 import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
@@ -9,13 +8,11 @@ import no.jonasandersen.admin.application.AccessControl;
 import no.jonasandersen.admin.application.ControlCenterProperties;
 import no.jonasandersen.admin.application.DefaultAccessControl;
 import no.jonasandersen.admin.application.DeleteLinodeInstance;
-import no.jonasandersen.admin.application.DnsService;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.LinodeVolumeService;
 import no.jonasandersen.admin.application.ServerGenerator;
 import no.jonasandersen.admin.application.ThemeService;
 import no.jonasandersen.admin.application.port.AccessControlRepository;
-import no.jonasandersen.admin.application.port.DnsApi;
 import no.jonasandersen.admin.application.port.ServerApi;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.domain.Feature;
@@ -47,11 +44,6 @@ class CoreConfiguration {
   }
 
   @Bean
-  DnsApi dnsApi(AdminProperties properties) {
-    return new CloudflareApi(properties);
-  }
-
-  @Bean
   LinodeVolumeService linodeVolumeService(ServerApi serverApi) {
     return LinodeVolumeService.create(serverApi);
   }
@@ -73,11 +65,6 @@ class CoreConfiguration {
     String rootPassword = properties.linode().rootPassword();
     return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword), FileExecutor.create(),
         controlCenterProperties);
-  }
-
-  @Bean
-  DnsService dnsService(DnsApi dnsApi) {
-    return DnsService.create(dnsApi);
   }
 
   @Bean

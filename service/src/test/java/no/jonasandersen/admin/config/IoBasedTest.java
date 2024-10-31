@@ -1,7 +1,7 @@
 package no.jonasandersen.admin.config;
 
-import no.jonasandersen.admin.adapter.out.dns.StubDnsApi;
-import no.jonasandersen.admin.application.port.DnsApi;
+import no.jonasandersen.admin.dns.cloudflare.api.DnsApi;
+import no.jonasandersen.admin.dns.cloudflare.internal.StubDnsApi;
 import no.jonasandersen.admin.infrastructure.TestSecurityConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
