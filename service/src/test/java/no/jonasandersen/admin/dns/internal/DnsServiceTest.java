@@ -7,6 +7,7 @@ import java.util.UUID;
 import no.jonasandersen.admin.dns.api.DnsManager;
 import no.jonasandersen.admin.dns.api.DnsRecord;
 import no.jonasandersen.admin.dns.api.DnsRecords;
+import no.jonasandersen.admin.dns.api.Domain;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,7 @@ class DnsServiceTest {
     DnsManager service = DnsService.configureForTest(
         config -> config.addDnsRecord(new DnsRecord("test", UUID.randomUUID().toString(), "CNAME")));
 
-    DnsRecords dnsRecords = service.listExistingDnsRecords();
+    DnsRecords dnsRecords = service.listExistingDnsRecords(Domain.JONASANDERSEN_NO);
     assertThat(dnsRecords.records()).hasSize(1);
   }
 }

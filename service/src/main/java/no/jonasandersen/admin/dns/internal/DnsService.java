@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import no.jonasandersen.admin.dns.api.DnsManager;
 import no.jonasandersen.admin.dns.api.DnsRecord;
 import no.jonasandersen.admin.dns.api.DnsRecords;
+import no.jonasandersen.admin.dns.api.Domain;
 import no.jonasandersen.admin.dns.cloudflare.api.DnsApi;
 import no.jonasandersen.admin.dns.cloudflare.internal.StubDnsApi;
 import no.jonasandersen.admin.domain.Ip;
@@ -33,13 +34,13 @@ class DnsService implements DnsManager {
   }
 
   @Override
-  public DnsRecords listExistingDnsRecords() {
-    return listExistingDnsRecords(dnsRecord -> true);
+  public DnsRecords listExistingDnsRecords(Domain domain) {
+    return listExistingDnsRecords(dnsRecord -> true, domain);
   }
 
   @Override
-  public DnsRecords listExistingDnsRecords(Predicate<DnsRecord> filter) {
-    List<DnsRecord> dnsRecords = dnsApi.listExistingDnsRecords();
+  public DnsRecords listExistingDnsRecords(Predicate<DnsRecord> filter, Domain domain) {
+    List<DnsRecord> dnsRecords = dnsApi.listExistingDnsRecords(domain);
     return new DnsRecords(dnsRecords.stream()
         .filter(filter)
         .toList());

@@ -17,7 +17,7 @@ public interface DnsManager {
    */
   Result<Void> createOrReplaceRecord(Ip ip, String owner, Subdomain subdomain);
 
-  DnsRecords listExistingDnsRecords();
+  DnsRecords listExistingDnsRecords(Domain domain);
 
-  DnsRecords listExistingDnsRecords(Predicate<DnsRecord> filter);
+  DnsRecords listExistingDnsRecords(Predicate<DnsRecord> filter, Domain domain);
 }

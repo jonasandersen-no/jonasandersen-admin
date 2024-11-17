@@ -11,7 +11,8 @@ import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "jonasandersen.admin")
 @Validated
-public record AdminProperties(@Valid Minecraft minecraft, @Valid Cloudflare cloudflare,
+public record AdminProperties(@Valid Minecraft minecraft, @Valid Cloudflare cloudflareBjoggis,
+                              @Valid Cloudflare cloudflareJonasandersen,
                               @Valid Linode linode, @Valid ControlCenter controlCenter, @NotNull String defaultTheme,
                               Map<Feature, Boolean> features,
                               @Valid Actuator actuator) {
@@ -30,8 +31,7 @@ public record AdminProperties(@Valid Minecraft minecraft, @Valid Cloudflare clou
   }
 
   @Valid
-  public record Cloudflare(@NotNull String apiKey, @NotNull String zoneId,
-                           @NotNull String dnsRecordId) {
+  public record Cloudflare(@NotNull String apiKey, @NotNull String dnsRecordId, @NotNull String zoneId) {
 
   }
 

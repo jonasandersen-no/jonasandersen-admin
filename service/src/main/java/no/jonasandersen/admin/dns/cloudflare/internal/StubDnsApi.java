@@ -3,6 +3,7 @@ package no.jonasandersen.admin.dns.cloudflare.internal;
 import java.util.ArrayList;
 import java.util.List;
 import no.jonasandersen.admin.dns.api.DnsRecord;
+import no.jonasandersen.admin.dns.api.Domain;
 import no.jonasandersen.admin.dns.cloudflare.api.DnsApi;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.Subdomain;
@@ -30,7 +31,7 @@ public class StubDnsApi implements DnsApi {
   }
 
   @Override
-  public List<DnsRecord> listExistingDnsRecords() {
+  public List<DnsRecord> listExistingDnsRecords(Domain domain) {
     return List.copyOf(dnsRecords);
   }
 }

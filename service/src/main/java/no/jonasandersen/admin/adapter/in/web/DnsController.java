@@ -1,7 +1,9 @@
 package no.jonasandersen.admin.adapter.in.web;
 
+import java.util.List;
 import no.jonasandersen.admin.dns.api.DnsManager;
 import no.jonasandersen.admin.dns.api.DnsRecords;
+import no.jonasandersen.admin.dns.api.Domain;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,7 @@ public class DnsController {
     this.manager = manager;
   }
 
-  record Domain(String rootDomain, DnsRecords dnsRecords) {
+  record DomainRecord(String rootDomain, DnsRecords dnsRecords) {
 
   }
 
@@ -25,8 +27,16 @@ public class DnsController {
   public String getDnsRecords(Model model) {
 
     DnsRecords dnsRecords = manager.listExistingDnsRecords(
-        dnsRecord -> dnsRecord.content().endsWith("cfargotunnel.com"));
-    model.addAttribute("dnsRecords", dnsRecords.sortByContent().records());
+        dnsRecord -> dnsRecord.content().endsWith("cfargotunnel.com"),
+        Domain.JONASANDERSEN_NO);
+
+    DnsRecords dnsRecords2 = manager.listExistingDnsRecords(
+        dnsRecord -> dnsRecord.content().endsWith("cfargotunnel.com"),
+        Domain.BJOGGIS_COM);
+
+    model.addAttribute("domains", List.of(
+        new DomainRecord("jonasandersen.no", dnsRecords.sortByContent()),
+        new DomainRecord("bjoggis.com", dnsRecords2.sortByContent())));
     return "dns/index";
   }
 }

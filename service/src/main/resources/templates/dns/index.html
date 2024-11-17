@@ -7,22 +7,25 @@
 <body>
 <div th:replace="~{fragments/main :: navigation}"></div>
 <main class="container">
-  <table>
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Content</th>
-      <th>Type</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="record: ${dnsRecords}">
-      <td th:text="${record.name()}"></td>
-      <td th:text="${record.content()}"></td>
-      <td th:text="${record.type()}"></td>
-    </tr>
-    </tbody>
-  </table>
+  <div th:each="domain : ${domains}">
+    <h3 th:text="${domain.rootDomain()}"></h3>
+    <table>
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Content</th>
+        <th>Type</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="record: ${domain.dnsRecords().records()}">
+        <td th:text="${record.name()}"></td>
+        <td th:text="${record.content()}"></td>
+        <td th:text="${record.type()}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </main>
 <footer>
   <div th:replace="~{fragments/main :: footer}"></div>

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class CloudflareDnsConfiguration {
 
   @Bean
-  DnsApi dnsApi(AdminProperties properties) {
-    return new CloudflareApi(properties);
+  DnsApi dnsApi(AdminProperties properties, ZoneSelector zoneSelector) {
+    return new CloudflareApi(properties, zoneSelector);
   }
 }
