@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <th:block th:fragment="baseHead">
     <meta charset="utf-8">
@@ -35,11 +36,13 @@
                aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:classappend="${currentPath.startsWith('/linode')} ? 'active' : ''"
+            <a class="nav-link"
+               th:classappend="${currentPath.startsWith('/linode')} ? 'active' : ''"
                href="/linode">Linode</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:classappend="${currentPath.startsWith('/control-center')} ? 'active' : ''"
+            <a class="nav-link"
+               th:classappend="${currentPath.startsWith('/control-center')} ? 'active' : ''"
                href="/control-center">Control Center</a>
           </li>
           <li class="nav-item">
@@ -47,9 +50,18 @@
                href="/menu">Menu</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:classappend="${currentPath.startsWith('/settings')} ? 'active' : ''"
+            <a class="nav-link"
+               th:classappend="${currentPath.startsWith('/settings')} ? 'active' : ''"
                href="/settings">Settings</a>
           </li>
+          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+              <a class="nav-link"
+                 th:classappend="${currentPath.startsWith('/swagger-ui')} ? 'active' : ''"
+                 href="/swagger-ui">Swagger</a>
+            </li>
+          </th:block>
+
         </ul>
         <span class="m-auto me-0" th:text="${loggedInUser}"></span>
       </div>
