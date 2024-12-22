@@ -12,6 +12,7 @@ import org.assertj.core.data.TemporalUnitWithinOffset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 class DefaultStoreMeasurementTest extends IoBasedTest {
 
@@ -19,6 +20,7 @@ class DefaultStoreMeasurementTest extends IoBasedTest {
   private CrudMeasurementRepository repository;
 
   @Autowired
+  @Qualifier("storeMeasurement")
   private StoreMeasurement storeMeasurement;
 
   @BeforeEach
