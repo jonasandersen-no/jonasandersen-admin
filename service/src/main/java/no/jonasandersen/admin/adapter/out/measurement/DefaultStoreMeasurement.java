@@ -19,6 +19,7 @@ class DefaultStoreMeasurement implements StoreMeasurement {
     MeasurementDbo dbo = new MeasurementDbo();
     dbo.setTemperature(measurement.celsius().value());
     dbo.setHumidity(measurement.humidity().value());
+    dbo.setTimestamp(measurement.timestamp());
     MeasurementDbo saved = repository.save(dbo);
     log.info("Stored measurement: {}", saved);
   }
