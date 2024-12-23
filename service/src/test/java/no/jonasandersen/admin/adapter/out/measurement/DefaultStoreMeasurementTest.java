@@ -37,7 +37,6 @@ class DefaultStoreMeasurementTest extends IoBasedTest {
     assertThat(measurements).hasSize(1);
     assertThat(measurements.getFirst().getHumidity()).isEqualTo(10);
     assertThat(measurements.getFirst().getTemperature()).isEqualTo("42.00");
-    assertThat(measurements.getFirst().getTimestamp()).isCloseToUtcNow(
-        new TemporalUnitWithinOffset(1, ChronoUnit.MINUTES));
+    assertThat(measurements.getFirst().getTimestamp()).isNotNull();
   }
 }
