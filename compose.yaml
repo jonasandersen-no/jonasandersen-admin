@@ -30,6 +30,14 @@ services:
       - internal
     ports:
       - "9090:9090"
+  loki:
+    image: grafana/loki:3.3.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - internal
+
 #  alertmanager:
 #    image: prom/alertmanager:latest
 #    volumes:
