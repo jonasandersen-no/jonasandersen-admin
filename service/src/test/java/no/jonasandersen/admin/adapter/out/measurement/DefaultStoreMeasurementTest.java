@@ -2,13 +2,11 @@ package no.jonasandersen.admin.adapter.out.measurement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.temporal.ChronoUnit;
 import no.jonasandersen.admin.application.port.StoreMeasurement;
 import no.jonasandersen.admin.config.IoBasedTest;
 import no.jonasandersen.admin.domain.Measurement;
 import no.jonasandersen.admin.domain.Measurement.Celsius;
 import no.jonasandersen.admin.domain.Measurement.Humidity;
-import org.assertj.core.data.TemporalUnitWithinOffset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
