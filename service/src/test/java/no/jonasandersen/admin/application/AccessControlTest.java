@@ -11,7 +11,7 @@ import no.jonasandersen.admin.domain.UserAlreadyExistsException;
 import no.jonasandersen.admin.domain.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 
-public class AccessControlTest {
+class AccessControlTest {
 
   @Test
   void allowUser() {

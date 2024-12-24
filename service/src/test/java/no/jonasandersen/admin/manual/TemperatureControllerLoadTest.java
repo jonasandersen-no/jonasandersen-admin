@@ -20,7 +20,6 @@ class TemperatureControllerLoadTest {
   @Test
   void run() throws URISyntaxException, IOException, InterruptedException {
     String temperature = "42";
-    String humidity = "10";
 
     for (int i = 0; i < 5; i++) {
       send(i + temperature, String.valueOf(new Random().nextInt(10)));
@@ -63,8 +62,8 @@ class TemperatureControllerLoadTest {
   }
 
   /**
-   * Ensures the given temperature string is exactly 5 characters long and contains only numbers. If the string is
-   * longer or shorter, it adjusts it to be 5 characters long.
+   * Ensures the given temperature string is exactly 5 characters long and contains only numbers. If
+   * the string is longer or shorter, it adjusts it to be 5 characters long.
    *
    * @param temperature the original temperature string
    * @return the adjusted temperature string
