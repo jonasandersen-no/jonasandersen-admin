@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.function.Supplier;
 import no.jonasandersen.admin.application.port.StoreMeasurement;
 import no.jonasandersen.admin.domain.Measurement;
 import org.slf4j.Logger;
@@ -16,10 +15,10 @@ class AsyncStoreMeasurement implements StoreMeasurement {
   private static final Logger log = LoggerFactory.getLogger(AsyncStoreMeasurement.class);
   private final Queue<Measurement> measurements = new ConcurrentLinkedQueue<>();
   private final StoreMeasurement delegate;
-  private final Supplier<Boolean> checkDatabaseConnection;
+  private final CheckDatabaseConnection checkDatabaseConnection;
 
   AsyncStoreMeasurement(StoreMeasurement delegate,
-      Supplier<Boolean> checkDatabaseConnection) {
+      CheckDatabaseConnection checkDatabaseConnection) {
     this.delegate = delegate;
     this.checkDatabaseConnection = checkDatabaseConnection;
   }
@@ -32,7 +31,7 @@ class AsyncStoreMeasurement implements StoreMeasurement {
   @Scheduled(cron = "0 * * * * *")
   void storeAsync() {
 
-    if (!checkDatabaseConnection.get()) {
+    if (!checkDatabaseConnection.check()) {
       return;
     }
 
@@ -44,7 +43,9 @@ class AsyncStoreMeasurement implements StoreMeasurement {
       try {
         delegate.store(measurement);
       } catch (Exception e) {
-        log.error("Something went wrong when storing measurement: {}. Adding measurement back to queue", measurement, e);
+        log.error(
+            "Something went wrong when storing measurement: {}. Adding measurement back to queue",
+            measurement, e);
         failedMeasurements.add(measurement);
       }
     }

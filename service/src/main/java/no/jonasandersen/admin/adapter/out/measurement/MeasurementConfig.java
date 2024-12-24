@@ -1,7 +1,6 @@
 package no.jonasandersen.admin.adapter.out.measurement;
 
 import jakarta.persistence.EntityManager;
-import java.util.function.Supplier;
 import no.jonasandersen.admin.application.port.StoreMeasurement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,12 +17,12 @@ public class MeasurementConfig {
   @Bean
   @Primary
   StoreMeasurement asyncStoreMeasurement(StoreMeasurement storeMeasurement,
-      Supplier<Boolean> checkDatabaseConnection) {
+      CheckDatabaseConnection checkDatabaseConnection) {
     return new AsyncStoreMeasurement(storeMeasurement, checkDatabaseConnection);
   }
 
   @Bean
-  Supplier<Boolean> checkDatabaseConnection(EntityManager entityManager) {
-    return new CheckDatabaseConnection(entityManager);
+  CheckDatabaseConnection checkDatabaseConnection(EntityManager entityManager) {
+    return new DeaultCheckDatabaseConnection(entityManager);
   }
 }

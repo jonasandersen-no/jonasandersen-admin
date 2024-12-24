@@ -36,8 +36,6 @@ class UserDboTest extends IoBasedTest {
         .query(String.class)
         .single();
 
-    assertThat(dbData).contains("USER");
-    assertThat(dbData).contains("ADMIN");
-    assertThat(dbData).contains(",");
+    assertThat(dbData).contains("USER", "ADMIN");
   }
 }

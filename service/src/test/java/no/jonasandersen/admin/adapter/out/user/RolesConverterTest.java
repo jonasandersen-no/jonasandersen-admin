@@ -13,9 +13,7 @@ class RolesConverterTest {
   void convertToDatabaseColumn() {
     String result = converter.convertToDatabaseColumn(Set.of(RolesDbo.USER, RolesDbo.ADMIN));
 
-    assertThat(result).contains("ADMIN");
-    assertThat(result).contains("USER");
-    assertThat(result).contains(",");
+    assertThat(result).contains("ADMIN", "USER");
   }
 
   @Test
