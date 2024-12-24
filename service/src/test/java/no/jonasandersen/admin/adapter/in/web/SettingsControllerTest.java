@@ -1,15 +1,9 @@
 package no.jonasandersen.admin.adapter.in.web;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
 import no.jonasandersen.admin.adapter.out.user.CrudPermittedUserRepository;
 import no.jonasandersen.admin.adapter.out.user.PermittedUserDbo;
 import no.jonasandersen.admin.config.IoBasedTest;
@@ -17,55 +11,60 @@ import no.jonasandersen.admin.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 @WithMockUser
 class SettingsControllerTest extends IoBasedTest {
 
   @Autowired
-  private MockMvc mockMvc;
+  private MockMvcTester mockMvc;
 
   @Autowired
   private CrudPermittedUserRepository repository;
 
   @Test
   @WithMockUser(roles = "ADMIN")
-  void addUserToAccessControl() throws Exception {
-
-    mockMvc.perform(post("/settings/allow-user")
-            .with(csrf())
-            .param("email", "email@example.com"))
-        .andExpect(status().is3xxRedirection());
+  void addUserToAccessControl() {
+    mockMvc.post().uri("/settings/allow-user")
+        .with(csrf())
+        .param("email", "email@example.com")
+        .assertThat()
+        .hasStatus3xxRedirection();
 
     assertThat(repository.count()).isEqualTo(1);
   }
 
   @Test
-  void nonAdminCanNotAllowUser() throws Exception {
-    mockMvc.perform(post("/settings/allow-user")
-            .with(csrf())
-            .param("email", "email@example.com"))
-        .andExpect(status().isForbidden());
+  void nonAdminCanNotAllowUser() {
+    mockMvc.post().uri("/settings/allow-user")
+        .with(csrf())
+        .param("email", "email@example.com")
+        .assertThat()
+        .hasStatus(HttpStatus.FORBIDDEN);
   }
 
   @Test
-  void allowedUserShownInModel() throws Exception {
+  void allowedUserShownInModel() {
     PermittedUserDbo entity = new PermittedUserDbo();
     entity.setEmail("email@example.com");
     repository.save(entity);
 
-    mockMvc.perform(get("/settings"))
-        .andExpect(status().isOk())
-        .andExpect(model().attribute("allowedUsers", hasItem(User.createUser("email@example.com"))));
+    mockMvc.get().uri("/settings")
+        .assertThat()
+        .hasStatusOk()
+        .model().extracting("allowedUsers")
+        .isEqualTo(List.of(User.createUser("email@example.com")));
   }
 
   @Test
-  void nonAdminCanNotRevokeAccess() throws Exception {
-    mockMvc.perform(delete("/settings/revoke-user")
-            .with(csrf())
-            .param("email", "email@example.com"))
-        .andExpect(status().isForbidden());
+  void nonAdminCanNotRevokeAccess() {
+    mockMvc.delete().uri("/settings/revoke-user")
+        .with(csrf())
+        .param("email", "email@example.com")
+        .assertThat()
+        .hasStatus(HttpStatus.FORBIDDEN);
   }
 
   @Test
@@ -75,14 +74,16 @@ class SettingsControllerTest extends IoBasedTest {
     entity.setEmail("email@example.com");
     repository.save(entity);
 
-    mockMvc.perform(delete("/settings/revoke-user")
+    mockMvc.delete().uri("/settings/revoke-user")
         .with(csrf())
-        .param("email", "email@example.com"))
-        .andExpect(status().is3xxRedirection());
+        .param("email", "email@example.com")
+        .assertThat()
+        .hasStatus3xxRedirection();
 
-    mockMvc.perform(get("/settings"))
-        .andExpect(status().isOk())
-        .andExpect(model().attribute("allowedUsers", hasSize(0)));
+    mockMvc.get().uri("/settings")
+        .assertThat()
+        .hasStatusOk()
+        .model().hasFieldOrPropertyWithValue("allowedUsers", List.of());
   }
 
   @AfterEach
