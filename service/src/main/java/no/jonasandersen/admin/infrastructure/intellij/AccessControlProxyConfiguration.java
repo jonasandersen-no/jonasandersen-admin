@@ -19,6 +19,9 @@ class AccessControlProxyConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(AccessControlProxyConfiguration.class);
 
+  private AccessControlProxyConfiguration() {
+  }
+
   @Bean
   static BeanPostProcessor accessControlProxyBeanPostProcessor() {
     return new BeanPostProcessor() {

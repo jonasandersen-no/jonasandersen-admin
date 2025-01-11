@@ -23,6 +23,9 @@ class UserServiceProxyConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(UserServiceProxyConfiguration.class);
 
+  private UserServiceProxyConfiguration() {
+  }
+
   @Bean
   static BeanPostProcessor userServiceProxyBeanPostProcessor() {
     return new BeanPostProcessor() {
