@@ -24,12 +24,6 @@ public record Measurement(LocalDateTime timestamp, Celsius celsius, Humidity hum
     return first + "." + last;
   }
 
-  public Measurement(LocalDateTime timestamp, Celsius celsius, Humidity humidity) {
-    this.timestamp = timestamp;
-    this.celsius = celsius;
-    this.humidity = humidity;
-  }
-
   public record Celsius(String value) {
 
   }

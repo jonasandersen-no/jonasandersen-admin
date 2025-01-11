@@ -46,7 +46,7 @@ class UserServiceProxyConfiguration {
           try {
             return new ProxiedUserService(userService);
           } catch (Exception e) {
-            throw new RuntimeException(e);
+            // no-op
           }
         }
         return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
