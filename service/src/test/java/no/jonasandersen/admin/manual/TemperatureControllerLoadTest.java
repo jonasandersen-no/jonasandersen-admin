@@ -7,10 +7,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Random;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 @Tag("manual")
 class TemperatureControllerLoadTest {
@@ -23,7 +25,7 @@ class TemperatureControllerLoadTest {
 
     for (int i = 0; i < 5; i++) {
       send(i + temperature, String.valueOf(new Random().nextInt(10)));
-      Thread.sleep(1000);
+      Awaitility.waitAtMost(Duration.ofSeconds(1));
     }
   }
 
@@ -62,8 +64,8 @@ class TemperatureControllerLoadTest {
   }
 
   /**
-   * Ensures the given temperature string is exactly 5 characters long and contains only numbers. If
-   * the string is longer or shorter, it adjusts it to be 5 characters long.
+   * Ensures the given temperature string is exactly 5 characters long and contains only numbers. If the string is
+   * longer or shorter, it adjusts it to be 5 characters long.
    *
    * @param temperature the original temperature string
    * @return the adjusted temperature string

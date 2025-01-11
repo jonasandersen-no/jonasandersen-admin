@@ -20,7 +20,7 @@ public class ActuatorUserDetailsService implements UserDetailsService {
     Actuator actuator = properties.actuator();
     username = actuator.username();
     String password = actuator.password();
-    encryptedPassword = password.replaceAll("'", "");
+    encryptedPassword = password.replace("'", "");
   }
 
   @Override

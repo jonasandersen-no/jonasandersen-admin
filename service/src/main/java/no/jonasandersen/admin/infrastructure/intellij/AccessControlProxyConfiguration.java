@@ -45,7 +45,7 @@ class AccessControlProxyConfiguration {
             try {
               allowUser(email);
             } catch (UserAlreadyExistsException _) {
-
+              // no-op
             }
 
             return delegate.isUserAllowed(email);
@@ -61,7 +61,7 @@ class AccessControlProxyConfiguration {
           try {
             return new ProxiedAccessControl(accessControl);
           } catch (Exception e) {
-            throw new RuntimeException(e);
+            // no-op
           }
         }
         return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);
