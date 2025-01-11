@@ -20,7 +20,7 @@ public class AccessControlProxyConfiguration {
   private static final Logger log = LoggerFactory.getLogger(AccessControlProxyConfiguration.class);
 
   @Bean
-  BeanPostProcessor accessControlProxyBeanPostProcessor() {
+  static BeanPostProcessor accessControlProxyBeanPostProcessor() {
     return new BeanPostProcessor() {
       @Override
       public Object postProcessAfterInitialization(@NotNull Object bean, @NotNull String beanName)

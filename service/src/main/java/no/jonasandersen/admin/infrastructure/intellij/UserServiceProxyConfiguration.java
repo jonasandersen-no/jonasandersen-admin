@@ -24,7 +24,7 @@ public class UserServiceProxyConfiguration {
   private static final Logger log = LoggerFactory.getLogger(UserServiceProxyConfiguration.class);
 
   @Bean
-  BeanPostProcessor userServiceProxyBeanPostProcessor() {
+  static BeanPostProcessor userServiceProxyBeanPostProcessor() {
     return new BeanPostProcessor() {
       @Override
       public Object postProcessAfterInitialization(@NotNull Object bean, @NotNull String beanName)

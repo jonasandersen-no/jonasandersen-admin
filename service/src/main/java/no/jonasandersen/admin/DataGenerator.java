@@ -40,6 +40,6 @@ public class DataGenerator implements ApplicationListener<ApplicationReadyEvent>
       }
       return;
     }
-    log.info("Not using stubs, skipping data generation.");
+    log.debug("Not using stubs, skipping data generation.");
   }
 }
