@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("intellij")
-public class UserServiceProxyConfiguration {
+class UserServiceProxyConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(UserServiceProxyConfiguration.class);
 

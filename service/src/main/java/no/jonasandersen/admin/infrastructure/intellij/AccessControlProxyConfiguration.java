@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("intellij")
-public class AccessControlProxyConfiguration {
+class AccessControlProxyConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(AccessControlProxyConfiguration.class);
 
