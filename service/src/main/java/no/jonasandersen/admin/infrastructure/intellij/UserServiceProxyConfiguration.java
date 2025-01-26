@@ -23,9 +23,6 @@ class UserServiceProxyConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(UserServiceProxyConfiguration.class);
 
-  private UserServiceProxyConfiguration() {
-  }
-
   @Bean
   static BeanPostProcessor userServiceProxyBeanPostProcessor() {
     return new BeanPostProcessor() {
@@ -37,8 +34,9 @@ class UserServiceProxyConfiguration {
           @Override
           public User storeOrLoadUser(String email) {
             User user = delegate.storeOrLoadUser(email);
-            log.info("Injecting all roles for user {}", user.username());
-            return new User(user.username(), Set.of(Roles.values()));
+            Set<Roles> roles = Set.of(Roles.values());
+            log.info("Injecting roles {} for user {}", roles, user.username());
+            return new User(user.username(), roles);
           }
         }
 

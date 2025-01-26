@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.adapter.in.web;
 
 import no.jonasandersen.admin.application.MenuService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/menu")
+@Secured("ROLE_ADMIN")
 public class MenuController {
 
 

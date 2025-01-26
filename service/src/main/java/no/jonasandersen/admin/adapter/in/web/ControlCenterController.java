@@ -3,6 +3,7 @@ package no.jonasandersen.admin.adapter.in.web;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import no.jonasandersen.admin.application.ServerGenerator;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/control-center")
+@Secured("ROLE_ADMIN")
 public class ControlCenterController {
 
 
