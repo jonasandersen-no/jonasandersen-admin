@@ -35,20 +35,26 @@
             <a class="nav-link" th:classappend="${currentPath.equals('/')} ? 'active' : ''"
                aria-current="page" href="/">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link"
-               th:classappend="${currentPath.startsWith('/linode')} ? 'active' : ''"
-               href="/linode">Linode</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link"
-               th:classappend="${currentPath.startsWith('/control-center')} ? 'active' : ''"
-               href="/control-center">Control Center</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:classappend="${currentPath.startsWith('/menu')} ? 'active' : ''"
-               href="/menu">Menu</a>
-          </li>
+          <th:block sec:authorize="hasRole('ROLE_SERVER')">
+            <li class="nav-item">
+              <a class="nav-link"
+                 th:classappend="${currentPath.startsWith('/linode')} ? 'active' : ''"
+                 href="/linode">Linode</a>
+            </li>
+          </th:block>
+          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+              <a class="nav-link"
+                 th:classappend="${currentPath.startsWith('/control-center')} ? 'active' : ''"
+                 href="/control-center">Control Center</a>
+            </li>
+          </th:block>
+          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+              <a class="nav-link" th:classappend="${currentPath.startsWith('/menu')} ? 'active' : ''"
+                 href="/menu">Menu</a>
+            </li>
+          </th:block>
           <li class="nav-item">
             <a class="nav-link"
                th:classappend="${currentPath.startsWith('/settings')} ? 'active' : ''"
