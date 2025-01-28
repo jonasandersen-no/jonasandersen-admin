@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:attr="data-bs-theme=${currentStoredTheme}">
 <head>
   <th:block th:fragment="baseHead">
     <meta charset="utf-8">
@@ -69,7 +69,14 @@
           </th:block>
 
         </ul>
-        <span class="m-auto me-0" th:text="${loggedInUser}"></span>
+        <div class="m-auto me-0">
+          <div class="dropdown">
+            <p class="m-0" th:text="${loggedInUser}"></p>
+            <div class="dropdown-content">
+              <a href="/logout">Logout</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
