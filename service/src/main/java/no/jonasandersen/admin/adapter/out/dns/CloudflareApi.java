@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class CloudflareApi implements DnsApi {
 
+  public static final String AUTO_CREATED = "auto-created:";
   private final Logger logger = LoggerFactory.getLogger(CloudflareApi.class);
   private final AdminProperties properties;
   private final RestTemplate restTemplate;
@@ -41,7 +42,7 @@ public class CloudflareApi implements DnsApi {
 
     if (existing.isPresent()) {
       logger.info("DNS record for {} already exists. Updating it.", subdomain);
-      updateExistingDnsRecord(ip, subdomain, owner);
+      updateExistingDnsRecord(ip, existing.get().id(), subdomain, owner);
     } else {
       logger.info("DNS record for {} does not exist. Creating it.", subdomain);
       createNewDnsRecord(ip, owner, subdomain);
@@ -50,12 +51,14 @@ public class CloudflareApi implements DnsApi {
 
   private void createNewDnsRecord(Ip ip, String owner, Subdomain subdomain) {
     restTemplate.postForObject("/zones/%s/dns_records".formatted(properties.cloudflare().zoneId()),
-        new Request(ip.value(), subdomain.value(), false, "A", "Created by " + owner, List.of("auto-created"), 60),
+        new Request(ip.value(), subdomain.value(), false, "A", AUTO_CREATED + owner, List.of(), 60),
         Response.class);
   }
 
   private List<DnsRecord> listExistingDnsRecords() {
-    Response result = restTemplate.getForObject("/zones/%s/dns_records".formatted(properties.cloudflare().zoneId()),
+    logger.info("Listing existing DNS records");
+    Response result = restTemplate.getForObject(
+        "/zones/%s/dns_records?type=A".formatted(properties.cloudflare().zoneId()),
         Response.class);
 
     if (result == null) {
@@ -63,18 +66,20 @@ public class CloudflareApi implements DnsApi {
       return List.of();
     }
 
+    result.result.forEach(dnsRecord -> logger.info("Found DNS record: {}", dnsRecord));
+
     return result.result();
   }
 
-  private void updateExistingDnsRecord(Ip ip, Subdomain subdomain, String owner) {
-    restTemplate.put("/zones/%s/dns_records/%s".formatted(properties.cloudflare().zoneId(),
-        properties.cloudflare().dnsRecordId()), new Request(ip.value(), subdomain.value(),
-        false, "A", "auto-created:" + owner, List.of(), 60));
+  private void updateExistingDnsRecord(Ip ip, String dnsRecordId, Subdomain subdomain, String owner) {
+    restTemplate.put("/zones/%s/dns_records/%s".formatted(
+        properties.cloudflare().zoneId(),
+        dnsRecordId), new Request(ip.value(), subdomain.value(),
+        false, "A", AUTO_CREATED + owner, List.of(), 60));
   }
 
   static @NotNull Predicate<DnsRecord> createdByApplication() {
-    return result -> (result.comment()) != null && (result.comment()
-        .equalsIgnoreCase("Updated by Spillhuset") || result.comment().contains("auto-created:"));
+    return result -> (result.comment()) != null && result.comment().startsWith(AUTO_CREATED);
   }
 
   record Request(String content, String name, boolean proxied, String type, String comment,
