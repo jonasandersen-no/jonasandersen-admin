@@ -68,11 +68,18 @@ class CoreConfiguration {
   }
 
   @Bean
-  ServerGenerator serverGenerator(LinodeService linodeService, AdminProperties properties,
-      ControlCenterProperties controlCenterProperties) throws JSchException {
+  ServerGenerator serverGenerator(LinodeService linodeService,
+      AdminProperties properties,
+      ControlCenterProperties controlCenterProperties,
+      DnsService dnsService,
+      DeleteLinodeInstance deleteLinodeInstance) throws JSchException {
     String rootPassword = properties.linode().rootPassword();
-    return ServerGenerator.create(linodeService, SensitiveString.of(rootPassword), FileExecutor.create(),
-        controlCenterProperties);
+    return ServerGenerator.create(linodeService,
+        SensitiveString.of(rootPassword),
+        FileExecutor.create(),
+        controlCenterProperties,
+        dnsService,
+        deleteLinodeInstance);
   }
 
   @Bean

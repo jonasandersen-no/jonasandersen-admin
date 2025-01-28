@@ -119,12 +119,12 @@ public class LinodeController {
   @PostMapping("/create")
   String createResponse(@RequestParam ServerType serverType, @RequestParam String subdomain) {
     subdomain = subdomain.replaceAll("[\n\r]", "_");
-    log.info("Creating server of type {} with subdomain '{}'", serverType, subdomain);
 
     if (subdomain.isBlank()) {
       log.info("Creating server of type {} with auto generated subdomain", serverType);
       serverGenerator.generate(UsernameResolver.getUsernameAsString(), serverType);
     } else {
+      log.info("Creating server of type {} with subdomain '{}'", serverType, subdomain);
       serverGenerator.generate(UsernameResolver.getUsernameAsString(), serverType, Subdomain.of(subdomain));
     }
     return REDIRECT_LINODE;

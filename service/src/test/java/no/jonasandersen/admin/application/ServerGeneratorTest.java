@@ -74,7 +74,8 @@ class ServerGeneratorTest {
         service,
         SensitiveString.of("password"),
         fileExecutor,
-        ControlCenterProperties.configureForTest());
+        ControlCenterProperties.configureForTest(), DnsService.configureForTest(),
+        DeleteLinodeInstance.configureForTest());
 
     assertDoesNotThrow(
         () -> generator.install(instance.linodeId(), SensitiveString.of("password"), ServerType.MINECRAFT));
@@ -95,7 +96,9 @@ class ServerGeneratorTest {
         service,
         SensitiveString.of("password"),
         fileExecutor,
-        ControlCenterProperties.configureForTest());
+        ControlCenterProperties.configureForTest(),
+        DnsService.configureForTest(),
+        DeleteLinodeInstance.configureForTest());
 
     ServerGeneratorResponse response = generator.generate(Username.create("someUsername"), ServerType.MINECRAFT);
 
