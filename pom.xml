@@ -19,7 +19,19 @@
     <module>service</module>
     <module>api-contract</module>
   </modules>
-
+  <url/>
+  <licenses>
+    <license/>
+  </licenses>
+  <developers>
+    <developer/>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:jonasandersen-no/jonasandersen-admin.git</connection>
+    <developerConnection>scm:git:git@github.com:jonasandersen-no/jonasandersen-admin.git</developerConnection>
+    <tag/>
+    <url/>
+  </scm>
   <properties>
     <java.version>23</java.version>
     <spring-cloud.version>2024.0.0</spring-cloud.version>
