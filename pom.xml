@@ -12,7 +12,7 @@
 
   <groupId>no.jonasandersen.admin</groupId>
   <artifactId>jonasandersen-admin-parent</artifactId>
-  <version>0</version>
+  <version>0.0.64-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
