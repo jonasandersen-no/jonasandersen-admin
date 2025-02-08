@@ -72,7 +72,7 @@
     <repository>
       <id>reposilite-releases</id>
       <name>Reposilite Releases</name>
-      <url>https://maven.bjoggis.com/releases</url>
+      <url>https://maven.jonasandersen.no/releases</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -83,7 +83,7 @@
     <repository>
       <id>reposilite-snapshots</id>
       <name>Reposilite Snapshots</name>
-      <url>https://maven.bjoggis.com/snapshots</url>
+      <url>https://maven.jonasandersen.no/snapshots</url>
       <releases>
         <enabled>false</enabled>
       </releases>
@@ -104,12 +104,12 @@
     <repository>
       <id>reposilite-releases</id>
       <name>Reposilite Releases</name>
-      <url>https://maven.bjoggis.com/releases</url>
+      <url>https://maven.jonasandersen.no/releases</url>
     </repository>
     <snapshotRepository>
       <id>reposilite-snapshots</id>
       <name>Reposilite Snapshots</name>
-      <url>https://maven.bjoggis.com/snapshots</url>
+      <url>https://maven.jonasandersen.no/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 
