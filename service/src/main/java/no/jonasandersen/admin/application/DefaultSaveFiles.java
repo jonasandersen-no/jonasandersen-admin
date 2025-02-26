@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import no.jonasandersen.admin.application.port.SaveFiles;
 import no.jonasandersen.admin.domain.SaveFile;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DefaultSaveFiles implements SaveFiles {
 
   private List<SaveFile> files = new ArrayList<>();
+
+  public DefaultSaveFiles() {
+  }
 
   @Override
   public SaveFile create(String name) {

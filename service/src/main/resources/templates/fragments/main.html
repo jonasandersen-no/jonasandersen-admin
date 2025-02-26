@@ -42,6 +42,13 @@
                  href="/linode">Linode</a>
             </li>
           </th:block>
+          <th:block sec:authorize="hasRole('ROLE_SERVER')">
+            <li class="nav-item">
+              <a class="nav-link"
+                 th:classappend="${currentPath.startsWith('/save-file')} ? 'active' : ''"
+                 href="/save-file">Save Files</a>
+            </li>
+          </th:block>
           <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <li class="nav-item">
               <a class="nav-link"
