@@ -10,7 +10,7 @@
 
   <groupId>no.jonasandersen.admin</groupId>
   <artifactId>jonasandersen-admin-parent</artifactId>
-  <version>67</version>
+  <version>68-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -27,8 +27,8 @@
   <scm>
     <connection>scm:git:git@github.com:jonasandersen-no/jonasandersen-admin.git</connection>
     <developerConnection>scm:git:git@github.com:jonasandersen-no/jonasandersen-admin.git</developerConnection>
-    <tag>v67</tag>
-    <url />
+    <tag></tag>
+    <url></url>
   </scm>
   <properties>
     <java.version>23</java.version>
