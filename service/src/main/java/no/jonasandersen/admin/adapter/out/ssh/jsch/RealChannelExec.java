@@ -36,6 +36,11 @@ public final class RealChannelExec implements ChannelExecWrapper {
   }
 
   @Override
+  public int getExitStatus() {
+    return channel.getExitStatus();
+  }
+
+  @Override
   public void setErrStream(OutputStream errStream) {
     channel.setErrStream(errStream);
   }

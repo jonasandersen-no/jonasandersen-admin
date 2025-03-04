@@ -1,8 +1,5 @@
 package no.jonasandersen.admin.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.util.Collections;
@@ -17,8 +14,11 @@ import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.domain.Username;
+import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.instancio.Instancio;
 import org.instancio.Select;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -75,10 +75,11 @@ class ServerGeneratorTest {
         SensitiveString.of("password"),
         fileExecutor,
         ControlCenterProperties.configureForTest(), DnsService.configureForTest(),
-        DeleteLinodeInstance.configureForTest());
+        DeleteLinodeInstance.configureForTest(), new Linode("base", "token", "password", 1L),
+        LinodeVolumeService.createNull());
 
     assertDoesNotThrow(
-        () -> generator.install(instance.linodeId(), SensitiveString.of("password"), ServerType.MINECRAFT));
+        () -> generator.install(instance.linodeId(), SensitiveString.of("password")));
 
   }
 
@@ -98,7 +99,8 @@ class ServerGeneratorTest {
         fileExecutor,
         ControlCenterProperties.configureForTest(),
         DnsService.configureForTest(),
-        DeleteLinodeInstance.configureForTest());
+        DeleteLinodeInstance.configureForTest(), new Linode("base", "token", "password", 1L),
+        LinodeVolumeService.createNull());
 
     ServerGeneratorResponse response = generator.generate(Username.create("someUsername"), ServerType.MINECRAFT);
 

@@ -27,6 +27,6 @@ public class ServerGeneratorListener {
   public void onInstanceCreated(InstanceCreatedEvent event) {
     log.info("Received instance created event: {}", event);
     String password = properties.minecraft().password();
-    serverGenerator.install(event.linodeId(), SensitiveString.of(password), event.serverType());
+    serverGenerator.install(event.linodeId(), SensitiveString.of(password));
   }
 }

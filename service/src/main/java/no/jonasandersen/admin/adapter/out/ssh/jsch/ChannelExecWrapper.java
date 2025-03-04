@@ -15,6 +15,8 @@ public sealed interface ChannelExecWrapper permits RealChannelExec, StubChannelE
 
   boolean isClosed();
 
+  int getExitStatus();
+
   void setErrStream(OutputStream errStream);
 
   InputStream getInputStream() throws IOException;

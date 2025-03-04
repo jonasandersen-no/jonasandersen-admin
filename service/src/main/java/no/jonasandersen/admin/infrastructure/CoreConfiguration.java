@@ -72,14 +72,17 @@ class CoreConfiguration {
       AdminProperties properties,
       ControlCenterProperties controlCenterProperties,
       DnsService dnsService,
-      DeleteLinodeInstance deleteLinodeInstance) throws JSchException {
+      DeleteLinodeInstance deleteLinodeInstance,
+      LinodeVolumeService linodeVolumeService) throws JSchException {
     String rootPassword = properties.linode().rootPassword();
     return ServerGenerator.create(linodeService,
         SensitiveString.of(rootPassword),
         FileExecutor.create(),
         controlCenterProperties,
         dnsService,
-        deleteLinodeInstance);
+        deleteLinodeInstance,
+        properties.linode(),
+        linodeVolumeService);
   }
 
   @Bean

@@ -31,6 +31,12 @@ public final class StubChannelExec implements ChannelExecWrapper {
   }
 
   @Override
+  public int getExitStatus() {
+    log.info("StubChannelExec: getExitStatus()");
+    return 0;
+  }
+
+  @Override
   public void setErrStream(OutputStream errStream) {
     log.info("StubChannelExec: setErrStream({})", errStream);
   }

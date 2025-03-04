@@ -61,7 +61,7 @@ public class CommandExecutor {
     session.disconnect();
   }
 
-  public String executeCommand(String command) throws JSchException, IOException, InterruptedException {
+  public ExecutedCommand executeCommand(String command) throws JSchException, IOException, InterruptedException {
     if (session == null || !session.isConnected()) {
       throw new IllegalStateException("Session is not connected");
     }
@@ -75,7 +75,7 @@ public class CommandExecutor {
       String channelOutput = getChannelOutput(exec, exec.getInputStream());
       log.info("Command output: {}", channelOutput);
       outputListener.track(command);
-      return channelOutput;
+      return new ExecutedCommand(channelOutput, exec.getExitStatus());
     } finally {
       exec.disconnect();
     }
