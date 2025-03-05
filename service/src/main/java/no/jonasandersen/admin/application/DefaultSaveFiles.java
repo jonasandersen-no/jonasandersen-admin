@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import no.jonasandersen.admin.application.port.SaveFiles;
 import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFile.SaveFileSnapshot;
+import no.jonasandersen.admin.domain.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DefaultSaveFiles implements SaveFiles {
 
-  private List<SaveFile> files = new ArrayList<>();
+  private List<SaveFileSnapshot> files = new ArrayList<>();
 
   public DefaultSaveFiles() {
   }
@@ -17,12 +19,27 @@ public class DefaultSaveFiles implements SaveFiles {
   @Override
   public SaveFile create(String name) {
     SaveFile saveFile = new SaveFile(name);
-    files.add(saveFile);
+    files.add(saveFile.snapshot());
     return saveFile;
   }
 
   @Override
   public List<SaveFile> findAll() {
-    return List.copyOf(files);
+    return files.stream()
+        .map(SaveFile::new)
+        .toList();
+  }
+
+  @Override
+  public List<SaveFile> findAllBy(User owner) {
+    return files.stream()
+        .filter(snapshot -> snapshot.owner().equals(owner))
+        .map(SaveFile::new)
+        .toList();
+  }
+
+  @Override
+  public void add(SaveFile saveFile) {
+    files.add(saveFile.snapshot());
   }
 }

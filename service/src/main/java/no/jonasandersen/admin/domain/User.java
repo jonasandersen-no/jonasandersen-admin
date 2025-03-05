@@ -40,21 +40,19 @@ public final class User {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (obj == null || obj.getClass() != this.getClass()) {
+  public boolean equals(Object o) {
+    if (!(o instanceof User user)) {
       return false;
     }
-    var that = (User) obj;
-    return Objects.equals(this.username, that.username) &&
-        Objects.equals(this.roles, that.roles);
+
+    return username.equals(user.username) && Objects.equals(roles, user.roles);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, roles);
+    int result = username.hashCode();
+    result = 31 * result + Objects.hashCode(roles);
+    return result;
   }
 
   @Override
