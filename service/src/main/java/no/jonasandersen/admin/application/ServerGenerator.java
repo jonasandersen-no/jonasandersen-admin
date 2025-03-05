@@ -199,6 +199,10 @@ public class ServerGenerator {
 
   public static boolean downloadAndRunDockerCompose(ConnectionInfo connectionInfo, String mountDir)
       throws IOException, JSchException, InterruptedException {
+    if (Features.isEnabled(Feature.LINODE_STUB)) {
+      return true;
+    }
+
     CommandExecutor commandExecutor = CommandExecutor.create(connectionInfo);
     try {
       commandExecutor.connect();
@@ -243,6 +247,10 @@ public class ServerGenerator {
 
   public static boolean mountVolume(ConnectionInfo connectionInfo, String volumeName, String mountPath)
       throws IOException, JSchException {
+    if (Features.isEnabled(Feature.LINODE_STUB)) {
+      return true;
+    }
+
     CommandExecutor commandExecutor = CommandExecutor.create(connectionInfo);
     try {
       commandExecutor.connect();
@@ -269,6 +277,9 @@ public class ServerGenerator {
   public static void ensureFilesystemExists(ConnectionInfo connectionInfo, String volumeName, long maxWaitTime,
       int retryInterval)
       throws IOException, InterruptedException, JSchException {
+    if (Features.isEnabled(Feature.LINODE_STUB)) {
+      return;
+    }
     long startTime = System.currentTimeMillis();
     boolean filesystemExists = false;
 
@@ -318,6 +329,10 @@ public class ServerGenerator {
 
   public static void waitForPort(String ip, int port, int timeout, int retryInterval, long maxWaitTime)
       throws InterruptedException, IOException {
+    if (Features.isEnabled(Feature.LINODE_STUB)) {
+      return;
+    }
+
     long startTime = System.currentTimeMillis();
     boolean connected = false;
 
@@ -343,6 +358,10 @@ public class ServerGenerator {
   public static void waitForVolumeDevice(ConnectionInfo connectionInfo, String volumeDevice, long maxWaitTime,
       int retryInterval)
       throws IOException, InterruptedException, JSchException {
+    if (Features.isEnabled(Feature.LINODE_STUB)) {
+      return;
+    }
+
     long startTime = System.currentTimeMillis();
     boolean deviceFound = false;
 
