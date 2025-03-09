@@ -20,6 +20,12 @@
     <format>
       <label>
         <pattern>app=${springAppName},host=${HOSTNAME},level=%level</pattern>
+        <structuredMetadataPattern>
+          level = %level,
+          thread = %thread,
+          class = %logger,
+          traceId = %mdc{traceId:-none}
+        </structuredMetadataPattern>
         <readMarkers>true</readMarkers>
       </label>
       <message>
