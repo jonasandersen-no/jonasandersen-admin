@@ -12,6 +12,8 @@ public interface UserRepository {
 
   void createNewUser(User user);
 
+  Long getIdByEmail(String email);
+
   static UserRepository configureForTest() {
     return new InMemoryUserRepository();
   }
@@ -33,6 +35,11 @@ public interface UserRepository {
     @Override
     public void createNewUser(User user) {
       users.put(user.username().value(), user);
+    }
+
+    @Override
+    public Long getIdByEmail(String email) {
+      return 0L;
     }
   }
 }

@@ -39,4 +39,9 @@ class DefaultUserRepository implements UserRepository {
 
     repository.save(userDbo);
   }
+
+  @Override
+  public Long getIdByEmail(String email) {
+    return repository.findIdByUsername(email);
+  }
 }
