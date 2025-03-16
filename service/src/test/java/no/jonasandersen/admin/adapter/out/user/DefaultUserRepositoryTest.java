@@ -3,6 +3,7 @@ package no.jonasandersen.admin.adapter.out.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
+import no.jonasandersen.admin.adapter.out.savefile.JdbcSaveFileRepository;
 import no.jonasandersen.admin.application.port.UserRepository;
 import no.jonasandersen.admin.config.IoBasedTest;
 import no.jonasandersen.admin.domain.Roles;
@@ -19,11 +20,17 @@ class DefaultUserRepositoryTest extends IoBasedTest {
   private CrudUserDboRepository crudRepository;
 
   @Autowired
+  private JdbcSaveFileRepository crudSaveFileRepository;
+
+  @Autowired
   private UserRepository repository;
 
   @BeforeEach
   @AfterEach
   void setUp() {
+    // Find a way to not rely on deletion in order to make the test pass
+
+    crudSaveFileRepository.deleteAll();
     crudRepository.deleteAll();
   }
 
