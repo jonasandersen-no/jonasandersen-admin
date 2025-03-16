@@ -7,39 +7,39 @@ services:
       POSTGRES_DB: admin
     ports:
       - "5432:5432"
-  grafana:
-    image: grafana/grafana:latest
-    networks:
-      - internal
-    volumes:
-      - grafana-storage:/var/lib/grafana
-      - ./grafana:/etc/grafana/provisioning/datasources
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-      - GF_AUTH_DISABLE_LOGIN_FORM=true
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=password
-    ports:
-      - "3000:3000"
-  prometheus:
-    image: prom/prometheus:latest
-    volumes:
-      - ./prometheus:/etc/prometheus/
-      - prometheus-storage:/prometheus
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    networks:
-      - internal
-    ports:
-      - "9090:9090"
-  loki:
-    image: grafana/loki:latest
-    ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
-    networks:
-      - internal
+#  grafana:
+#    image: grafana/grafana:latest
+#    networks:
+#      - internal
+#    volumes:
+#      - grafana-storage:/var/lib/grafana
+#      - ./grafana:/etc/grafana/provisioning/datasources
+#    environment:
+#      - GF_AUTH_ANONYMOUS_ENABLED=true
+#      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+#      - GF_AUTH_DISABLE_LOGIN_FORM=true
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=password
+#    ports:
+#      - "3000:3000"
+#  prometheus:
+#    image: prom/prometheus:latest
+#    volumes:
+#      - ./prometheus:/etc/prometheus/
+#      - prometheus-storage:/prometheus
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    networks:
+#      - internal
+#    ports:
+#      - "9090:9090"
+#  loki:
+#    image: grafana/loki:latest
+#    ports:
+#      - "3100:3100"
+#    command: -config.file=/etc/loki/local-config.yaml
+#    networks:
+#      - internal
 
 #  alertmanager:
 #    image: prom/alertmanager:latest

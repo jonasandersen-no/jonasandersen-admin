@@ -47,8 +47,7 @@ class SettingsControllerTest extends IoBasedTest {
 
   @Test
   void allowedUserShownInModel() {
-    PermittedUserDbo entity = new PermittedUserDbo();
-    entity.setEmail("email@example.com");
+    PermittedUserDbo entity = new PermittedUserDbo(null, "email@example.com");
     repository.save(entity);
 
     mockMvc.get().uri("/settings")
@@ -70,8 +69,7 @@ class SettingsControllerTest extends IoBasedTest {
   @Test
   @WithMockUser(roles = "ADMIN")
   void revokeAccessOfAllowedUser() throws Exception {
-    PermittedUserDbo entity = new PermittedUserDbo();
-    entity.setEmail("email@example.com");
+    PermittedUserDbo entity = new PermittedUserDbo(null, "email@example.com");
     repository.save(entity);
 
     mockMvc.delete().uri("/settings/revoke-user")

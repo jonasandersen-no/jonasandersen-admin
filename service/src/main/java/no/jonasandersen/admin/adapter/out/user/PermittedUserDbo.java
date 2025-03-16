@@ -1,24 +1,29 @@
 package no.jonasandersen.admin.adapter.out.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
 import no.jonasandersen.admin.domain.User;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
-@Table(name = "permitted_users", indexes = @Index(columnList = "email"))
-public class PermittedUserDbo {
+@Table(name = "permitted_users")
+public final class PermittedUserDbo {
 
   @Id
-  @GeneratedValue
   private Long id;
-
   private String email;
 
-  public Long id() {
+  public PermittedUserDbo() {
+  }
+
+  public PermittedUserDbo(Long id, String email) {
+    this.id = id;
+    this.email = email;
+  }
+
+  public User toUser() {
+    return User.createUser(this.email);
+  }
+
+  public Long getId() {
     return id;
   }
 
@@ -26,15 +31,19 @@ public class PermittedUserDbo {
     this.id = id;
   }
 
-  public @Email String email() {
+  public String getEmail() {
     return email;
   }
 
-  public void setEmail(@Email String email) {
+  public void setEmail(String email) {
     this.email = email;
   }
 
-  public User toUser() {
-    return User.createUser(this.email);
+  @Override
+  public String toString() {
+    return "PermittedUserDbo[" +
+           "id=" + id + ", " +
+           "email=" + email + ']';
   }
+
 }

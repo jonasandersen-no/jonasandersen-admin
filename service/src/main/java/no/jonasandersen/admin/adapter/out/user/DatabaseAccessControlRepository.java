@@ -18,8 +18,7 @@ class DatabaseAccessControlRepository implements AccessControlRepository {
 
   @Override
   public void addUser(User user) {
-    PermittedUserDbo entity = new PermittedUserDbo();
-    entity.setEmail(user.username().value());
+    PermittedUserDbo entity = new PermittedUserDbo(null, user.username().value());
     repository.save(entity);
   }
 

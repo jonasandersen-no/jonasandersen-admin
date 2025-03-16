@@ -52,8 +52,7 @@ class DatabaseAccessControlRepositoryTest extends IoBasedTest {
 
   @Test
   void removeUser() {
-    PermittedUserDbo entity = new PermittedUserDbo();
-    entity.setEmail("email@example.com");
+    PermittedUserDbo entity = new PermittedUserDbo(null, "email@example.com");
     db.save(entity);
 
     repository.removeUser(User.createUser("email@example.com"));
