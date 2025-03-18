@@ -1,5 +1,7 @@
 package no.jonasandersen.admin.adapter.out.measurement;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import no.jonasandersen.admin.application.port.StoreMeasurement;
 import no.jonasandersen.admin.domain.Measurement;
 import org.slf4j.Logger;
@@ -19,7 +21,11 @@ class DefaultStoreMeasurement implements StoreMeasurement {
     MeasurementDbo dbo = new MeasurementDbo();
     dbo.setTemperature(measurement.celsius().value());
     dbo.setHumidity(measurement.humidity().value());
-    dbo.setTimestamp(measurement.timestamp());
+    if (measurement.timestamp() != null) {
+      dbo.setTimestamp(measurement.timestamp());
+    } else {
+      dbo.setTimestamp(LocalDateTime.now(ZoneId.of("UTC")));
+    }
     MeasurementDbo saved = repository.save(dbo);
     log.info("Stored measurement: {}", saved);
   }

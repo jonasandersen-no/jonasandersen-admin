@@ -1,17 +1,13 @@
 package no.jonasandersen.admin.adapter.out.measurement;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
+@Table(name = "measurement_dbo")
 public class MeasurementDbo {
 
   @Id
-  @GeneratedValue
   private Long id;
 
   private String temperature;
@@ -19,13 +15,6 @@ public class MeasurementDbo {
   private int humidity;
 
   private LocalDateTime timestamp;
-
-  @PrePersist
-  public void prePersist() {
-    if (timestamp == null) {
-      timestamp = LocalDateTime.now(ZoneId.of("UTC"));
-    }
-  }
 
   public Long getId() {
     return id;
@@ -62,10 +51,10 @@ public class MeasurementDbo {
   @Override
   public String toString() {
     return "MeasurementDbo{" +
-        "id=" + id +
-        ", temperature='" + temperature + '\'' +
-        ", humidity=" + humidity +
-        ", timestamp=" + timestamp +
-        '}';
+           "id=" + id +
+           ", temperature='" + temperature + '\'' +
+           ", humidity=" + humidity +
+           ", timestamp=" + timestamp +
+           '}';
   }
 }
