@@ -1,21 +1,14 @@
 package no.jonasandersen.admin.adapter.out.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 
-@Entity
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
 @Table(name = "user_settings")
 class UserSettingsDbo {
 
   @Id
-  @GeneratedValue
   private Long id;
-
-  @OneToOne(mappedBy = "settings")
-  private UserDbo user;
 
   private String theme;
 
@@ -23,7 +16,6 @@ class UserSettingsDbo {
   }
 
   public UserSettingsDbo(UserDbo userDbo, String value) {
-    this.user = userDbo;
     this.theme = value;
 
     userDbo.setSettings(this);
@@ -37,13 +29,6 @@ class UserSettingsDbo {
     this.id = id;
   }
 
-  public UserDbo getUser() {
-    return user;
-  }
-
-  public void setUser(UserDbo user) {
-    this.user = user;
-  }
 
   public String getTheme() {
     return theme;
@@ -56,9 +41,8 @@ class UserSettingsDbo {
   @Override
   public String toString() {
     return "UserSettingsDbo{" +
-        "id=" + id +
-        ", user=" + user +
-        ", theme='" + theme + '\'' +
-        '}';
+           "id=" + id +
+           ", theme='" + theme + '\'' +
+           '}';
   }
 }

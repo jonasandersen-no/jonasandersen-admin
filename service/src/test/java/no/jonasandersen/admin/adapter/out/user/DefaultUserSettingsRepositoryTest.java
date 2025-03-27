@@ -15,24 +15,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 class DefaultUserSettingsRepositoryTest extends IoBasedTest {
 
-  private static final Logger log = LoggerFactory.getLogger(
-      DefaultUserSettingsRepositoryTest.class);
+  private static final Logger log = LoggerFactory.getLogger(DefaultUserSettingsRepositoryTest.class);
   @Autowired
   private UserSettingsRepository repository;
-  @Autowired
-  private CrudUserSettingsRepository jdbcRepository;
   @Autowired
   private CrudUserDboRepository userRepository;
 
   @Test
   @Transactional
   void findTheme() {
-    UserDbo user = userRepository.save(new UserDbo(Username.create("findThemeUsername")));
-
-    UserSettingsDbo saved = jdbcRepository.save(new UserSettingsDbo(user, "theme"));
+    UserDbo created = new UserDbo(Username.create("findThemeUsername"));
+    UserDbo saved = userRepository.save(created);
+    UserSettingsDbo settings = new UserSettingsDbo(saved, "theme");
+    created.setSettings(settings);
+    saved = userRepository.save(created);
 
     log.info("Saved: {}", saved);
-    Optional<Theme> theme = repository.findTheme(new Username(saved.getUser().getUsername()));
+    Optional<Theme> theme = repository.findTheme(new Username(saved.getUsername()));
 
     log.info("Theme: {}", theme);
     assertThat(theme).isNotEmpty()

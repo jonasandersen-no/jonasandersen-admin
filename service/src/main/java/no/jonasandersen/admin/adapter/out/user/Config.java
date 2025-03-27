@@ -6,16 +6,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Config {
+class Config {
 
   @Bean
-  UserSettingsRepository userSettingsRepository(CrudUserSettingsRepository repository,
-      CrudUserDboRepository userRepository) {
-    return new DefaultUserSettingsRepository(repository, userRepository);
+  UserSettingsRepository userSettingsRepository(CrudUserDboRepository userRepository) {
+    return new DefaultUserSettingsRepository(userRepository);
   }
 
   @Bean
   UserRepository userRepository(CrudUserDboRepository repository) {
     return DefaultUserRepository.create(repository);
   }
+
 }

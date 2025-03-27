@@ -1,35 +1,27 @@
 package no.jonasandersen.admin.adapter.out.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import java.util.Set;
 import java.util.stream.Collectors;
 import no.jonasandersen.admin.domain.User;
 import no.jonasandersen.admin.domain.Username;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
 @Table(name = "users")
 class UserDbo {
 
   @Id
-  @GeneratedValue
   Long id;
 
-  @Column(unique = true, nullable = false)
   String username;
 
-  @Convert(converter = RolesConverter.class)
+  @Transient
   Set<RolesDbo> roles;
 
-  @OneToOne(orphanRemoval = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "settings")
+  @MappedCollection(idColumn = "id")
   private UserSettingsDbo settings;
 
   public UserDbo() {
@@ -42,6 +34,17 @@ class UserDbo {
   public UserDbo(Username username, Set<RolesDbo> roles) {
     this.username = username.value();
     this.roles = Set.copyOf(roles);
+  }
+
+  @Column("roles")
+  public String getRolesAsString() {
+    RolesSetToStringConverter converter = new RolesSetToStringConverter();
+    return converter.convert(roles);
+  }
+
+  public void setRolesAsString(String roles) {
+    StringToRolesSetConverter converter = new StringToRolesSetConverter();
+    this.roles = converter.convert(roles);
   }
 
   public Long getId() {
