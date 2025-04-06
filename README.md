@@ -34,7 +34,7 @@ Docker image configuration. Use to toggle between native image and jvm image.
   <env>
     <!--              <BPL_SPRING_AOT_ENABLED>true</BPL_SPRING_AOT_ENABLED>-->
     <!--              <BP_JVM_CDS_ENABLED>true</BP_JVM_CDS_ENABLED>-->
-    <BP_JVM_VERSION>23</BP_JVM_VERSION>
+    <BP_JVM_VERSION>24</BP_JVM_VERSION>
     <!--              <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:-AddAllFileSystemProviders</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-->
     <!--              <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>-->
   </env>
