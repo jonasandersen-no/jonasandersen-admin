@@ -5,19 +5,15 @@ import com.panfutov.result.Result;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.time.Duration;
 import java.util.function.UnaryOperator;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.adapter.out.ssh.CommandExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.ExecutedCommand;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
-import no.jonasandersen.admin.adapter.out.ssh.Retryer;
-import no.jonasandersen.admin.domain.CommandExecutionFailedException;
 import no.jonasandersen.admin.domain.ConnectionInfo;
 import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.domain.Ip;
-import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.PasswordConnectionInfo;
 import no.jonasandersen.admin.domain.PrivateKeyConnectionInfo;
@@ -399,16 +395,6 @@ public class ServerGenerator {
   }
 
 
-  public void install(LinodeId from, SensitiveString password) {
-    LinodeInstance instance = service.findInstanceById(from)
-        .orElseThrow(() -> new IllegalArgumentException("Instance not found"));
-
-    PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("root", SensitiveString.of(password.value()),
-        new Ip(instance.ip().getFirst()), 22);
-
-    runFile(connectionInfo, "setup-minecraft.txt");
-  }
-
   public String generateViaAnsible(String command) throws JSchException, IOException, InterruptedException {
     String privateKey = controlCenterProperties.privateKeyFilePath();
     String username = controlCenterProperties.username();
@@ -423,22 +409,6 @@ public class ServerGenerator {
     ExecutedCommand result = commandExecutor.executeCommand(command);
     commandExecutor.disconnect();
     return result.output();
-  }
-
-  private void runFile(PasswordConnectionInfo connectionInfo, String file) {
-    Retryer.retry(() -> {
-      try {
-        log.info("Executing file: {}", file);
-        fileExecutor.setup(connectionInfo);
-        fileExecutor.parseFile(file);
-        log.info("Done executing file");
-      } catch (JSchException | IOException | InterruptedException e) {
-        log.warn("Failed to connect to instance: {}", e.getMessage());
-        throw new CommandExecutionFailedException(e);
-      } finally {
-        fileExecutor.cleanup();
-      }
-    }, 20, Duration.ofMinutes(1));
   }
 
   public static class Config {

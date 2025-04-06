@@ -1,5 +1,7 @@
 package no.jonasandersen.admin.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.util.Collections;
@@ -9,16 +11,13 @@ import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
 import no.jonasandersen.admin.adapter.out.ssh.CommandExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.domain.Ip;
-import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.domain.Username;
 import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.instancio.Instancio;
 import org.instancio.Select;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -56,31 +55,6 @@ class ServerGeneratorTest {
     generator.generate("owner", ServerType.MINECRAFT);
 
     assertThat(tracker.data().getFirst().value()).isEqualTo("Password123!");
-  }
-
-  @Test
-  void installingMinecraftServerTypeCallsFileExectuorWithCommands() throws JSchException {
-    LinodeInstanceApi instanceApi = Instancio.of(LinodeInstanceApi.class)
-        .set(Select.field(LinodeInstanceApi::tags), List.of("auto-created"))
-        .set(Select.field(LinodeInstanceApi::ipv4), List.of("127.0.0.1"))
-        .create();
-
-    LinodeService service = LinodeService.createNull(List.of(instanceApi), Collections.emptyList());
-
-    LinodeInstance instance = service.getInstances().getFirst();
-
-    FileExecutor fileExecutor = FileExecutor.createNull();
-    ServerGenerator generator = ServerGenerator.create(
-        service,
-        SensitiveString.of("password"),
-        fileExecutor,
-        ControlCenterProperties.configureForTest(), DnsService.configureForTest(),
-        DeleteLinodeInstance.configureForTest(), new Linode("base", "token", "password", 1L),
-        LinodeVolumeService.createNull());
-
-    assertDoesNotThrow(
-        () -> generator.install(instance.linodeId(), SensitiveString.of("password")));
-
   }
 
   @Test
