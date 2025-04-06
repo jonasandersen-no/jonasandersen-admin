@@ -6,13 +6,11 @@ import no.jonasandersen.admin.adapter.UsernameResolver;
 import no.jonasandersen.admin.application.DeleteLinodeInstance;
 import no.jonasandersen.admin.application.LinodeService;
 import no.jonasandersen.admin.application.ServerGenerator;
-import no.jonasandersen.admin.domain.InstanceCreatedEvent;
 import no.jonasandersen.admin.domain.InstanceNotFound;
 import no.jonasandersen.admin.domain.LinodeId;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.ServerType;
 import no.jonasandersen.admin.domain.Subdomain;
-import no.jonasandersen.admin.domain.VolumeId;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,25 +85,6 @@ public class LinodeController {
       // Remove subdomain from DNS?
     }
 
-    return REDIRECT_LINODE;
-  }
-
-  @PostMapping("/{linodeId}")
-  @Transactional
-  public String installMinecraft(@PathVariable Long linodeId, RedirectAttributes redirectAttrs) {
-    LinodeInstance instance = service.findInstanceById(LinodeId.from(linodeId)).orElseThrow();
-
-    if (!instance.status().equals("running")) {
-      redirectAttrs.addFlashAttribute(INFO_MESSAGE_VARIABLE, "Instance is not running");
-      return REDIRECT_LINODE;
-    }
-
-    Long volumeId = properties.linode().volumeId();
-
-    events.publishEvent(
-        new InstanceCreatedEvent(LinodeId.from(linodeId), VolumeId.from(volumeId), ServerType.MINECRAFT));
-
-    redirectAttrs.addFlashAttribute(INFO_MESSAGE_VARIABLE, "Minecraft server is being installed");
     return REDIRECT_LINODE;
   }
 
