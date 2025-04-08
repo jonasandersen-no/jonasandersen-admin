@@ -33,10 +33,10 @@ public class LinodeService {
     return createNull(List.of(), List.of());
   }
 
-  public static LinodeService createNull(List<LinodeInstanceApi> instances,
-      List<LinodeVolumeDto> volumes) {
-    return new LinodeService(LinodeServerApi.createNull(instances, volumes),
-        LinodeVolumeService.createNull());
+  public static LinodeService createNull(
+      List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
+    return new LinodeService(
+        LinodeServerApi.createNull(instances, volumes), LinodeVolumeService.createNull());
   }
 
   private LinodeService(ServerApi serverApi, LinodeVolumeService linodeVolumeService) {
@@ -62,37 +62,41 @@ public class LinodeService {
 
   public List<LinodeInstance> getInstances() {
     List<LinodeInstance> instances = serverApi.getInstances();
-    List<LinodeInstance> filteredList = instances.stream()
-        .filter(instance -> instance.tags().contains(AUTO_CREATED))
-        .toList();
+    List<LinodeInstance> filteredList =
+        instances.stream().filter(instance -> instance.tags().contains(AUTO_CREATED)).toList();
 
-    return filteredList.parallelStream()
-        .map(this::findVolumeForInstance)
-        .toList();
+    return filteredList.parallelStream().map(this::findVolumeForInstance).toList();
   }
 
   private @NotNull LinodeInstance findVolumeForInstance(LinodeInstance instance) {
-    List<LinodeVolume> volumesByInstance = linodeVolumeService.getVolumesByInstance(
-        instance.linodeId());
+    List<LinodeVolume> volumesByInstance =
+        linodeVolumeService.getVolumesByInstance(instance.linodeId());
 
-    List<String> volumeNames = volumesByInstance.stream()
-        .map(LinodeVolume::label)
-        .toList();
+    List<String> volumeNames = volumesByInstance.stream().map(LinodeVolume::label).toList();
 
-    return new LinodeInstance(instance.linodeId(), instance.ip(), instance.status(),
-        instance.label(), instance.tags(), volumeNames, instance.specs());
+    return new LinodeInstance(
+        instance.linodeId(),
+        instance.ip(),
+        instance.status(),
+        instance.label(),
+        instance.tags(),
+        volumeNames,
+        instance.specs());
   }
 
-  LinodeInstance createDefaultMinecraftInstance(String owner, SensitiveString password, Subdomain subdomain) {
-    return createInstance(owner, InstanceDetails.createDefaultMinecraft(password), subdomain, ServerType.MINECRAFT);
+  LinodeInstance createDefaultMinecraftInstance(
+      String owner, SensitiveString password, Subdomain subdomain) {
+    return createInstance(
+        owner, InstanceDetails.createDefaultMinecraft(password), subdomain, ServerType.MINECRAFT);
   }
 
-  LinodeInstance createInstance(String owner, InstanceDetails instanceDetails,
-      @NotNull Subdomain subdomain, ServerType serverType) {
-    InstanceDetails withTags = instanceDetails
-        .withPrincipalTag(owner)
-        .withServerType(serverType)
-        .withSubdomain(subdomain);
+  LinodeInstance createInstance(
+      String owner,
+      InstanceDetails instanceDetails,
+      @NotNull Subdomain subdomain,
+      ServerType serverType) {
+    InstanceDetails withTags =
+        instanceDetails.withPrincipalTag(owner).withServerType(serverType).withSubdomain(subdomain);
 
     return serverApi.createInstance(withTags);
   }

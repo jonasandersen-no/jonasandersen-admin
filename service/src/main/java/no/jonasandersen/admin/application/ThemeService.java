@@ -31,10 +31,12 @@ public class ThemeService {
   public static ThemeService configureForTest(UnaryOperator<Config> configure) {
     Config config = configure.apply(new Config());
 
-    UserSettingsRepository repository = UserSettingsRepository.configureForTest(config1 -> {
-      config.themes.forEach(config1::addTheme);
-      return config1;
-    });
+    UserSettingsRepository repository =
+        UserSettingsRepository.configureForTest(
+            config1 -> {
+              config.themes.forEach(config1::addTheme);
+              return config1;
+            });
 
     return new ThemeService(repository);
   }
@@ -49,7 +51,6 @@ public class ThemeService {
 
     log.info("No theme found for user: {}", username);
     return DEFAULT_THEME;
-
   }
 
   public void saveTheme(Username username, Theme theme) {

@@ -6,8 +6,10 @@ class AttachVolumeRequestBody {
 
   @JsonProperty("linode_id")
   private Long linodeId;
+
   @JsonProperty("config_id")
   private Long configId;
+
   @JsonProperty("persist_across_boots")
   private Boolean persistAcrossBoots;
 

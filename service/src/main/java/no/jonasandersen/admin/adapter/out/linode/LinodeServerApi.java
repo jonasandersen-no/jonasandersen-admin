@@ -50,8 +50,8 @@ public class LinodeServerApi implements ServerApi {
     return createNull(instances, List.of());
   }
 
-  public static LinodeServerApi createNull(List<LinodeInstanceApi> instances,
-      List<LinodeVolumeDto> volumes) {
+  public static LinodeServerApi createNull(
+      List<LinodeInstanceApi> instances, List<LinodeVolumeDto> volumes) {
     return new LinodeServerApi(new StubLinodeExchange(instances, volumes));
   }
 
@@ -63,8 +63,8 @@ public class LinodeServerApi implements ServerApi {
   public LinodeInstance createInstance(InstanceDetails instanceDetails) {
     logger.info("Creating instance with details: {}", instanceDetails);
 
-    LinodeInstanceApi linodeInstanceApi = linodeExchange.createInstance(
-        CreateInstanceRequest.from(instanceDetails));
+    LinodeInstanceApi linodeInstanceApi =
+        linodeExchange.createInstance(CreateInstanceRequest.from(instanceDetails));
     outputListener.track(linodeInstanceApi);
     return linodeInstanceApi.toDomain();
   }
@@ -73,7 +73,8 @@ public class LinodeServerApi implements ServerApi {
   public List<LinodeVolume> getVolumes() {
     Page<LinodeVolumeDto> volumes = linodeExchange.volumes();
 
-    return volumes.data().stream().map(
+    return volumes.data().stream()
+        .map(
             volume -> {
               VolumeId volumeId = new VolumeId(volume.id());
               LinodeId linodeId =
@@ -90,17 +91,14 @@ public class LinodeServerApi implements ServerApi {
 
     List<LinodeInstanceApi> data = list.data();
 
-    return data.stream()
-        .map(LinodeInstanceApi::toDomain)
-        .toList();
+    return data.stream().map(LinodeInstanceApi::toDomain).toList();
   }
 
   @Override
   public Optional<LinodeInstance> findInstanceById(LinodeId linodeId) {
     Optional<LinodeInstanceApi> linodeInstanceApi = linodeExchange.findInstanceById(linodeId.id());
 
-    return linodeInstanceApi
-        .map(LinodeInstanceApi::toDomain);
+    return linodeInstanceApi.map(LinodeInstanceApi::toDomain);
   }
 
   @Override
@@ -151,7 +149,7 @@ public class LinodeServerApi implements ServerApi {
 
   private static class StubLinodeExchange implements LinodeExchange {
 
-    private final static Logger logger = LoggerFactory.getLogger(StubLinodeExchange.class);
+    private static final Logger logger = LoggerFactory.getLogger(StubLinodeExchange.class);
 
     private final List<LinodeInstanceApi> instances;
     private final List<LinodeVolumeDto> volumes;
@@ -174,16 +172,15 @@ public class LinodeServerApi implements ServerApi {
 
     @Override
     public Optional<LinodeInstanceApi> findInstanceById(Long linodeId) {
-      return instances.stream()
-          .filter(instance -> linodeId.equals(instance.id()))
-          .findFirst();
+      return instances.stream().filter(instance -> linodeId.equals(instance.id())).findFirst();
     }
 
     @Override
     public Page<LinodeVolumeDto> volumes(String linodeId) {
-      List<LinodeVolumeDto> filteredList = volumes.stream()
-          .filter(volume -> volume.linodeId().equals(Long.valueOf(linodeId)))
-          .toList();
+      List<LinodeVolumeDto> filteredList =
+          volumes.stream()
+              .filter(volume -> volume.linodeId().equals(Long.valueOf(linodeId)))
+              .toList();
 
       return new Page<>(List.copyOf(filteredList), 0, 1, filteredList.size());
     }
@@ -201,25 +198,27 @@ public class LinodeServerApi implements ServerApi {
 
     @Override
     public LinodeInstanceApi createInstance(CreateInstanceRequest request) {
-      LinodeInstanceApi instance = new LinodeInstanceApi(id++,
-          request.label(),
-          "group",
-          "running",
-          LocalDateTime.now(),
-          LocalDateTime.now(),
-          request.type(),
-          List.of("127.0.0.1"),
-          "::1",
-          request.image(),
-          request.region(),
-          new Specs(81920, 4096, 2, 0, 4000),
-          new Alerts(100, 10, 10, 80, 10000),
-          new Backups(true, true, new Schedule("Saturday", "W22"), LocalDateTime.now()),
-          "kvm",
-          false,
-          List.copyOf(request.tags()),
-          "21e5aaacb4064de1951324ce58a2c41b",
-          false);
+      LinodeInstanceApi instance =
+          new LinodeInstanceApi(
+              id++,
+              request.label(),
+              "group",
+              "running",
+              LocalDateTime.now(),
+              LocalDateTime.now(),
+              request.type(),
+              List.of("127.0.0.1"),
+              "::1",
+              request.image(),
+              request.region(),
+              new Specs(81920, 4096, 2, 0, 4000),
+              new Alerts(100, 10, 10, 80, 10000),
+              new Backups(true, true, new Schedule("Saturday", "W22"), LocalDateTime.now()),
+              "kvm",
+              false,
+              List.copyOf(request.tags()),
+              "21e5aaacb4064de1951324ce58a2c41b",
+              false);
 
       if (request.volume()) {
         LinodeVolumeDto volume = new LinodeVolumeDto(id++, "volume", "active", instance.id());
@@ -239,5 +238,4 @@ public class LinodeServerApi implements ServerApi {
       return ResponseEntity.badRequest().build();
     }
   }
-
 }

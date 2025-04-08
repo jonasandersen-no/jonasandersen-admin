@@ -24,12 +24,7 @@ public record Measurement(LocalDateTime timestamp, Celsius celsius, Humidity hum
     return first + "." + last;
   }
 
-  public record Celsius(String value) {
+  public record Celsius(String value) {}
 
-  }
-
-  public record Humidity(int value) {
-
-  }
-
+  public record Humidity(int value) {}
 }

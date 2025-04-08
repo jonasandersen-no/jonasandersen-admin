@@ -14,7 +14,8 @@ class DefaultUserSettingsRepository implements UserSettingsRepository {
   private final CrudUserSettingsRepository repository;
   private final CrudUserDboRepository userRepository;
 
-  public DefaultUserSettingsRepository(CrudUserSettingsRepository repository, CrudUserDboRepository userRepository) {
+  public DefaultUserSettingsRepository(
+      CrudUserSettingsRepository repository, CrudUserDboRepository userRepository) {
     this.repository = repository;
     this.userRepository = userRepository;
   }
@@ -24,8 +25,7 @@ class DefaultUserSettingsRepository implements UserSettingsRepository {
   public Optional<Theme> findTheme(Username username) {
     Optional<UserSettingsDbo> userSettingsDbo = repository.findByUsername(username.value());
 
-    return userSettingsDbo.map(UserSettingsDbo::getTheme)
-        .map(Theme::new);
+    return userSettingsDbo.map(UserSettingsDbo::getTheme).map(Theme::new);
   }
 
   @Override
@@ -48,5 +48,4 @@ class DefaultUserSettingsRepository implements UserSettingsRepository {
       log.warn("User not found: {}", username);
     }
   }
-
 }

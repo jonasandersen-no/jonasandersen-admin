@@ -7,8 +7,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table(name = "measurement_dbo")
 public class MeasurementDbo {
 
-  @Id
-  private Long id;
+  @Id private Long id;
 
   private String temperature;
 
@@ -50,11 +49,16 @@ public class MeasurementDbo {
 
   @Override
   public String toString() {
-    return "MeasurementDbo{" +
-           "id=" + id +
-           ", temperature='" + temperature + '\'' +
-           ", humidity=" + humidity +
-           ", timestamp=" + timestamp +
-           '}';
+    return "MeasurementDbo{"
+        + "id="
+        + id
+        + ", temperature='"
+        + temperature
+        + '\''
+        + ", humidity="
+        + humidity
+        + ", timestamp="
+        + timestamp
+        + '}';
   }
 }

@@ -8,8 +8,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 public class UsernameResolver {
 
-  private UsernameResolver() {
-  }
+  private UsernameResolver() {}
 
   public static Username getUsername() {
     return Username.create(getUsernameAsString());

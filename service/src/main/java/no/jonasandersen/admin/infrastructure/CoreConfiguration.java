@@ -66,13 +66,16 @@ class CoreConfiguration {
   }
 
   @Bean
-  ServerGenerator serverGenerator(LinodeService linodeService,
+  ServerGenerator serverGenerator(
+      LinodeService linodeService,
       AdminProperties properties,
       DnsService dnsService,
       DeleteLinodeInstance deleteLinodeInstance,
-      LinodeVolumeService linodeVolumeService) throws JSchException {
+      LinodeVolumeService linodeVolumeService)
+      throws JSchException {
     String rootPassword = properties.linode().rootPassword();
-    return ServerGenerator.create(linodeService,
+    return ServerGenerator.create(
+        linodeService,
         SensitiveString.of(rootPassword),
         FileExecutor.create(),
         dnsService,
@@ -89,10 +92,11 @@ class CoreConfiguration {
   @Bean
   LinodeExchange linodeExchange(AdminProperties properties) {
     Linode linode = properties.linode();
-    RestClient restClient = RestClient.builder()
-        .baseUrl(linode.baseUrl())
-        .requestInitializer(request -> request.getHeaders().setBearerAuth(linode.token()))
-        .build();
+    RestClient restClient =
+        RestClient.builder()
+            .baseUrl(linode.baseUrl())
+            .requestInitializer(request -> request.getHeaders().setBearerAuth(linode.token()))
+            .build();
 
     RestClientAdapter adapter = RestClientAdapter.create(restClient);
     HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();

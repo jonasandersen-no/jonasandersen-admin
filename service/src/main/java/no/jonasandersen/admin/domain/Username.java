@@ -13,5 +13,4 @@ public record Username(String value) {
     Objects.requireNonNull(value);
     return new Username(value);
   }
-
 }

@@ -4,8 +4,7 @@ import no.jonasandersen.admin.domain.ServerType;
 
 class ServerTypeConverter {
 
-  private ServerTypeConverter() {
-  }
+  private ServerTypeConverter() {}
 
   static ServerType convert(no.jonasandersen.admin.api.ServerType serverType) {
     return switch (serverType) {

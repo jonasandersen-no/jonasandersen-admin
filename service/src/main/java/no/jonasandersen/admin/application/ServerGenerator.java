@@ -42,21 +42,33 @@ public class ServerGenerator {
   private final Linode linodeProperties;
   private final LinodeVolumeService linodeVolumeService;
 
-
-  public static ServerGenerator create(LinodeService service,
+  public static ServerGenerator create(
+      LinodeService service,
       SensitiveString defaultPassword,
       FileExecutor executor,
       DnsService dnsService,
       DeleteLinodeInstance deleteLinodeInstance,
       Linode linodeProperties,
-      LinodeVolumeService linodeVolumeService) throws JSchException {
-    return new ServerGenerator(service, defaultPassword, executor, dnsService,
-        deleteLinodeInstance, CommandExecutor.create(), linodeProperties, linodeVolumeService);
+      LinodeVolumeService linodeVolumeService)
+      throws JSchException {
+    return new ServerGenerator(
+        service,
+        defaultPassword,
+        executor,
+        dnsService,
+        deleteLinodeInstance,
+        CommandExecutor.create(),
+        linodeProperties,
+        linodeVolumeService);
   }
 
   public static ServerGenerator createNull() {
-    return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
-        FileExecutor.createNull(), DnsService.configureForTest(), DeleteLinodeInstance.configureForTest(),
+    return new ServerGenerator(
+        LinodeService.createNull(),
+        SensitiveString.of("Password123!"),
+        FileExecutor.createNull(),
+        DnsService.configureForTest(),
+        DeleteLinodeInstance.configureForTest(),
         CommandExecutor.createNull(),
         new Linode("base", "token", "password", 1L),
         LinodeVolumeService.createNull());
@@ -64,29 +76,38 @@ public class ServerGenerator {
 
   public static ServerGenerator configureForTest(UnaryOperator<Config> configure) {
     Config config = configure.apply(new Config());
-    return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
-        FileExecutor.createNull(), DnsService.configureForTest(), DeleteLinodeInstance.configureForTest(),
+    return new ServerGenerator(
+        LinodeService.createNull(),
+        SensitiveString.of("Password123!"),
+        FileExecutor.createNull(),
+        DnsService.configureForTest(),
+        DeleteLinodeInstance.configureForTest(),
         config.commandExecutor,
         new Linode("base", "token", "password", 1L),
         LinodeVolumeService.createNull());
-
   }
 
   public static ServerGenerator configureForTest() {
-    return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
-        FileExecutor.createNull(), DnsService.configureForTest(), DeleteLinodeInstance.configureForTest(),
+    return new ServerGenerator(
+        LinodeService.createNull(),
+        SensitiveString.of("Password123!"),
+        FileExecutor.createNull(),
+        DnsService.configureForTest(),
+        DeleteLinodeInstance.configureForTest(),
         CommandExecutor.createNull(),
         new Linode("base", "token", "password", 1L),
         LinodeVolumeService.createNull());
   }
 
-  private ServerGenerator(LinodeService service,
+  private ServerGenerator(
+      LinodeService service,
       SensitiveString defaultPassword,
       FileExecutor fileExecutor,
       DnsService dnsService,
       DeleteLinodeInstance deleteLinodeInstance,
       CommandExecutor commandExecutor,
-      Linode linodeProperties, LinodeVolumeService linodeVolumeService) {
+      Linode linodeProperties,
+      LinodeVolumeService linodeVolumeService) {
     this.service = service;
     this.defaultPassword = defaultPassword;
     this.fileExecutor = fileExecutor;
@@ -113,20 +134,23 @@ public class ServerGenerator {
     return generate(owner, defaultPassword, serverType, Subdomain.generate());
   }
 
-  public ServerGeneratorResponse generate(String owner, ServerType serverType, Subdomain subdomain) {
+  public ServerGeneratorResponse generate(
+      String owner, ServerType serverType, Subdomain subdomain) {
     return generate(owner, defaultPassword, serverType, subdomain);
   }
 
-  public ServerGeneratorResponse generate(String owner, SensitiveString password, ServerType serverType) {
+  public ServerGeneratorResponse generate(
+      String owner, SensitiveString password, ServerType serverType) {
     return generate(owner, password, serverType, Subdomain.generate());
   }
 
-  public ServerGeneratorResponse generate(String owner, SensitiveString password, ServerType serverType,
-      Subdomain subdomain) {
+  public ServerGeneratorResponse generate(
+      String owner, SensitiveString password, ServerType serverType, Subdomain subdomain) {
     switch (serverType) {
       case MINECRAFT -> {
         passwordOutputListener.track(password);
-        LinodeInstance instance = service.createDefaultMinecraftInstance(owner, password, subdomain);
+        LinodeInstance instance =
+            service.createDefaultMinecraftInstance(owner, password, subdomain);
         log.info("Created instance: {}", instance);
         instanceOutputListener.track(instance);
 
@@ -134,54 +158,59 @@ public class ServerGenerator {
 
           Result<Void> result = null;
           try {
-            result = dnsService.createOrReplaceRecord(new Ip(instance.ip().getFirst()), owner,
-                subdomain);
+            result =
+                dnsService.createOrReplaceRecord(
+                    new Ip(instance.ip().getFirst()), owner, subdomain);
 
             // This isnt working? Drop results?
             if (result.isFailure()) {
               log.warn("Failed to create DNS record: {}", result.getErrors());
               log.warn("Deleting instance: {}", instance);
-//              deleteLinodeInstance.delete(instance.linodeId());
+              //              deleteLinodeInstance.delete(instance.linodeId());
             }
           } catch (Exception e) {
             log.warn("Failed to create DNS record", e);
             log.warn("Deleting instance: {}", instance);
-//            deleteLinodeInstance.delete(instance.linodeId());
+            //            deleteLinodeInstance.delete(instance.linodeId());
           }
-
         }
 
-        Thread.ofVirtual().start(() -> {
+        Thread.ofVirtual()
+            .start(
+                () -> {
 
-          // Wait until booted and running. Check if ssh port can be connected to?
-          long maxWaitTime = 10 * 60 * 1000; // 10 minutes in milliseconds
-          try {
-            waitForPort(instance.ip().getFirst(), 22, 1000, 5000, maxWaitTime);
-          } catch (InterruptedException | IOException e) {
-            log.error("Something went wrong while waiting for server to get boot", e);
-          }
-//          attachVolume(instance, volumeId);
-          attachVolume(instance, linodeProperties.volumeId());
+                  // Wait until booted and running. Check if ssh port can be connected to?
+                  long maxWaitTime = 10 * 60 * 1000; // 10 minutes in milliseconds
+                  try {
+                    waitForPort(instance.ip().getFirst(), 22, 1000, 5000, maxWaitTime);
+                  } catch (InterruptedException | IOException e) {
+                    log.error("Something went wrong while waiting for server to get boot", e);
+                  }
+                  //          attachVolume(instance, volumeId);
+                  attachVolume(instance, linodeProperties.volumeId());
 
-          PasswordConnectionInfo connectionInfo = new PasswordConnectionInfo("root",
-              SensitiveString.of(password.value()),
-              new Ip(instance.ip().getFirst()), 22);
+                  PasswordConnectionInfo connectionInfo =
+                      new PasswordConnectionInfo(
+                          "root",
+                          SensitiveString.of(password.value()),
+                          new Ip(instance.ip().getFirst()),
+                          22);
 
-          try {
-            String baseVolumeName = "scsi-0Linode_Volume_";
-            String volumeName = "minecraft-volume-02"; //Get from volume info
-            String fullVolumeName = baseVolumeName + volumeName;
-            String baseMountDir = "/mnt/";
-            String mountDir = baseMountDir + volumeName;
-            waitForVolumeDevice(connectionInfo, fullVolumeName, maxWaitTime, 1000);
-            ensureFilesystemExists(connectionInfo, fullVolumeName, maxWaitTime, 1000);
-            mountVolume(connectionInfo, fullVolumeName, mountDir);
-            log.info("All good, ready to install minecraft");
-            downloadAndRunDockerCompose(connectionInfo, mountDir);
-          } catch (IOException | InterruptedException | JSchException e) {
-            log.error("Something went wrong while waiting for volume device", e);
-          }
-        });
+                  try {
+                    String baseVolumeName = "scsi-0Linode_Volume_";
+                    String volumeName = "minecraft-volume-02"; // Get from volume info
+                    String fullVolumeName = baseVolumeName + volumeName;
+                    String baseMountDir = "/mnt/";
+                    String mountDir = baseMountDir + volumeName;
+                    waitForVolumeDevice(connectionInfo, fullVolumeName, maxWaitTime, 1000);
+                    ensureFilesystemExists(connectionInfo, fullVolumeName, maxWaitTime, 1000);
+                    mountVolume(connectionInfo, fullVolumeName, mountDir);
+                    log.info("All good, ready to install minecraft");
+                    downloadAndRunDockerCompose(connectionInfo, mountDir);
+                  } catch (IOException | InterruptedException | JSchException e) {
+                    log.error("Something went wrong while waiting for volume device", e);
+                  }
+                });
 
         return ServerGeneratorResponse.from(instance);
       }
@@ -200,20 +229,26 @@ public class ServerGenerator {
       commandExecutor.connect();
 
       // Download docker-compose.yml
-      ExecutedCommand downloadResult = commandExecutor.executeCommand(
-          "curl -fsSL https://raw.githubusercontent.com/NotBjoggisAtAll/minecraft-compose/main/testing/docker-compose.yml -o docker-compose.yml");
+      ExecutedCommand downloadResult =
+          commandExecutor.executeCommand(
+              "curl -fsSL https://raw.githubusercontent.com/NotBjoggisAtAll/minecraft-compose/main/testing/docker-compose.yml -o docker-compose.yml");
       if (downloadResult.statusCode() != 0) {
-        log.error("Error downloading docker-compose.yml. Status code: {}, Output: {}", downloadResult.statusCode(),
+        log.error(
+            "Error downloading docker-compose.yml. Status code: {}, Output: {}",
+            downloadResult.statusCode(),
             downloadResult.output());
         return false;
       }
 
       // Run docker compose up -d
       String volumeDir = mountDir + "/minecraft-data"; // Or get it from elsewhere
-      ExecutedCommand composeUpResult = commandExecutor.executeCommand(
-          "MINECRAFT_VOLUME_DIR=" + volumeDir + " docker compose up -d");
+      ExecutedCommand composeUpResult =
+          commandExecutor.executeCommand(
+              "MINECRAFT_VOLUME_DIR=" + volumeDir + " docker compose up -d");
       if (composeUpResult.statusCode() != 0) {
-        log.error("Error running docker compose up. Status code: {}, Output: {}", composeUpResult.statusCode(),
+        log.error(
+            "Error running docker compose up. Status code: {}, Output: {}",
+            composeUpResult.statusCode(),
             composeUpResult.output());
         return false;
       }
@@ -221,7 +256,9 @@ public class ServerGenerator {
       // Show running containers
       ExecutedCommand dockerPsResult = commandExecutor.executeCommand("docker ps -a");
       if (dockerPsResult.statusCode() != 0) {
-        log.error("Error running docker ps. Status code: {}, Output: {}", dockerPsResult.statusCode(),
+        log.error(
+            "Error running docker ps. Status code: {}, Output: {}",
+            dockerPsResult.statusCode(),
             dockerPsResult.output());
         return false;
       }
@@ -237,7 +274,8 @@ public class ServerGenerator {
     }
   }
 
-  public static boolean mountVolume(ConnectionInfo connectionInfo, String volumeName, String mountPath)
+  public static boolean mountVolume(
+      ConnectionInfo connectionInfo, String volumeName, String mountPath)
       throws IOException, JSchException {
     if (Features.isEnabled(Feature.LINODE_STUB)) {
       return true;
@@ -247,12 +285,16 @@ public class ServerGenerator {
     try {
       commandExecutor.connect();
       commandExecutor.executeCommand("mkdir \"" + mountPath + "\"");
-      ExecutedCommand result = commandExecutor.executeCommand(
-          "mount /dev/disk/by-id/" + volumeName + " \"" + mountPath + "\"");
+      ExecutedCommand result =
+          commandExecutor.executeCommand(
+              "mount /dev/disk/by-id/" + volumeName + " \"" + mountPath + "\"");
       commandExecutor.disconnect();
       if (result.statusCode() != 0) {
         System.out.println(
-            "Error mounting volume. Status code: " + result.statusCode() + ", Output: " + result.output());
+            "Error mounting volume. Status code: "
+                + result.statusCode()
+                + ", Output: "
+                + result.output());
       }
       return result.statusCode() == 0;
     } catch (InterruptedException e) {
@@ -266,8 +308,8 @@ public class ServerGenerator {
     }
   }
 
-  public static void ensureFilesystemExists(ConnectionInfo connectionInfo, String volumeName, long maxWaitTime,
-      int retryInterval)
+  public static void ensureFilesystemExists(
+      ConnectionInfo connectionInfo, String volumeName, long maxWaitTime, int retryInterval)
       throws IOException, InterruptedException, JSchException {
     if (Features.isEnabled(Feature.LINODE_STUB)) {
       return;
@@ -279,15 +321,19 @@ public class ServerGenerator {
       long elapsedTime = System.currentTimeMillis() - startTime;
       if (elapsedTime >= maxWaitTime) {
         throw new IOException(
-            "Filesystem on " + volumeName + " did not become ready within the specified timeout (" + maxWaitTime
-            + "ms).");
+            "Filesystem on "
+                + volumeName
+                + " did not become ready within the specified timeout ("
+                + maxWaitTime
+                + "ms).");
       }
 
       CommandExecutor commandExecutor = CommandExecutor.create(connectionInfo);
       try {
         commandExecutor.connect();
-        ExecutedCommand result = commandExecutor.executeCommand(
-            "blkid /dev/disk/by-id/" + volumeName + " | grep -q 'TYPE=\"ext4\"'");
+        ExecutedCommand result =
+            commandExecutor.executeCommand(
+                "blkid /dev/disk/by-id/" + volumeName + " | grep -q 'TYPE=\"ext4\"'");
         if (result.statusCode() == 0) {
           log.info("Filesystem already exists on {}", volumeName);
           filesystemExists = true;
@@ -298,7 +344,10 @@ public class ServerGenerator {
             log.info("Filesystem created successfully on {}", volumeName);
             filesystemExists = true;
           } else {
-            log.info("Error creating filesystem on {}. Status code: {}, Output: {}", volumeName, result.statusCode(),
+            log.info(
+                "Error creating filesystem on {}. Status code: {}, Output: {}",
+                volumeName,
+                result.statusCode(),
                 result.output());
             Thread.sleep(retryInterval);
           }
@@ -313,13 +362,12 @@ public class ServerGenerator {
     }
   }
 
-
   private void attachVolume(LinodeInstance instance, Long volumeId) {
     linodeVolumeService.attachVolume(instance.linodeId(), VolumeId.from(volumeId));
   }
 
-
-  public static void waitForPort(String ip, int port, int timeout, int retryInterval, long maxWaitTime)
+  public static void waitForPort(
+      String ip, int port, int timeout, int retryInterval, long maxWaitTime)
       throws InterruptedException, IOException {
     if (Features.isEnabled(Feature.LINODE_STUB)) {
       return;
@@ -332,7 +380,11 @@ public class ServerGenerator {
       long elapsedTime = System.currentTimeMillis() - startTime;
       if (elapsedTime >= maxWaitTime) {
         throw new IOException(
-            "Port " + port + " did not become available within the specified timeout (" + maxWaitTime + "ms).");
+            "Port "
+                + port
+                + " did not become available within the specified timeout ("
+                + maxWaitTime
+                + "ms).");
       }
 
       try (Socket socket = new Socket()) {
@@ -340,15 +392,18 @@ public class ServerGenerator {
         connected = true;
         log.info("Port {} is now open on {}", port, ip);
       } catch (IOException e) {
-        log.info("Port {} is not yet open. Retrying in {}ms. Elapsed time: {}ms", port, retryInterval, elapsedTime);
+        log.info(
+            "Port {} is not yet open. Retrying in {}ms. Elapsed time: {}ms",
+            port,
+            retryInterval,
+            elapsedTime);
         Thread.sleep(retryInterval);
       }
     }
   }
 
-
-  public static void waitForVolumeDevice(ConnectionInfo connectionInfo, String volumeDevice, long maxWaitTime,
-      int retryInterval)
+  public static void waitForVolumeDevice(
+      ConnectionInfo connectionInfo, String volumeDevice, long maxWaitTime, int retryInterval)
       throws IOException, InterruptedException, JSchException {
     if (Features.isEnabled(Feature.LINODE_STUB)) {
       return;
@@ -361,21 +416,28 @@ public class ServerGenerator {
       long elapsedTime = System.currentTimeMillis() - startTime;
       if (elapsedTime >= maxWaitTime) {
         throw new IOException(
-            "Volume device " + volumeDevice + " did not become available within the specified timeout (" + maxWaitTime
-            + "ms).");
+            "Volume device "
+                + volumeDevice
+                + " did not become available within the specified timeout ("
+                + maxWaitTime
+                + "ms).");
       }
 
       CommandExecutor commandExecutor = CommandExecutor.create(connectionInfo);
       try {
         commandExecutor.connect();
-        ExecutedCommand result = commandExecutor.executeCommand("ls -al /dev/disk/by-id/ | grep -q " + volumeDevice);
+        ExecutedCommand result =
+            commandExecutor.executeCommand("ls -al /dev/disk/by-id/ | grep -q " + volumeDevice);
         commandExecutor.disconnect();
 
         if (result.statusCode() == 0) {
           log.info("Volume device {} found.", volumeDevice);
           deviceFound = true;
         } else {
-          log.info("Volume device {} not yet found. Retrying in {}ms. Elapsed time: {}ms", volumeDevice, retryInterval,
+          log.info(
+              "Volume device {} not yet found. Retrying in {}ms. Elapsed time: {}ms",
+              volumeDevice,
+              retryInterval,
               elapsedTime);
           Thread.sleep(retryInterval);
         }

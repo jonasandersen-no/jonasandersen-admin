@@ -41,7 +41,8 @@ public class CommandExecutor {
     }
   }
 
-  private CommandExecutor(JSchWrapper jschWrapper, ConnectionInfo connectionInfo) throws JSchException {
+  private CommandExecutor(JSchWrapper jschWrapper, ConnectionInfo connectionInfo)
+      throws JSchException {
     this.jsch = jschWrapper;
     if (connectionInfo != null) {
       setupConnection(connectionInfo);
@@ -61,7 +62,8 @@ public class CommandExecutor {
     session.disconnect();
   }
 
-  public ExecutedCommand executeCommand(String command) throws JSchException, IOException, InterruptedException {
+  public ExecutedCommand executeCommand(String command)
+      throws JSchException, IOException, InterruptedException {
     if (session == null || !session.isConnected()) {
       throw new IllegalStateException("Session is not connected");
     }
@@ -85,8 +87,7 @@ public class CommandExecutor {
     log.info("Connecting to {}", connectionInfo);
     switch (connectionInfo) {
       case PasswordConnectionInfo password -> {
-        session = jsch.getSession(password.username(), password.ip().value(),
-            password.port());
+        session = jsch.getSession(password.username(), password.ip().value(), password.port());
         session.setPassword(password.credentials().value());
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
@@ -96,15 +97,15 @@ public class CommandExecutor {
         jsch.addIdentity(privateKey.credentials().value());
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
-        session = jsch.getSession(privateKey.username(), privateKey.ip().value(),
-            privateKey.port());
+        session =
+            jsch.getSession(privateKey.username(), privateKey.ip().value(), privateKey.port());
         session.setConfig(config);
       }
     }
   }
 
-
-  private String getChannelOutput(ChannelExecWrapper channel, InputStream in) throws IOException, InterruptedException {
+  private String getChannelOutput(ChannelExecWrapper channel, InputStream in)
+      throws IOException, InterruptedException {
 
     byte[] buffer = new byte[1024];
     StringBuilder strBuilder = new StringBuilder();
@@ -124,5 +125,4 @@ public class CommandExecutor {
 
     return strBuilder.toString();
   }
-
 }

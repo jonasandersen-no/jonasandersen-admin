@@ -18,9 +18,7 @@ import no.jonasandersen.admin.domain.Username;
 @Table(name = "users")
 class UserDbo {
 
-  @Id
-  @GeneratedValue
-  Long id;
+  @Id @GeneratedValue Long id;
 
   @Column(unique = true, nullable = false)
   String username;
@@ -32,8 +30,7 @@ class UserDbo {
   @JoinColumn(name = "settings")
   private UserSettingsDbo settings;
 
-  public UserDbo() {
-  }
+  public UserDbo() {}
 
   public UserDbo(Username username) {
     this.username = username.value();
@@ -77,7 +74,8 @@ class UserDbo {
   }
 
   public User toDomain() {
-    return new User(Username.create(username),
+    return new User(
+        Username.create(username),
         roles.stream().map(RolesDbo::toDomain).collect(Collectors.toUnmodifiableSet()));
   }
 }

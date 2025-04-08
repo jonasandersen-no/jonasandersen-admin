@@ -80,7 +80,6 @@ public class FileExecutor {
     } catch (JSchException e) {
       throw new IOException(e);
     }
-
   }
 
   Path getPath(String file) throws FileNotFoundException {

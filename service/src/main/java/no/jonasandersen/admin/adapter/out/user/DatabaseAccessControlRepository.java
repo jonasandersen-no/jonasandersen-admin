@@ -29,16 +29,12 @@ class DatabaseAccessControlRepository implements AccessControlRepository {
       return null;
     }
 
-    return repository.findByEmail(email)
-        .toUser();
+    return repository.findByEmail(email).toUser();
   }
 
   @Override
   public List<User> findAll() {
-    return repository.findAll()
-        .stream()
-        .map(PermittedUserDbo::toUser)
-        .toList();
+    return repository.findAll().stream().map(PermittedUserDbo::toUser).toList();
   }
 
   @Override

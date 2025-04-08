@@ -14,7 +14,6 @@ public final class PrivateKeyConnectionInfo implements ConnectionInfo {
     this.port = port;
   }
 
-
   @Override
   public String username() {
     return username;
@@ -45,8 +44,10 @@ public final class PrivateKeyConnectionInfo implements ConnectionInfo {
     }
 
     PrivateKeyConnectionInfo that = (PrivateKeyConnectionInfo) o;
-    return port == that.port && username.equals(that.username) && privateKey.equals(that.privateKey) && ip.equals(
-        that.ip);
+    return port == that.port
+        && username.equals(that.username)
+        && privateKey.equals(that.privateKey)
+        && ip.equals(that.ip);
   }
 
   @Override
@@ -60,11 +61,16 @@ public final class PrivateKeyConnectionInfo implements ConnectionInfo {
 
   @Override
   public String toString() {
-    return "PrivateKeyConnectionInfo{" +
-        "username='" + username + '\'' +
-        ", privateKey=" + privateKey +
-        ", ip=" + ip +
-        ", port=" + port +
-        '}';
+    return "PrivateKeyConnectionInfo{"
+        + "username='"
+        + username
+        + '\''
+        + ", privateKey="
+        + privateKey
+        + ", ip="
+        + ip
+        + ", port="
+        + port
+        + '}';
   }
 }

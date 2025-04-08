@@ -7,7 +7,5 @@ import no.jonasandersen.admin.domain.Subdomain;
 public class StubDnsApi implements DnsApi {
 
   @Override
-  public void overwriteDnsRecord(Ip ip, String owner, Subdomain subdomain) {
-
-  }
+  public void overwriteDnsRecord(Ip ip, String owner, Subdomain subdomain) {}
 }

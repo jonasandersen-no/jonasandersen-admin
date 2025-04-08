@@ -7,12 +7,10 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table(name = "permitted_users")
 public final class PermittedUserDbo {
 
-  @Id
-  private Long id;
+  @Id private Long id;
   private String email;
 
-  public PermittedUserDbo() {
-  }
+  public PermittedUserDbo() {}
 
   public PermittedUserDbo(Long id, String email) {
     this.id = id;
@@ -41,9 +39,6 @@ public final class PermittedUserDbo {
 
   @Override
   public String toString() {
-    return "PermittedUserDbo[" +
-           "id=" + id + ", " +
-           "email=" + email + ']';
+    return "PermittedUserDbo[" + "id=" + id + ", " + "email=" + email + ']';
   }
-
 }

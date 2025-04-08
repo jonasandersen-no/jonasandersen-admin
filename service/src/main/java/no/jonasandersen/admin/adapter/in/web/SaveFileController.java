@@ -17,7 +17,7 @@ public class SaveFileController {
   public SaveFileController(SaveFiles saveFiles) {
     this.saveFiles = saveFiles;
 
-    //Temporary until we create it via UI
+    // Temporary until we create it via UI
     saveFiles.create("A save file name");
     saveFiles.create("Another save file name");
   }
@@ -25,16 +25,13 @@ public class SaveFileController {
   @GetMapping
   String listAllSaveFiles(Model model) {
     List<SaveFile> files = saveFiles.findAll();
-    List<SaveFileRecord> records = files.stream()
-        .map(saveFile -> new SaveFileRecord(saveFile.getName())).toList();
+    List<SaveFileRecord> records =
+        files.stream().map(saveFile -> new SaveFileRecord(saveFile.getName())).toList();
 
     model.addAttribute("files", records);
 
     return "saveFile/index";
   }
 
-
-  record SaveFileRecord(String name) {
-
-  }
+  record SaveFileRecord(String name) {}
 }

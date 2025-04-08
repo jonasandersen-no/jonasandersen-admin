@@ -19,10 +19,7 @@ public class MenuService {
     LocalDate now = LocalDate.now();
     LocalDate tomorrow = now.plusDays(1);
 
-    menuItems = List.of(
-        new MenuItem(now, "Pasta"),
-        new MenuItem(tomorrow, "Pizza")
-    );
+    menuItems = List.of(new MenuItem(now, "Pasta"), new MenuItem(tomorrow, "Pizza"));
   }
 
   public List<MenuItem> listMenu() {
@@ -55,7 +52,6 @@ public class MenuService {
   public static MenuService configureForTest() {
     return configureForTest(UnaryOperator.identity());
   }
-
 
   public static MenuService configureForTest(UnaryOperator<Config> configure) {
     Config config = configure.apply(new Config());

@@ -10,17 +10,14 @@ import jakarta.persistence.Table;
 @Table(name = "user_settings")
 class UserSettingsDbo {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+  @Id @GeneratedValue private Long id;
 
   @OneToOne(mappedBy = "settings")
   private UserDbo user;
 
   private String theme;
 
-  public UserSettingsDbo() {
-  }
+  public UserSettingsDbo() {}
 
   public UserSettingsDbo(UserDbo userDbo, String value) {
     this.user = userDbo;
@@ -55,10 +52,6 @@ class UserSettingsDbo {
 
   @Override
   public String toString() {
-    return "UserSettingsDbo{" +
-        "id=" + id +
-        ", user=" + user +
-        ", theme='" + theme + '\'' +
-        '}';
+    return "UserSettingsDbo{" + "id=" + id + ", user=" + user + ", theme='" + theme + '\'' + '}';
   }
 }

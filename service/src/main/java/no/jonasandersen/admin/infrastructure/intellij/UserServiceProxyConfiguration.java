@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /*
-  This configuration is only active when the "intellij" profile is active. It creates a proxy for
-  the UserService bean that adds all roles to the user.
- */
+ This configuration is only active when the "intellij" profile is active. It creates a proxy for
+ the UserService bean that adds all roles to the user.
+*/
 @Configuration
 @Profile("intellij")
 class UserServiceProxyConfiguration {

@@ -4,6 +4,4 @@ import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CrudMeasurementRepository extends ListCrudRepository<MeasurementDbo, Long> {
-
-}
+public interface CrudMeasurementRepository extends ListCrudRepository<MeasurementDbo, Long> {}

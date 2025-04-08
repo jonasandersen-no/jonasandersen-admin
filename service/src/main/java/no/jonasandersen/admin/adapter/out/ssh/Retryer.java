@@ -22,16 +22,17 @@ public class Retryer {
   }
 
   public static void retry(Runnable runnable, int maxAttempts, Duration backoff) {
-    RetryTemplateBuilder builder = RetryTemplate.builder()
-        .maxAttempts(maxAttempts);
+    RetryTemplateBuilder builder = RetryTemplate.builder().maxAttempts(maxAttempts);
 
     if (backoff.toMillis() > 0) {
       builder.fixedBackoff(backoff);
     }
-    builder.build().execute(context -> {
-      runnable.run();
-      return null;
-    });
+    builder
+        .build()
+        .execute(
+            context -> {
+              runnable.run();
+              return null;
+            });
   }
-
 }

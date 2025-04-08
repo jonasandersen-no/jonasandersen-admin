@@ -25,36 +25,41 @@ class SecurityConfiguration {
   SecurityFilterChain securityFilterChainResourceServer(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .securityMatcher("/api/**")
-        .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests.requestMatchers("/api/temperature").permitAll()
-                .requestMatchers("/api/**").authenticated())
+        .authorizeHttpRequests(
+            authorizeRequests ->
+                authorizeRequests
+                    .requestMatchers("/api/temperature")
+                    .permitAll()
+                    .requestMatchers("/api/**")
+                    .authenticated())
         .oauth2ResourceServer(configurer -> configurer.jwt(withDefaults()));
     return http.build();
   }
 
   @Bean
   @Order(2)
-  SecurityFilterChain securityFilterChain(HttpSecurity http, AccessControl accessControl,
-      DefaultOidcUserService defaultOidcUserService) throws Exception {
+  SecurityFilterChain securityFilterChain(
+      HttpSecurity http, AccessControl accessControl, DefaultOidcUserService defaultOidcUserService)
+      throws Exception {
 
-    http
-        .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-            .requestMatchers("/actuator/**").hasRole("ACTUATOR")
-            .anyRequest().authenticated())
+    http.authorizeHttpRequests(
+            authorizeRequests ->
+                authorizeRequests
+                    .requestMatchers("/actuator/**")
+                    .hasRole("ACTUATOR")
+                    .anyRequest()
+                    .authenticated())
         .addFilterBefore(new PermittedUserFilter(accessControl), AuthorizationFilter.class)
-        .oauth2Login(c ->
-            c.userInfoEndpoint(userInfo ->
-                userInfo.oidcUserService(defaultOidcUserService)))
+        .oauth2Login(
+            c -> c.userInfoEndpoint(userInfo -> userInfo.oidcUserService(defaultOidcUserService)))
         .oauth2Client(withDefaults())
         .httpBasic(withDefaults());
     return http.build();
   }
 
-
   @Bean
-  AuthenticationEventPublisher authenticationEventPublisher
-      (ApplicationEventPublisher applicationEventPublisher) {
+  AuthenticationEventPublisher authenticationEventPublisher(
+      ApplicationEventPublisher applicationEventPublisher) {
     return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
   }
-
 }

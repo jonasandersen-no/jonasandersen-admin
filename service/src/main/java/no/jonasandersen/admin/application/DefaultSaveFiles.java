@@ -13,8 +13,7 @@ public class DefaultSaveFiles implements SaveFiles {
 
   private List<SaveFileSnapshot> files = new ArrayList<>();
 
-  public DefaultSaveFiles() {
-  }
+  public DefaultSaveFiles() {}
 
   @Override
   public SaveFile create(String name) {
@@ -25,9 +24,7 @@ public class DefaultSaveFiles implements SaveFiles {
 
   @Override
   public List<SaveFile> findAll() {
-    return files.stream()
-        .map(SaveFile::new)
-        .toList();
+    return files.stream().map(SaveFile::new).toList();
   }
 
   @Override

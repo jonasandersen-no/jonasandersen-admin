@@ -3,7 +3,6 @@ package no.jonasandersen.admin.adapter.out.user;
 import no.jonasandersen.admin.domain.Roles;
 
 enum RolesDbo {
-
   USER,
   SERVER,
   ADMIN;

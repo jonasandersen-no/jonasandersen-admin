@@ -1,21 +1,16 @@
 package no.jonasandersen.admin.domain;
 
-
 import jakarta.validation.constraints.NotNull;
 
 public class MinecraftInstance {
 
-  @NotNull
-  private String name;
+  @NotNull private String name;
 
-  @NotNull
-  private Ip ip;
+  @NotNull private Ip ip;
 
-  @NotNull
-  private String status;
+  @NotNull private String status;
 
-  public MinecraftInstance() {
-  }
+  public MinecraftInstance() {}
 
   public MinecraftInstance(String name, String ip) {
     this.name = name;
@@ -58,7 +53,7 @@ public class MinecraftInstance {
   }
 
   public static MinecraftInstance from(LinodeInstance linodeInstance) {
-    return new MinecraftInstance(linodeInstance.label(), linodeInstance.ip().getFirst(),
-        linodeInstance.status());
+    return new MinecraftInstance(
+        linodeInstance.label(), linodeInstance.ip().getFirst(), linodeInstance.status());
   }
 }

@@ -26,30 +26,33 @@ public class TemperatureController {
     this.storeMeasurement = storeMeasurement;
   }
 
-  public record Sensor(String sensortag, String sensorvalue) {
+  public record Sensor(String sensortag, String sensorvalue) {}
 
-  }
-
-  public record Device(String objecttag, List<Sensor> sensors) {
-
-  }
+  public record Device(String objecttag, List<Sensor> sensors) {}
 
   private final StoreMeasurement storeMeasurement;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "201", description = "Measurement stored"),
-      @ApiResponse(responseCode = "400", description = "Bad request")
-  })
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "201", description = "Measurement stored"),
+        @ApiResponse(responseCode = "400", description = "Bad request")
+      })
   void catchAll(@RequestBody Device device) {
     log.info("Received request: {}", device);
 
-    Sensor temperature = device.sensors().stream().filter(sensor -> sensor.sensortag().equals("mC"))
-        .findFirst().orElseThrow(() -> new IllegalArgumentException("No sensor with tag mC"));
+    Sensor temperature =
+        device.sensors().stream()
+            .filter(sensor -> sensor.sensortag().equals("mC"))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("No sensor with tag mC"));
 
-    Sensor humidity = device.sensors().stream().filter(sensor -> sensor.sensortag().equals("Humidity"))
-        .findFirst().orElseThrow(() -> new IllegalArgumentException("No sensor with tag Humidity"));
+    Sensor humidity =
+        device.sensors().stream()
+            .filter(sensor -> sensor.sensortag().equals("Humidity"))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("No sensor with tag Humidity"));
 
     storeMeasurement.store(new Measurement(temperature.sensorvalue(), humidity.sensorvalue()));
   }

@@ -16,8 +16,8 @@ public class MeasurementConfig {
 
   @Bean
   @Primary
-  StoreMeasurement asyncStoreMeasurement(StoreMeasurement storeMeasurement,
-      CheckDatabaseConnection checkDatabaseConnection) {
+  StoreMeasurement asyncStoreMeasurement(
+      StoreMeasurement storeMeasurement, CheckDatabaseConnection checkDatabaseConnection) {
     return new AsyncStoreMeasurement(storeMeasurement, checkDatabaseConnection);
   }
 

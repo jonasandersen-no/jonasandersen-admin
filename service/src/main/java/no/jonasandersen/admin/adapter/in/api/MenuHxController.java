@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MenuHxController {
 
-  public static final String MENU_ITEM_HTML = """
+  public static final String MENU_ITEM_HTML =
+      """
       <div class="input-group mb-3">
         <span class="input-group-text">%s</span>
       <input type="text" class="form-control" value="%s" name='%s'/>
@@ -28,10 +29,10 @@ public class MenuHxController {
 
   @GetMapping(value = "/api/hx/menu/edit", headers = "Hx-Request")
   String editMenu() {
-    List<String> descriptions = menuService.listMenu().stream()
-        .map(i -> MENU_ITEM_HTML.formatted(i.formattedDate(), i.description(), i.date())
-        )
-        .toList();
+    List<String> descriptions =
+        menuService.listMenu().stream()
+            .map(i -> MENU_ITEM_HTML.formatted(i.formattedDate(), i.description(), i.date()))
+            .toList();
 
     return """
         <div class='d-inline-flex gap-4'>
@@ -44,8 +45,9 @@ public class MenuHxController {
         </div>
         <button class="btn btn-primary" >Save</button>
         </form>
-        
-        """.formatted(String.join(System.lineSeparator(), descriptions));
+
+        """
+        .formatted(String.join(System.lineSeparator(), descriptions));
   }
 
   int counter = 2;
@@ -54,25 +56,30 @@ public class MenuHxController {
   String newLine() {
     var i = new MenuItem(LocalDate.now().plusDays(counter++), "Laks");
     return MENU_ITEM_HTML.formatted(i.formattedDate(), i.description(), i.date());
-
   }
 
-  @PostMapping(value = "/api/hx/menu/edit", headers = "Hx-Request", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+  @PostMapping(
+      value = "/api/hx/menu/edit",
+      headers = "Hx-Request",
+      consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   String saveMenu(@RequestBody MultiValueMap<String, String> data) {
 
     menuService.update(data);
 
-    String htmlItem = """
+    String htmlItem =
+        """
         <div>
           <h3>%s</h3>
           <p>%s</p>
         </div>
         """;
-    List<String> html = menuService.listMenu().stream()
-        .map(item -> htmlItem.formatted(item.formattedDate(), item.description()))
-        .toList();
+    List<String> html =
+        menuService.listMenu().stream()
+            .map(item -> htmlItem.formatted(item.formattedDate(), item.description()))
+            .toList();
 
-    String button = """
+    String button =
+        """
         <button class="btn btn-primary" hx-get="/api/hx/menu/edit" hx-target="#menu">Edit</button>
         """;
 

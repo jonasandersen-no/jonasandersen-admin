@@ -53,10 +53,10 @@ public final class PasswordConnectionInfo implements ConnectionInfo {
       return false;
     }
     var that = (PasswordConnectionInfo) obj;
-    return Objects.equals(this.username, that.username) &&
-        Objects.equals(this.password, that.password) &&
-        Objects.equals(this.ip, that.ip) &&
-        this.port == that.port;
+    return Objects.equals(this.username, that.username)
+        && Objects.equals(this.password, that.password)
+        && Objects.equals(this.ip, that.ip)
+        && this.port == that.port;
   }
 
   @Override
@@ -66,11 +66,18 @@ public final class PasswordConnectionInfo implements ConnectionInfo {
 
   @Override
   public String toString() {
-    return "ConnectionInfo[" +
-        "username=" + username + ", " +
-        "password=" + password + ", " +
-        "ip=" + ip + ", " +
-        "port=" + port + ']';
+    return "ConnectionInfo["
+        + "username="
+        + username
+        + ", "
+        + "password="
+        + password
+        + ", "
+        + "ip="
+        + ip
+        + ", "
+        + "port="
+        + port
+        + ']';
   }
-
 }

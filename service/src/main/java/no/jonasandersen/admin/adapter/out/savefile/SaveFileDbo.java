@@ -6,8 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table("save_file")
 public class SaveFileDbo {
 
-  @Id
-  private Long id;
+  @Id private Long id;
 
   private String name;
 

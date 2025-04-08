@@ -32,9 +32,8 @@ class DefaultUserRepository implements UserRepository {
   public void createNewUser(User user) {
     UserDbo userDbo = new UserDbo(user.username());
 
-    Set<RolesDbo> roles = user.roles().stream()
-        .map(RolesDbo::fromDomain)
-        .collect(Collectors.toSet());
+    Set<RolesDbo> roles =
+        user.roles().stream().map(RolesDbo::fromDomain).collect(Collectors.toSet());
     userDbo.setRoles(roles);
 
     repository.save(userDbo);

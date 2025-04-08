@@ -17,8 +17,8 @@ class AsyncStoreMeasurement implements StoreMeasurement {
   private final StoreMeasurement delegate;
   private final CheckDatabaseConnection checkDatabaseConnection;
 
-  AsyncStoreMeasurement(StoreMeasurement delegate,
-      CheckDatabaseConnection checkDatabaseConnection) {
+  AsyncStoreMeasurement(
+      StoreMeasurement delegate, CheckDatabaseConnection checkDatabaseConnection) {
     this.delegate = delegate;
     this.checkDatabaseConnection = checkDatabaseConnection;
   }
@@ -45,7 +45,8 @@ class AsyncStoreMeasurement implements StoreMeasurement {
       } catch (Exception e) {
         log.error(
             "Something went wrong when storing measurement: {}. Adding measurement back to queue",
-            measurement, e);
+            measurement,
+            e);
         failedMeasurements.add(measurement);
       }
     }
@@ -56,5 +57,4 @@ class AsyncStoreMeasurement implements StoreMeasurement {
   public Queue<Measurement> getQueue() {
     return measurements;
   }
-
 }

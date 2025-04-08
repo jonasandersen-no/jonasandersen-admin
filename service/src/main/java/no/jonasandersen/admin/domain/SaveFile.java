@@ -47,7 +47,5 @@ public class SaveFile {
     return new SaveFileSnapshot(name, owner);
   }
 
-  public record SaveFileSnapshot(String name, User owner) {
-
-  }
+  public record SaveFileSnapshot(String name, User owner) {}
 }

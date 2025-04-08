@@ -31,7 +31,8 @@ public class SettingsController {
 
   @GetMapping
   String settings(Model model) {
-    model.addAttribute("currentTheme",
+    model.addAttribute(
+        "currentTheme",
         themeService.findTheme(Username.create(UsernameResolver.getUsernameAsString())));
 
     List<User> allowedUsers = accessControl.getAllowedUsers();
@@ -61,5 +62,4 @@ public class SettingsController {
     accessControl.revokeUser(email);
     return REDIRECT_SETTINGS;
   }
-
 }

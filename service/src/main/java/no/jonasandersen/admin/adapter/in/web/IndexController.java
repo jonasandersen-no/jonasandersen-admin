@@ -18,5 +18,4 @@ public class IndexController {
   String swaggerUi() {
     return "redirect:/swagger-ui/index.html";
   }
-
 }

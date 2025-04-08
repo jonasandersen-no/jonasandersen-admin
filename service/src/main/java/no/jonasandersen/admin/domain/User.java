@@ -8,8 +8,7 @@ public final class User {
   private Username username;
   private Set<Roles> roles;
 
-  public User() {
-  }
+  public User() {}
 
   public User(Username username, Set<Roles> roles) {
     this.username = username;
@@ -57,10 +56,6 @@ public final class User {
 
   @Override
   public String toString() {
-    return "User[" +
-        "username=" + username + ", " +
-        "roles=" + roles + ']';
+    return "User[" + "username=" + username + ", " + "roles=" + roles + ']';
   }
-
-
 }

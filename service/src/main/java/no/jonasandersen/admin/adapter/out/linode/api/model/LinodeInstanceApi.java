@@ -28,8 +28,7 @@ public record LinodeInstanceApi(
     boolean watchdogEnabled,
     List<String> tags,
     String hostUuid,
-    boolean hasUserData
-) {
+    boolean hasUserData) {
 
   public LinodeInstanceApi {
     if (id <= 0) {
@@ -44,7 +43,13 @@ public record LinodeInstanceApi(
   }
 
   public LinodeInstance toDomain() {
-    return new LinodeInstance(new LinodeId(id), List.copyOf(ipv4), status, label, tags, List.of(),
+    return new LinodeInstance(
+        new LinodeId(id),
+        List.copyOf(ipv4),
+        status,
+        label,
+        tags,
+        List.of(),
         new LinodeSpecs(specs.memory(), specs.vcpus()));
   }
 }

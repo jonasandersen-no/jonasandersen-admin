@@ -42,8 +42,12 @@ public class LinodeController {
   private final ApplicationEventPublisher events;
   private final DeleteLinodeInstance deleteLinodeInstance;
 
-  public LinodeController(AdminProperties properties, ServerGenerator serverGenerator,
-      LinodeService service, ApplicationEventPublisher events, DeleteLinodeInstance deleteLinodeInstance) {
+  public LinodeController(
+      AdminProperties properties,
+      ServerGenerator serverGenerator,
+      LinodeService service,
+      ApplicationEventPublisher events,
+      DeleteLinodeInstance deleteLinodeInstance) {
     this.properties = properties;
     this.serverGenerator = serverGenerator;
     this.service = service;
@@ -65,7 +69,8 @@ public class LinodeController {
     } catch (HttpClientErrorException | InstanceNotFound e) {
       log.error("Failed to get instance with id {}", linodeId);
       log.error(e.getMessage());
-      redirectAttrs.addFlashAttribute(INFO_MESSAGE_VARIABLE, "Failed to get instance with id " + linodeId);
+      redirectAttrs.addFlashAttribute(
+          INFO_MESSAGE_VARIABLE, "Failed to get instance with id " + linodeId);
       return REDIRECT_LINODE;
     }
 
@@ -104,9 +109,9 @@ public class LinodeController {
       serverGenerator.generate(UsernameResolver.getUsernameAsString(), serverType);
     } else {
       log.info("Creating server of type {} with subdomain '{}'", serverType, subdomain);
-      serverGenerator.generate(UsernameResolver.getUsernameAsString(), serverType, Subdomain.of(subdomain));
+      serverGenerator.generate(
+          UsernameResolver.getUsernameAsString(), serverType, Subdomain.of(subdomain));
     }
     return REDIRECT_LINODE;
   }
-
 }

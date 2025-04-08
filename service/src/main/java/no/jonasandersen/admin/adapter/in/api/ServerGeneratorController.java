@@ -32,17 +32,25 @@ public class ServerGeneratorController {
   }
 
   @PostMapping
-  @ApiResponse(responseCode = "200", description = "Server instance created", content = @Content(schema = @Schema(implementation = CreateServerResponse.class)))
-  @ApiResponse(responseCode = "500", description = "Failed to create server instance", content = @Content)
-  public ResponseEntity<CreateServerResponse> createLinode(@RequestBody CreateServerRequest request,
+  @ApiResponse(
+      responseCode = "200",
+      description = "Server instance created",
+      content = @Content(schema = @Schema(implementation = CreateServerResponse.class)))
+  @ApiResponse(
+      responseCode = "500",
+      description = "Failed to create server instance",
+      content = @Content)
+  public ResponseEntity<CreateServerResponse> createLinode(
+      @RequestBody CreateServerRequest request,
       @RequestHeader(value = "X-Discord-Id", required = false) String discordId) {
     try {
       Username username = getUsername(discordId);
 
-      ServerGeneratorResponse generate = serverGenerator.generate(username,
-          ServerTypeConverter.convert(request.serverType()));
+      ServerGeneratorResponse generate =
+          serverGenerator.generate(username, ServerTypeConverter.convert(request.serverType()));
       return ResponseEntity.ok(
-          new CreateServerResponse(generate.linodeId(), generate.label(), generate.ip().value(), generate.owner()));
+          new CreateServerResponse(
+              generate.linodeId(), generate.label(), generate.ip().value(), generate.owner()));
     } catch (Exception e) {
       log.error("Failed to create linode", e);
       return ResponseEntity.internalServerError().build();
@@ -58,5 +66,4 @@ public class ServerGeneratorController {
     }
     return username;
   }
-
 }

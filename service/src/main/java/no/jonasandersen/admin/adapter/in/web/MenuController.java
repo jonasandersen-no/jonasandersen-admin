@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Secured("ROLE_ADMIN")
 public class MenuController {
 
-
   private final MenuService menuService;
 
   public MenuController(MenuService menuService) {
@@ -25,5 +24,4 @@ public class MenuController {
     model.addAttribute("menuItems", menuService.listMenu());
     return "menu/index";
   }
-
 }

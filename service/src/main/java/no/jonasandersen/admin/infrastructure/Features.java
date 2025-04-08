@@ -14,16 +14,18 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class Features {
 
-  private final static Map<Feature, Boolean> features = new EnumMap<>(Feature.class);
+  private static final Map<Feature, Boolean> features = new EnumMap<>(Feature.class);
   private static final Logger log = LoggerFactory.getLogger(Features.class);
 
   public Features(AdminProperties adminProperties) {
     features.putAll(adminProperties.features());
 
-    features.entrySet().stream().filter(Entry::getValue)
+    features.entrySet().stream()
+        .filter(Entry::getValue)
         .forEach(entry -> log.info("FEATURE {} IS ENABLED", entry.getKey()));
 
-    features.entrySet().stream().filter(entry -> !entry.getValue())
+    features.entrySet().stream()
+        .filter(entry -> !entry.getValue())
         .forEach(entry -> log.info("FEATURE {} IS DISABLED", entry.getKey()));
   }
 
