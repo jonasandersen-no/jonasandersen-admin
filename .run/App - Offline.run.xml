@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="App - Offline" type="SpringBootApplicationConfigurationType"
+    factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="dev-offline,intellij"/>
+    <option name="SCHEDULED_DEBUGGER" value="true"/>
+    <module name="service"/>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="no.jonasandersen.admin.AdminApplication"/>
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="no.jonasandersen.admin.*"/>
+        <option name="ENABLED" value="true"/>
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true"/>
+    </method>
+  </configuration>
+</component>
