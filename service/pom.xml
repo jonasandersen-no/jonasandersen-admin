@@ -114,12 +114,6 @@
       <optional>true</optional>
     </dependency>
 
-    <dependency>
-      <groupId>com.github.kagkarlsson</groupId>
-      <artifactId>db-scheduler-spring-boot-starter</artifactId>
-      <version>15.3.0</version>
-    </dependency>
-
     <!--Test dependencies-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
