@@ -16,7 +16,6 @@ import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.LinodeInstance;
 import no.jonasandersen.admin.domain.PasswordConnectionInfo;
-import no.jonasandersen.admin.domain.PrivateKeyConnectionInfo;
 import no.jonasandersen.admin.domain.SensitiveString;
 import no.jonasandersen.admin.domain.ServerGeneratorResponse;
 import no.jonasandersen.admin.domain.ServerType;
@@ -38,7 +37,6 @@ public class ServerGenerator {
   private final DnsService dnsService;
   private final DeleteLinodeInstance deleteLinodeInstance;
   private final CommandExecutor commandExecutor;
-  private final ControlCenterProperties controlCenterProperties;
   private final OutputListener<SensitiveString> passwordOutputListener = new OutputListener<>();
   private final OutputListener<LinodeInstance> instanceOutputListener = new OutputListener<>();
   private final Linode linodeProperties;
@@ -48,19 +46,19 @@ public class ServerGenerator {
   public static ServerGenerator create(LinodeService service,
       SensitiveString defaultPassword,
       FileExecutor executor,
-      ControlCenterProperties controlCenterProperties, DnsService dnsService,
+      DnsService dnsService,
       DeleteLinodeInstance deleteLinodeInstance,
       Linode linodeProperties,
       LinodeVolumeService linodeVolumeService) throws JSchException {
     return new ServerGenerator(service, defaultPassword, executor, dnsService,
-        deleteLinodeInstance, CommandExecutor.create(), controlCenterProperties, linodeProperties, linodeVolumeService);
+        deleteLinodeInstance, CommandExecutor.create(), linodeProperties, linodeVolumeService);
   }
 
   public static ServerGenerator createNull() {
     return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
         FileExecutor.createNull(), DnsService.configureForTest(), DeleteLinodeInstance.configureForTest(),
         CommandExecutor.createNull(),
-        ControlCenterProperties.configureForTest(), new Linode("base", "token", "password", 1L),
+        new Linode("base", "token", "password", 1L),
         LinodeVolumeService.createNull());
   }
 
@@ -69,7 +67,7 @@ public class ServerGenerator {
     return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
         FileExecutor.createNull(), DnsService.configureForTest(), DeleteLinodeInstance.configureForTest(),
         config.commandExecutor,
-        ControlCenterProperties.configureForTest(), new Linode("base", "token", "password", 1L),
+        new Linode("base", "token", "password", 1L),
         LinodeVolumeService.createNull());
 
   }
@@ -78,7 +76,7 @@ public class ServerGenerator {
     return new ServerGenerator(LinodeService.createNull(), SensitiveString.of("Password123!"),
         FileExecutor.createNull(), DnsService.configureForTest(), DeleteLinodeInstance.configureForTest(),
         CommandExecutor.createNull(),
-        ControlCenterProperties.configureForTest(), new Linode("base", "token", "password", 1L),
+        new Linode("base", "token", "password", 1L),
         LinodeVolumeService.createNull());
   }
 
@@ -88,7 +86,6 @@ public class ServerGenerator {
       DnsService dnsService,
       DeleteLinodeInstance deleteLinodeInstance,
       CommandExecutor commandExecutor,
-      ControlCenterProperties controlCenterProperties,
       Linode linodeProperties, LinodeVolumeService linodeVolumeService) {
     this.service = service;
     this.defaultPassword = defaultPassword;
@@ -96,7 +93,6 @@ public class ServerGenerator {
     this.dnsService = dnsService;
     this.deleteLinodeInstance = deleteLinodeInstance;
     this.commandExecutor = commandExecutor;
-    this.controlCenterProperties = controlCenterProperties;
     this.linodeProperties = linodeProperties;
     this.linodeVolumeService = linodeVolumeService;
   }
@@ -392,23 +388,6 @@ public class ServerGenerator {
         }
       }
     }
-  }
-
-
-  public String generateViaAnsible(String command) throws JSchException, IOException, InterruptedException {
-    String privateKey = controlCenterProperties.privateKeyFilePath();
-    String username = controlCenterProperties.username();
-    String ip = controlCenterProperties.ip();
-    Integer port = controlCenterProperties.port();
-
-    PrivateKeyConnectionInfo controlCenter =
-        new PrivateKeyConnectionInfo(username, SensitiveString.of(privateKey), new Ip(ip), port);
-
-    CommandExecutor commandExecutor = CommandExecutor.create(controlCenter);
-    commandExecutor.connect();
-    ExecutedCommand result = commandExecutor.executeCommand(command);
-    commandExecutor.disconnect();
-    return result.output();
   }
 
   public static class Config {

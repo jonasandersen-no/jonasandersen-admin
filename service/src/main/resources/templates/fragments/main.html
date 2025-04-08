@@ -51,13 +51,6 @@
           </th:block>
           <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <li class="nav-item">
-              <a class="nav-link"
-                 th:classappend="${currentPath.startsWith('/control-center')} ? 'active' : ''"
-                 href="/control-center">Control Center</a>
-            </li>
-          </th:block>
-          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-            <li class="nav-item">
               <a class="nav-link" th:classappend="${currentPath.startsWith('/menu')} ? 'active' : ''"
                  href="/menu">Menu</a>
             </li>

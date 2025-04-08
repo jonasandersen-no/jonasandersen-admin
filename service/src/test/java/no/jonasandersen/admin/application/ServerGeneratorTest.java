@@ -3,12 +3,10 @@ package no.jonasandersen.admin.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jcraft.jsch.JSchException;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.adapter.out.linode.api.model.LinodeInstanceApi;
-import no.jonasandersen.admin.adapter.out.ssh.CommandExecutor;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.SensitiveString;
@@ -18,7 +16,6 @@ import no.jonasandersen.admin.domain.Username;
 import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
 import org.instancio.Instancio;
 import org.instancio.Select;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class ServerGeneratorTest {
@@ -71,7 +68,6 @@ class ServerGeneratorTest {
         service,
         SensitiveString.of("password"),
         fileExecutor,
-        ControlCenterProperties.configureForTest(),
         DnsService.configureForTest(),
         DeleteLinodeInstance.configureForTest(), new Linode("base", "token", "password", 1L),
         LinodeVolumeService.createNull());
@@ -79,20 +75,5 @@ class ServerGeneratorTest {
     ServerGeneratorResponse response = generator.generate(Username.create("someUsername"), ServerType.MINECRAFT);
 
     assertThat(response.tags()).contains("owner:someUsername", "auto-created");
-  }
-
-  @Test
-  @Disabled
-  void generateServerViaAnsible() throws JSchException, IOException, InterruptedException {
-    ServerGenerator serverGenerator = ServerGenerator.configureForTest(config -> {
-      try {
-        return config.setCommandExecutor(
-            CommandExecutor.create());
-      } catch (JSchException e) {
-        throw new RuntimeException(e);
-      }
-    });
-
-    serverGenerator.generateViaAnsible("cd /home/gollien/dev/ansible-control && ansible all -m ping");
   }
 }

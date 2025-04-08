@@ -6,7 +6,6 @@ import no.jonasandersen.admin.adapter.out.linode.LinodeExchange;
 import no.jonasandersen.admin.adapter.out.linode.LinodeServerApi;
 import no.jonasandersen.admin.adapter.out.ssh.FileExecutor;
 import no.jonasandersen.admin.application.AccessControl;
-import no.jonasandersen.admin.application.ControlCenterProperties;
 import no.jonasandersen.admin.application.DefaultAccessControl;
 import no.jonasandersen.admin.application.DeleteLinodeInstance;
 import no.jonasandersen.admin.application.DnsService;
@@ -20,7 +19,6 @@ import no.jonasandersen.admin.application.port.ServerApi;
 import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.domain.Feature;
 import no.jonasandersen.admin.domain.SensitiveString;
-import no.jonasandersen.admin.infrastructure.AdminProperties.ControlCenter;
 import no.jonasandersen.admin.infrastructure.AdminProperties.Linode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +68,6 @@ class CoreConfiguration {
   @Bean
   ServerGenerator serverGenerator(LinodeService linodeService,
       AdminProperties properties,
-      ControlCenterProperties controlCenterProperties,
       DnsService dnsService,
       DeleteLinodeInstance deleteLinodeInstance,
       LinodeVolumeService linodeVolumeService) throws JSchException {
@@ -78,7 +75,6 @@ class CoreConfiguration {
     return ServerGenerator.create(linodeService,
         SensitiveString.of(rootPassword),
         FileExecutor.create(),
-        controlCenterProperties,
         dnsService,
         deleteLinodeInstance,
         properties.linode(),
@@ -107,17 +103,6 @@ class CoreConfiguration {
   @Bean
   DeleteLinodeInstance deleteLinodeInstance(ServerApi serverApi) {
     return DeleteLinodeInstance.create(serverApi);
-  }
-
-  @Bean
-  ControlCenterProperties controlCenterProperties(AdminProperties properties) {
-    ControlCenter controlCenter = properties.controlCenter();
-    return ControlCenterProperties.withKey(
-        controlCenter.username(),
-        SensitiveString.of(controlCenter.privateKeyString()),
-        controlCenter.ip(),
-        controlCenter.port()
-    );
   }
 
   @Bean

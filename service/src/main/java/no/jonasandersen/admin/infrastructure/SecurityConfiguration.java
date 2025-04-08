@@ -39,7 +39,6 @@ class SecurityConfiguration {
 
     http
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-            .requestMatchers("/control-center").hasRole("ADMIN")
             .requestMatchers("/actuator/**").hasRole("ACTUATOR")
             .anyRequest().authenticated())
         .addFilterBefore(new PermittedUserFilter(accessControl), AuthorizationFilter.class)

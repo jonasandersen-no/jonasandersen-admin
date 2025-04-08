@@ -32,7 +32,6 @@ public class TestSecurityConfiguration {
   SecurityFilterChain securityFilterChain(HttpSecurity http, AccessControl accessControl) throws Exception {
     http
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-            .requestMatchers("/control-center").hasRole("ADMIN")
             .requestMatchers("/actuator/**").hasRole("ACTUATOR")
             .anyRequest().authenticated())
         .addFilterBefore(new PermittedUserFilter(accessControl), AuthorizationFilter.class)
