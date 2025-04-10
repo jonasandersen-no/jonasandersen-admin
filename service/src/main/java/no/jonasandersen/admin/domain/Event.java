@@ -1,3 +1,3 @@
 package no.jonasandersen.admin.domain;
 
-public interface Event {}
+public sealed interface Event permits TestEvent, TestEvent2 {}
