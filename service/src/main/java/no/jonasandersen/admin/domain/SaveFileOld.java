@@ -1,20 +1,20 @@
 package no.jonasandersen.admin.domain;
 
-public class SaveFile {
+public class SaveFileOld {
 
   private String name;
   private User owner;
 
-  public SaveFile(String name) {
+  public SaveFileOld(String name) {
     this.name = name;
   }
 
-  public SaveFile(SaveFileSnapshot snapshot) {
+  public SaveFileOld(SaveFileSnapshot snapshot) {
     this.name = snapshot.name();
     this.owner = snapshot.owner();
   }
 
-  public SaveFile(String name, User owner) {
+  public SaveFileOld(String name, User owner) {
     this.name = name;
     this.owner = owner;
   }
@@ -29,11 +29,11 @@ public class SaveFile {
 
   @Override
   public final boolean equals(Object o) {
-    if (!(o instanceof SaveFile saveFile)) {
+    if (!(o instanceof SaveFileOld saveFileOld)) {
       return false;
     }
 
-    return name.equals(saveFile.name) && owner.equals(saveFile.owner);
+    return name.equals(saveFileOld.name) && owner.equals(saveFileOld.owner);
   }
 
   @Override

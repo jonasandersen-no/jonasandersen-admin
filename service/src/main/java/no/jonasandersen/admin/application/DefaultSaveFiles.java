@@ -3,8 +3,8 @@ package no.jonasandersen.admin.application;
 import java.util.ArrayList;
 import java.util.List;
 import no.jonasandersen.admin.application.port.SaveFiles;
-import no.jonasandersen.admin.domain.SaveFile;
-import no.jonasandersen.admin.domain.SaveFile.SaveFileSnapshot;
+import no.jonasandersen.admin.domain.SaveFileOld;
+import no.jonasandersen.admin.domain.SaveFileOld.SaveFileSnapshot;
 import no.jonasandersen.admin.domain.User;
 import org.springframework.stereotype.Service;
 
@@ -16,27 +16,27 @@ public class DefaultSaveFiles implements SaveFiles {
   public DefaultSaveFiles() {}
 
   @Override
-  public SaveFile create(String name) {
-    SaveFile saveFile = new SaveFile(name);
-    files.add(saveFile.snapshot());
-    return saveFile;
+  public SaveFileOld create(String name) {
+    SaveFileOld saveFileOld = new SaveFileOld(name);
+    files.add(saveFileOld.snapshot());
+    return saveFileOld;
   }
 
   @Override
-  public List<SaveFile> findAll() {
-    return files.stream().map(SaveFile::new).toList();
+  public List<SaveFileOld> findAll() {
+    return files.stream().map(SaveFileOld::new).toList();
   }
 
   @Override
-  public List<SaveFile> findAllBy(User owner) {
+  public List<SaveFileOld> findAllBy(User owner) {
     return files.stream()
         .filter(snapshot -> snapshot.owner().equals(owner))
-        .map(SaveFile::new)
+        .map(SaveFileOld::new)
         .toList();
   }
 
   @Override
-  public void add(SaveFile saveFile) {
-    files.add(saveFile.snapshot());
+  public void add(SaveFileOld saveFileOld) {
+    files.add(saveFileOld.snapshot());
   }
 }

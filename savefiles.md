@@ -439,37 +439,37 @@ class SaveFileService {
 
   public String createSaveFile(String name) {
     String saveFileId = UUID.randomUUID().toString();
-    SaveFile saveFile = SaveFile.create(saveFileId, name); // Use the factory
+    SaveFile saveFileOld = SaveFile.create(saveFileId, name); // Use the factory
     eventStore.append(saveFileId, List.of(new SaveFileCreatedEvent(saveFileId, name)));
     return saveFileId;
   }
 
   public void updateSaveFileName(String saveFileId, String newName) {
     List<SaveFileEvent> events = eventStore.getEvents(saveFileId);
-    SaveFile saveFile = SaveFile.fromEvents(events); // Rehydrate
-    saveFile.updateName(newName); // Call aggregate method
+    SaveFile saveFileOld = SaveFile.fromEvents(events); // Rehydrate
+    saveFileOld.updateName(newName); // Call aggregate method
     eventStore.append(saveFileId, DomainEvents.getRaisedEvents()); // Persist
     DomainEvents.clear();
   }
 
   public void deleteSaveFile(String saveFileId) {
     List<SaveFileEvent> events = eventStore.getEvents(saveFileId);
-    SaveFile saveFile = SaveFile.fromEvents(events);
-    saveFile.delete();
+    SaveFile saveFileOld = SaveFile.fromEvents(events);
+    saveFileOld.delete();
     eventStore.append(saveFileId, DomainEvents.getRaisedEvents());
     DomainEvents.clear();
   }
 
   public void startServer(String saveFileId, ServerConfiguration configuration) {
     List<SaveFileEvent> events = eventStore.getEvents(saveFileId);
-    SaveFile saveFile = SaveFile.fromEvents(events);
+    SaveFile saveFileOld = SaveFile.fromEvents(events);
 
-    if (saveFile.getServerStatus() == ServerStatus.RUNNING || saveFile.getServerStatus() == ServerStatus.STARTING)
+    if (saveFileOld.getServerStatus() == ServerStatus.RUNNING || saveFileOld.getServerStatus() == ServerStatus.STARTING)
       throw new ServerAlreadyRunningException("A server is already running or starting for this save file.");
 
     String serverId;
     try {
-      saveFile.startServer(serverId);  // Tell aggregate to start
+      saveFileOld.startServer(serverId);  // Tell aggregate to start
       eventStore.append(saveFileId, DomainEvents.getRaisedEvents()); //persist
       DomainEvents.clear();
       serverId = serverService.startServer(configuration); // *Now* start the server
@@ -477,13 +477,13 @@ class SaveFileService {
       throw ex; // Propagate original exception
     } catch (Exception ex) { // Catch other exceptions during server start
       // Handle the error (e.g., log, notify user)
-      saveFile.markServerStartFailed(); //update aggregate
+      saveFileOld.markServerStartFailed(); //update aggregate
       eventStore.append(saveFileId, DomainEvents.getRaisedEvents());
       DomainEvents.clear();
       throw new ServerStartFailedException("Failed to start server: " + ex.getMessage(), ex);
     }
 
-    saveFile.markServerRunning();  // Update status after successful start
+    saveFileOld.markServerRunning();  // Update status after successful start
     eventStore.append(saveFileId, DomainEvents.getRaisedEvents()); //persist
     DomainEvents.clear();
 
@@ -491,8 +491,8 @@ class SaveFileService {
 
   public void stopServer(String saveFileId) {
     List<SaveFileEvent> events = eventStore.getEvents(saveFileId);
-    SaveFile saveFile = SaveFile.fromEvents(events);
-    saveFile.stopServer();
+    SaveFile saveFileOld = SaveFile.fromEvents(events);
+    saveFileOld.stopServer();
     eventStore.append(saveFileId, DomainEvents.getRaisedEvents());
     DomainEvents.clear();
   }

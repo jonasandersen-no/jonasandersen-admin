@@ -2,7 +2,7 @@ package no.jonasandersen.admin.adapter.in.web;
 
 import java.util.List;
 import no.jonasandersen.admin.application.port.SaveFiles;
-import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFileOld;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ public class SaveFileController {
 
   @GetMapping
   String listAllSaveFiles(Model model) {
-    List<SaveFile> files = saveFiles.findAll();
+    List<SaveFileOld> files = saveFiles.findAll();
     List<SaveFileRecord> records =
         files.stream().map(saveFile -> new SaveFileRecord(saveFile.getName())).toList();
 

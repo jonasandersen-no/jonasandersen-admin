@@ -1,8 +1,8 @@
 package no.jonasandersen.admin.application.port;
 
-import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFileOld;
 
 public interface SaveFileRepository {
 
-  void save(SaveFile saveFile);
+  void save(SaveFileOld saveFileOld);
 }

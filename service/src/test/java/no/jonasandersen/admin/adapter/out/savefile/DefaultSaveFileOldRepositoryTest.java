@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import no.jonasandersen.admin.application.port.UserRepository;
 import no.jonasandersen.admin.config.IoBasedTest;
-import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFileOld;
 import no.jonasandersen.admin.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class DefaultSaveFileRepositoryTest extends IoBasedTest {
+class DefaultSaveFileOldRepositoryTest extends IoBasedTest {
 
   @Autowired
   private DefaultSaveFileRepository repository;
@@ -25,8 +25,8 @@ class DefaultSaveFileRepositoryTest extends IoBasedTest {
 
     userRepository.createNewUser(User.createUser("owner@email.com"));
 
-    SaveFile saveFile = new SaveFile("saveFile", User.createUser("owner@email.com"));
-    repository.save(saveFile);
+    SaveFileOld saveFileOld = new SaveFileOld("saveFileOld", User.createUser("owner@email.com"));
+    repository.save(saveFileOld);
 
     assertThat(db.count()).isEqualTo(1);
     assertThat(db.findAll().getFirst().getOwner()).isEqualTo(userRepository.getIdByEmail("owner@email.com"));

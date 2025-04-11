@@ -2,7 +2,7 @@ package no.jonasandersen.admin.adapter.out.savefile;
 
 import no.jonasandersen.admin.application.port.SaveFileRepository;
 import no.jonasandersen.admin.application.port.UserRepository;
-import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFileOld;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +17,11 @@ class DefaultSaveFileRepository implements SaveFileRepository {
   }
 
   @Override
-  public void save(SaveFile saveFile) {
+  public void save(SaveFileOld saveFileOld) {
     SaveFileDbo dbo = new SaveFileDbo();
-    Long user = userRepository.getIdByEmail(saveFile.getOwner().username().value());
+    Long user = userRepository.getIdByEmail(saveFileOld.getOwner().username().value());
     dbo.setOwner(user);
-    dbo.setName(saveFile.getName());
+    dbo.setName(saveFileOld.getName());
 
     dbo.validate();
     repository.save(dbo);

@@ -1,16 +1,16 @@
 package no.jonasandersen.admin.application.port;
 
 import java.util.List;
-import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFileOld;
 import no.jonasandersen.admin.domain.User;
 
 public interface SaveFiles {
 
-  SaveFile create(String name);
+  SaveFileOld create(String name);
 
-  List<SaveFile> findAll();
+  List<SaveFileOld> findAll();
 
-  List<SaveFile> findAllBy(User owner);
+  List<SaveFileOld> findAllBy(User owner);
 
-  void add(SaveFile saveFile);
+  void add(SaveFileOld saveFileOld);
 }

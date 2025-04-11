@@ -4,20 +4,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import no.jonasandersen.admin.application.DefaultSaveFiles;
-import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFileOld;
 import org.junit.jupiter.api.Test;
 
-class SaveFilesTest {
+class SaveFilesTestOld {
 
   @Test
   void createSaveFile() {
     SaveFiles saveFiles = new DefaultSaveFiles();
 
-    SaveFile saveFile = saveFiles.create("A save file name");
+    SaveFileOld saveFileOld = saveFiles.create("A save file name");
 
-    assertThat(saveFile)
+    assertThat(saveFileOld)
         .isNotNull()
-        .extracting(SaveFile::getName)
+        .extracting(SaveFileOld::getName)
         .isEqualTo("A save file name");
   }
 
@@ -27,7 +27,7 @@ class SaveFilesTest {
 
     saveFiles.create("A save file name");
 
-    List<SaveFile> files = saveFiles.findAll();
+    List<SaveFileOld> files = saveFiles.findAll();
 
     assertThat(files)
         .hasSize(1);
