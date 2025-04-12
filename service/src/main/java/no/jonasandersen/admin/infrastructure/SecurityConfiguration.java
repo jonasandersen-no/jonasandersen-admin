@@ -28,7 +28,7 @@ class SecurityConfiguration {
         .authorizeHttpRequests(
             authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/api/temperature")
+                    .requestMatchers("/api/temperature", "/api/test")
                     .permitAll()
                     .requestMatchers("/api/**")
                     .authenticated())

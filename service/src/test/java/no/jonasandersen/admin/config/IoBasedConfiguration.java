@@ -12,7 +12,7 @@ public class IoBasedConfiguration {
   @Bean
   @ServiceConnection
   PostgreSQLContainer<?> postgreSQLContainer() {
-    return new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
+    return new PostgreSQLContainer<>(DockerImageName.parse("postgres:17"))
         .withDatabaseName("admin");
   }
 

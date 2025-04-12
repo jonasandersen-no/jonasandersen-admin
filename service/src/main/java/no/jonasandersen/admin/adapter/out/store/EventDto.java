@@ -3,11 +3,13 @@ package no.jonasandersen.admin.adapter.out.store;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.Instant;
 import java.util.UUID;
 import no.jonasandersen.admin.domain.Event;
 
 public class EventDto<EVENT extends Event> {
   private final UUID aggRootId; // ID for the Aggregate Root
+  private final Instant recordedAt;
   private final int eventId;
   private final String eventType;
   private final String json; // blob of data - schemaless
@@ -34,6 +36,7 @@ public class EventDto<EVENT extends Event> {
     if (eventClassName == null) {
       throw new IllegalArgumentException("Event class name cannot be null, JSON is: " + json);
     }
+    this.recordedAt = Instant.now();
     this.aggRootId = aggRootId;
     this.eventId = eventId;
     this.eventType = eventClassName;
@@ -71,5 +74,25 @@ public class EventDto<EVENT extends Event> {
     } catch (ClassNotFoundException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public UUID getAggRootId() {
+    return aggRootId;
+  }
+
+  public Instant getRecordedAt() {
+    return recordedAt;
+  }
+
+  public int getEventId() {
+    return eventId;
+  }
+
+  public String getEventType() {
+    return eventType;
+  }
+
+  public String getJson() {
+    return json;
   }
 }

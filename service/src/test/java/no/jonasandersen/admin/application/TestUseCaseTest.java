@@ -15,7 +15,8 @@ class TestUseCaseTest {
     EventStore<TestId, TestEvent, Test> eventStore = EventStore.forTests();
     TestUseCase unit = new TestUseCase(eventStore);
 
-    TestId testId = new TestId(UUID.randomUUID());
+    UUID id = UUID.randomUUID();
+    TestId testId = new TestId(id);
     unit.testEvent(testId);
     unit.testEvent(testId);
 
@@ -23,6 +24,6 @@ class TestUseCaseTest {
 
     assertThat(found).isNotNull();
 
-    assertThat(eventStore.allEvents()).hasSize(2);
+    assertThat(eventStore.allEvents(new TestId(id))).hasSize(2);
   }
 }
