@@ -13,38 +13,17 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class EventStoreMongoConfiguration {
 
   @Bean
-  MongoTransactionManager transactionManager(MongoDatabaseFactory dbFactory) {
-    return new MongoTransactionManager(dbFactory);
-  }
-
-  @Bean
   SpringMongoEventStore springMongoEventStore(
-      MongoTransactionManager mongoTransactionManager, MongoTemplate mongoTemplate) {
+      MongoDatabaseFactory dbFactory, MongoTemplate mongoTemplate) {
     EventStoreConfig eventStoreConfig =
         new EventStoreConfig.Builder()
             // The collection where all events will be stored
             .eventStoreCollectionName("events")
-            .transactionConfig(mongoTransactionManager)
+            .transactionConfig(new MongoTransactionManager(dbFactory))
             // How the CloudEvent "time" property will be serialized in MongoDB! !!Important!!
             .timeRepresentation(TimeRepresentation.RFC_3339_STRING)
             .build();
 
     return new SpringMongoEventStore(mongoTemplate, eventStoreConfig);
   }
-
-  //  MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-  //  MongoTransactionManager mongoTransactionManager = new MongoTransactionManager(new
-  // SimpleMongoClientDatabaseFactory(mongoClient, "database"));
-  //
-  //  MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, "database");
-  //  EventStoreConfig eventStoreConfig = new EventStoreConfig.Builder()
-  //      // The collection where all events will be stored
-  //      .eventStoreCollectionName("events")
-  //      .transactionConfig(mongoTransactionManager)
-  //      // How the CloudEvent "time" property will be serialized in MongoDB! !!Important!!
-  //      .timeRepresentation(TimeRepresentation.RFC_3339_STRING)
-  //      .build();
-  //
-  //  SpringMongoEventStore eventStore = new SpringMongoEventStore(mongoTemplate, eventStoreConfig);
-
 }
