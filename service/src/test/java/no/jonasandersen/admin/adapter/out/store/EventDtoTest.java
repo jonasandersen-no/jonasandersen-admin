@@ -86,6 +86,7 @@ class EventDtoTest {
         Arguments.of(new TestEvent(new TestId(UUID.randomUUID()))),
         Arguments.of(new TestEvent2(new TestId(UUID.randomUUID()))),
         Arguments.of(
-            new SaveFileCreatedEvent(new SaveFileId(UUID.randomUUID()), "save file name")));
+            new SaveFileCreatedEvent(
+                new SaveFileId(UUID.randomUUID()), "save file name", "owner")));
   }
 }

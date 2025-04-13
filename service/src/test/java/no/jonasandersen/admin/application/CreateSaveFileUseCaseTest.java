@@ -15,12 +15,12 @@ public class CreateSaveFileUseCaseTest {
   void createSaveFileCreatesSaveFile() {
     Fixture fixture = useCaseWithEventStore();
 
-    SaveFileId id = fixture.useCase().createSaveFile("saveFile1");
+    SaveFileId id = fixture.useCase().createSaveFile("saveFile1", "jonas");
 
     assertThat(id).isNotNull();
 
     assertThat(fixture.eventStore().allEvents(id))
-        .containsExactly(new SaveFileCreatedEvent(id, "saveFile1"));
+        .containsExactly(new SaveFileCreatedEvent(id, "saveFile1", "jonas"));
   }
 
   private record Fixture(

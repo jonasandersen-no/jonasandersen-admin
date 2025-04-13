@@ -15,10 +15,10 @@ public class CreateSaveFileUseCase {
     this.eventStore = eventStore;
   }
 
-  public SaveFileId createSaveFile(String name) {
+  public SaveFileId createSaveFile(String name, String owner) {
     SaveFileId id = new SaveFileId(UUID.randomUUID());
 
-    SaveFile saveFile = SaveFile.create(id, name);
+    SaveFile saveFile = SaveFile.create(id, name, owner);
     eventStore.save(saveFile);
 
     return id;
