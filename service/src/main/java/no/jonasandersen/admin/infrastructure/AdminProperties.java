@@ -17,7 +17,8 @@ public record AdminProperties(
     @Valid Linode linode,
     @NotNull String defaultTheme,
     Map<Feature, Boolean> features,
-    @Valid Actuator actuator) {
+    @Valid Actuator actuator,
+    @Valid Discord discord) {
 
   public AdminProperties {
 
@@ -45,4 +46,7 @@ public record AdminProperties(
 
   @Valid
   public record Actuator(@NotNull String username, @NotNull String password) {}
+
+  @Valid
+  public record Discord(@NotNull String token) {}
 }
