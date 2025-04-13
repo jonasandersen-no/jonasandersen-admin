@@ -28,11 +28,13 @@ class SecurityConfiguration {
         .authorizeHttpRequests(
             authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/api/temperature", "/api/test")
+                    .requestMatchers("/api/temperature")
                     .permitAll()
                     .requestMatchers("/api/**")
                     .authenticated())
-        .oauth2ResourceServer(configurer -> configurer.jwt(withDefaults()));
+        .oauth2ResourceServer(configurer -> configurer.jwt(withDefaults()))
+        .httpBasic(withDefaults());
+
     return http.build();
   }
 
