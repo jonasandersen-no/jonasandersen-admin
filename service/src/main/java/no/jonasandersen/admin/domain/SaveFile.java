@@ -8,7 +8,7 @@ public class SaveFile extends EventSourcedAggregate<SaveFileEvent, SaveFileId> {
 
   private SaveFile() {}
 
-  private SaveFile(List<SaveFileCreatedEvent> events) {
+  private SaveFile(List<SaveFileEvent> events) {
     events.forEach(this::apply);
   }
 
@@ -28,7 +28,7 @@ public class SaveFile extends EventSourcedAggregate<SaveFileEvent, SaveFileId> {
     }
   }
 
-  public static SaveFile reconstitute(List<SaveFileCreatedEvent> events) {
+  public static SaveFile reconstitute(List<SaveFileEvent> events) {
     return new SaveFile(events);
   }
 

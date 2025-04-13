@@ -10,6 +10,9 @@ import no.jonasandersen.admin.application.port.InMemoryEventStoreRepository;
 import no.jonasandersen.admin.domain.Event;
 import no.jonasandersen.admin.domain.EventSourcedAggregate;
 import no.jonasandersen.admin.domain.Id;
+import no.jonasandersen.admin.domain.SaveFile;
+import no.jonasandersen.admin.domain.SaveFileEvent;
+import no.jonasandersen.admin.domain.SaveFileId;
 import no.jonasandersen.admin.domain.Test;
 import no.jonasandersen.admin.domain.TestEvent;
 import no.jonasandersen.admin.domain.TestId;
@@ -24,6 +27,15 @@ public class EventStore<
       Function<List<EVENT>, AGGREGATE> eventsToAggregate, EventStoreRepository repository) {
     this.eventsToAggregate = eventsToAggregate;
     this.repository = repository;
+  }
+
+  public static EventStore<SaveFileId, SaveFileEvent, SaveFile> forSaveFiles() {
+    return forSaveFiles(new InMemoryEventStoreRepository());
+  }
+
+  public static EventStore<SaveFileId, SaveFileEvent, SaveFile> forSaveFiles(
+      EventStoreRepository repository) {
+    return new EventStore<>(SaveFile::reconstitute, repository);
   }
 
   public static EventStore<TestId, TestEvent, Test> forTests() {

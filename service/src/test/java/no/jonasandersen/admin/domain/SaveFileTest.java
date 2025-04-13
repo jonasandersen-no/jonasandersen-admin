@@ -33,7 +33,7 @@ public class SaveFileTest {
       SaveFileId id = new SaveFileId(UUIDGenerator.generate());
       String name = "mySaveFile";
 
-      List<SaveFileCreatedEvent> events = List.of(new SaveFileCreatedEvent(id, name));
+      List<SaveFileEvent> events = List.of(new SaveFileCreatedEvent(id, name));
 
       SaveFile saveFile = SaveFile.reconstitute(events);
 
