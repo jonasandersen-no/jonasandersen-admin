@@ -1,7 +1,7 @@
 package no.jonasandersen.admin.adapter.in.discord;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.internal.interactions.CommandDataImpl;
 
 /**
@@ -20,13 +20,8 @@ public abstract class BaseCommand {
     commandData = new CommandDataImpl(commandName, description);
   }
 
-  public void addOption(Command.Option option) {
-    commandData.addOption(
-        option.getType(),
-        option.getName(),
-        option.getDescription(),
-        option.isRequired(),
-        option.isAutoComplete());
+  public void addOptions(OptionData... options) {
+    commandData.addOptions(options);
   }
 
   public CommandDataImpl getCommandData() {

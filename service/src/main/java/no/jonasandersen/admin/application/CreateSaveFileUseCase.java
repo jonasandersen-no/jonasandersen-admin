@@ -15,6 +15,8 @@ public class CreateSaveFileUseCase {
     this.eventStore = eventStore;
   }
 
+  // How to deal with duplicate names on saves? The read model only stores unique names and I think
+  // that makes the most sense for the user too.
   public SaveFileId createSaveFile(String name, String owner) {
     SaveFileId id = new SaveFileId(UUID.randomUUID());
 

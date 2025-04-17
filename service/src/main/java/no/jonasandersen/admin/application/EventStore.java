@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import no.jonasandersen.admin.adapter.out.store.EventDto;
+import no.jonasandersen.admin.application.port.EventBus;
 import no.jonasandersen.admin.application.port.EventStoreRepository;
 import no.jonasandersen.admin.application.port.InMemoryEventStoreRepository;
 import no.jonasandersen.admin.domain.Event;
@@ -22,36 +23,43 @@ public class EventStore<
 
   private final Function<List<EVENT>, AGGREGATE> eventsToAggregate;
   private final EventStoreRepository repository;
+  private final EventBus eventBus;
 
   private EventStore(
-      Function<List<EVENT>, AGGREGATE> eventsToAggregate, EventStoreRepository repository) {
+      Function<List<EVENT>, AGGREGATE> eventsToAggregate,
+      EventStoreRepository repository,
+      EventBus eventBus) {
     this.eventsToAggregate = eventsToAggregate;
     this.repository = repository;
+    this.eventBus = eventBus;
   }
 
   public static EventStore<SaveFileId, SaveFileEvent, SaveFile> forSaveFiles() {
-    return forSaveFiles(new InMemoryEventStoreRepository());
+    return forSaveFiles(new InMemoryEventStoreRepository(), _ -> {});
   }
 
   public static EventStore<SaveFileId, SaveFileEvent, SaveFile> forSaveFiles(
-      EventStoreRepository repository) {
-    return new EventStore<>(SaveFile::reconstitute, repository);
+      EventStoreRepository repository, EventBus eventBus) {
+    return new EventStore<>(SaveFile::reconstitute, repository, eventBus);
   }
 
   public static EventStore<TestId, TestEvent, Test> forTests() {
-    return forTests(new InMemoryEventStoreRepository());
+    return forTests(new InMemoryEventStoreRepository(), _ -> {});
   }
 
-  public static EventStore<TestId, TestEvent, Test> forTests(EventStoreRepository repository) {
-    return new EventStore<>(Test::reconstitute, repository);
+  public static EventStore<TestId, TestEvent, Test> forTests(
+      EventStoreRepository repository, EventBus eventBus) {
+    return new EventStore<>(Test::reconstitute, repository, eventBus);
   }
 
   public void save(AGGREGATE aggregate) {
     if (aggregate.getId() == null) {
       throw new IllegalArgumentException("The Aggregate " + aggregate + " must have an ID");
     }
+    List<EVENT> uncommittedEvents = aggregate.uncommittedEvents();
+
     List<EventDto<EVENT>> freshEventDtos =
-        aggregate.uncommittedEvents().stream()
+        uncommittedEvents.stream()
             .map(event -> EventDto.from(aggregate.getId().id(), 0, event))
             .toList();
     for (EventDto<EVENT> freshEventDto : freshEventDtos) {
@@ -61,6 +69,10 @@ public class EventStore<
           freshEventDto.getEventId(),
           freshEventDto.getEventType(),
           freshEventDto.getJson());
+    }
+
+    for (EVENT uncommittedEvent : uncommittedEvents) {
+      eventBus.publish(uncommittedEvent);
     }
   }
 
