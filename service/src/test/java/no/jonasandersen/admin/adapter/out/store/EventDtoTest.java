@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import no.jonasandersen.admin.domain.Event;
+import no.jonasandersen.admin.domain.HabitCreatedEvent;
 import no.jonasandersen.admin.domain.SaveFileCreatedEvent;
 import no.jonasandersen.admin.domain.SaveFileId;
 import no.jonasandersen.admin.domain.TestEvent;
@@ -82,11 +83,17 @@ class EventDtoTest {
   }
 
   public static Stream<Arguments> events() {
-    return Stream.of(
-        Arguments.of(new TestEvent(new TestId(UUID.randomUUID()))),
-        Arguments.of(new TestEvent2(new TestId(UUID.randomUUID()))),
-        Arguments.of(
-            new SaveFileCreatedEvent(
-                new SaveFileId(UUID.randomUUID()), "save file name", "owner")));
+    return Stream.concat(
+        Stream.of(
+            Arguments.of(new TestEvent(new TestId(UUID.randomUUID()))),
+            Arguments.of(new TestEvent2(new TestId(UUID.randomUUID()))),
+            Arguments.of(
+                new SaveFileCreatedEvent(
+                    new SaveFileId(UUID.randomUUID()), "save file name", "owner"))),
+        habitEvents());
+  }
+
+  public static Stream<Arguments> habitEvents() {
+    return Stream.of(Arguments.of(new HabitCreatedEvent(UUID.randomUUID(), 1, "name", "goal")));
   }
 }
