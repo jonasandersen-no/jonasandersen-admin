@@ -32,7 +32,7 @@ public class HabitTest {
 
       Habit habit = Habit.reconstitute(List.of());
 
-      habit.complete(aggregateId, "Drink water", now);
+      habit.complete(aggregateId, now);
 
       assertThat(habit.uncommittedEvents())
           .containsExactly(new HabitCompletedEvent(aggregateId, 1, now));

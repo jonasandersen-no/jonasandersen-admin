@@ -18,7 +18,7 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
     return habit;
   }
 
-  public void complete(UUID aggregateId, String name, LocalDateTime completionTime) {
+  public void complete(UUID aggregateId, LocalDateTime completionTime) {
     enqueue(new HabitCompletedEvent(aggregateId, this.version + 1, completionTime));
   }
 
