@@ -3,12 +3,15 @@ package no.jonasandersen.admin.adapter.out.store;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Modifier;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import no.jonasandersen.admin.domain.Event;
+import no.jonasandersen.admin.domain.HabitCompletedEvent;
 import no.jonasandersen.admin.domain.HabitCreatedEvent;
 import no.jonasandersen.admin.domain.SaveFileCreatedEvent;
 import no.jonasandersen.admin.domain.SaveFileId;
@@ -94,6 +97,9 @@ class EventDtoTest {
   }
 
   public static Stream<Arguments> habitEvents() {
-    return Stream.of(Arguments.of(new HabitCreatedEvent(UUID.randomUUID(), 1, "name", "goal")));
+    return Stream.of(
+        Arguments.of(new HabitCreatedEvent(UUID.randomUUID(), 1, "name", "goal")),
+        Arguments.of(
+            new HabitCompletedEvent(UUID.randomUUID(), 1, LocalDateTime.now(ZoneId.of("UTC")))));
   }
 }

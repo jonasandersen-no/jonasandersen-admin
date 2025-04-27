@@ -1,5 +1,8 @@
 package no.jonasandersen.admin.domain;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
@@ -7,6 +10,7 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
   private String name;
   private int version = 0;
   private String goal;
+  private final List<LocalDateTime> completions = new ArrayList<>();
 
   public static Habit create(UUID aggregateId, String name, String goal) {
     Habit habit = new Habit();
@@ -23,7 +27,19 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
         this.name = name;
         this.goal = goal;
       }
+      case HabitCompletedEvent(_, int version, LocalDateTime completionDate) -> {
+        this.version = version;
+        this.completions.add(completionDate);
+      }
     }
+  }
+
+  public static Habit reconstitute(List<HabitEvent> events) {
+    Habit habit = new Habit();
+    for (HabitEvent event : events) {
+      habit.apply(event);
+    }
+    return habit;
   }
 
   public String getName() {
@@ -36,5 +52,13 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
 
   public String getGoal() {
     return goal;
+  }
+
+  public void complete(UUID aggregateId, String name, LocalDateTime completionTime) {
+    enqueue(new HabitCompletedEvent(aggregateId, this.version + 1, completionTime));
+  }
+
+  public List<LocalDateTime> getCompletions() {
+    return completions;
   }
 }
