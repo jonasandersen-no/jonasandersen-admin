@@ -84,12 +84,25 @@ public class HabitTest {
   @Test
   void applyFailsWhenEventIsNotInCorrectOrder() {
 
-    Habit habit = Habit.create(UUID.randomUUID(), "name", "goal");
+    UUID aggregateId = UUID.randomUUID();
+    Habit habit = Habit.create(aggregateId, "name", "goal");
     assertThat(habit.getVersion()).isEqualTo(1);
 
-    assertThatThrownBy(
-            () -> habit.apply(new HabitCreatedEvent(UUID.randomUUID(), 42, "name", "goal")))
+    assertThatThrownBy(() -> habit.apply(new HabitCreatedEvent(aggregateId, 42, "name", "goal")))
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("event version mismatch. Expected 2, got 42");
+  }
+
+  @Test
+  void applyFailsWhenEventIdDoesNotMatchAggregateId() {
+    Habit habit = Habit.create(UUID.randomUUID(), "name", "goal");
+
+    assertThatThrownBy(
+            () ->
+                habit.apply(
+                    new HabitCompletedEvent(
+                        UUID.randomUUID(), 2, LocalDateTime.now(ZoneId.of("UTC")))))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessage("aggregate id mismatch");
   }
 }

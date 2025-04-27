@@ -21,6 +21,10 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
   @Override
   protected void apply(HabitEvent event) {
 
+    if (this.getId() != null && !this.getId().id().equals(event.aggregateId())) {
+      throw new IllegalStateException("aggregate id mismatch");
+    }
+
     if (this.version != event.version() - 1 && this.version != 0) {
       throw new IllegalStateException(
           "event version mismatch. Expected %s, got %s"
