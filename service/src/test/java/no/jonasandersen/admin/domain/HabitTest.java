@@ -55,19 +55,19 @@ public class HabitTest {
       assertThat(habit.getName()).isEqualTo("Drink water");
       assertThat(habit.getGoal()).isEqualTo("Daily");
     }
-  }
 
-  @Test
-  void habitCompletedEventAddsCurrentDateToListOfCompletions() {
-    UUID aggregateId = UUID.randomUUID();
-    LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
+    @Test
+    void habitCompletedEventAddsCurrentDateToListOfCompletions() {
+      UUID aggregateId = UUID.randomUUID();
+      LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
 
-    Habit habit = new Habit();
+      Habit habit = new Habit();
 
-    habit.apply(new HabitCompletedEvent(aggregateId, 1, now));
+      habit.apply(new HabitCompletedEvent(aggregateId, 1, now));
 
-    assertThat(habit.getVersion()).isEqualTo(1);
-    assertThat(habit.getCompletions()).containsExactly(now);
+      assertThat(habit.getVersion()).isEqualTo(1);
+      assertThat(habit.getCompletions()).containsExactly(now);
+    }
   }
 
   @Test
