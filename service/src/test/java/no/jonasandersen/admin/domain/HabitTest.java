@@ -37,6 +37,21 @@ public class HabitTest {
       assertThat(habit.uncommittedEvents())
           .containsExactly(new HabitCompletedEvent(aggregateId, 1, now));
     }
+
+    @Test
+    void completeHabitCommandCantCompleteAlreadyCompletedHabitForDate() {
+      UUID aggregateId = UUID.randomUUID();
+      LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC"));
+
+      Habit habit =
+          Habit.reconstitute(
+              new HabitCreatedEvent(aggregateId, 1, "name", "goal"),
+              new HabitCompletedEvent(aggregateId, 2, now));
+
+      assertThatThrownBy(() -> habit.complete(aggregateId, now))
+          .isInstanceOf(HabitException.class)
+          .hasMessage("habit already completed for this date");
+    }
   }
 
   @Nested

@@ -1,5 +1,6 @@
 package no.jonasandersen.admin.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,20 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
   }
 
   public void complete(UUID aggregateId, LocalDateTime completionTime) {
+
+    boolean found = false;
+    for (LocalDateTime completion : this.completions) {
+      LocalDate localDate = LocalDate.from(completion);
+      if (localDate.isEqual(completionTime.toLocalDate())) {
+        found = true;
+        break;
+      }
+    }
+
+    if (found) {
+      throw new HabitException("habit already completed for this date");
+    }
+
     enqueue(new HabitCompletedEvent(aggregateId, this.version + 1, completionTime));
   }
 
@@ -47,6 +62,10 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
         this.completions.add(completionDate);
       }
     }
+  }
+
+  public static Habit reconstitute(HabitEvent... events) {
+    return reconstitute(List.of(events));
   }
 
   public static Habit reconstitute(List<HabitEvent> events) {
