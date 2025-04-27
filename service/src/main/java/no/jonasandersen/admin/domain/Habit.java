@@ -18,6 +18,10 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
     return habit;
   }
 
+  public void complete(UUID aggregateId, String name, LocalDateTime completionTime) {
+    enqueue(new HabitCompletedEvent(aggregateId, this.version + 1, completionTime));
+  }
+
   @Override
   protected void apply(HabitEvent event) {
 
@@ -63,10 +67,6 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
 
   public String getGoal() {
     return goal;
-  }
-
-  public void complete(UUID aggregateId, String name, LocalDateTime completionTime) {
-    enqueue(new HabitCompletedEvent(aggregateId, this.version + 1, completionTime));
   }
 
   public List<LocalDateTime> getCompletions() {
