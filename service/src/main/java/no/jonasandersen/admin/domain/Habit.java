@@ -20,6 +20,13 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
 
   @Override
   protected void apply(HabitEvent event) {
+
+    if (this.version != event.version() - 1 && this.version != 0) {
+      throw new IllegalStateException(
+          "event version mismatch. Expected %s, got %s"
+              .formatted(this.version + 1, event.version()));
+    }
+
     switch (event) {
       case HabitCreatedEvent(UUID aggregateId, int version, String name, String goal) -> {
         setId(new HabitId(aggregateId));

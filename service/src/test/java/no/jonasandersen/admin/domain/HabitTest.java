@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -67,5 +68,28 @@ public class HabitTest {
 
     assertThat(habit.getVersion()).isEqualTo(1);
     assertThat(habit.getCompletions()).containsExactly(now);
+  }
+
+  @Test
+  void eventVersionShouldOneHigherThanAggregate() {
+    Habit habit = new Habit();
+
+    assertThat(habit.getVersion()).isEqualTo(0);
+
+    habit.apply(new HabitCreatedEvent(UUID.randomUUID(), habit.getVersion() + 1, "name", "goal"));
+
+    assertThat(habit.getVersion()).isEqualTo(1);
+  }
+
+  @Test
+  void applyFailsWhenEventIsNotInCorrectOrder() {
+
+    Habit habit = Habit.create(UUID.randomUUID(), "name", "goal");
+    assertThat(habit.getVersion()).isEqualTo(1);
+
+    assertThatThrownBy(
+            () -> habit.apply(new HabitCreatedEvent(UUID.randomUUID(), 42, "name", "goal")))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessage("event version mismatch. Expected 2, got 42");
   }
 }
