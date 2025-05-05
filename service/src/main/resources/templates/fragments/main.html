@@ -51,6 +51,11 @@
           </th:block>
           <li class="nav-item">
             <a class="nav-link"
+               th:classappend="${currentPath.startsWith('/habits')} ? 'active' : ''"
+               href="/habits">Habits</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
                th:classappend="${currentPath.startsWith('/settings')} ? 'active' : ''"
                href="/settings">Settings</a>
           </li>

@@ -64,10 +64,6 @@ public class Habit extends EventSourcedAggregate<HabitEvent, HabitId> {
     }
   }
 
-  public static Habit reconstitute(HabitEvent... events) {
-    return reconstitute(List.of(events));
-  }
-
   public static Habit reconstitute(List<HabitEvent> events) {
     Habit habit = new Habit();
     for (HabitEvent event : events) {

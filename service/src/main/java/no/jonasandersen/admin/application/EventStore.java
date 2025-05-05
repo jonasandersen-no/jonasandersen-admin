@@ -10,6 +10,9 @@ import no.jonasandersen.admin.application.port.EventStoreRepository;
 import no.jonasandersen.admin.application.port.InMemoryEventStoreRepository;
 import no.jonasandersen.admin.domain.Event;
 import no.jonasandersen.admin.domain.EventSourcedAggregate;
+import no.jonasandersen.admin.domain.Habit;
+import no.jonasandersen.admin.domain.HabitEvent;
+import no.jonasandersen.admin.domain.HabitId;
 import no.jonasandersen.admin.domain.Id;
 import no.jonasandersen.admin.domain.SaveFile;
 import no.jonasandersen.admin.domain.SaveFileEvent;
@@ -50,6 +53,11 @@ public class EventStore<
   public static EventStore<TestId, TestEvent, Test> forTests(
       EventStoreRepository repository, EventBus eventBus) {
     return new EventStore<>(Test::reconstitute, repository, eventBus);
+  }
+
+  public static EventStore<HabitId, HabitEvent, Habit> forHabits(
+      EventStoreRepository repository, EventBus eventBus) {
+    return new EventStore<>(Habit::reconstitute, repository, eventBus);
   }
 
   public void save(AGGREGATE aggregate) {
@@ -99,6 +107,21 @@ public class EventStore<
   public Stream<EVENT> allEvents(ID id) {
     List<EventDto<EVENT>> events =
         repository.findByAggregateRootId(id.id()).stream()
+            .map(
+                databaseEvent ->
+                    new EventDto<EVENT>(
+                        databaseEvent.aggregateRootId(),
+                        databaseEvent.eventId(),
+                        databaseEvent.eventType(),
+                        databaseEvent.content()))
+            .toList();
+
+    return events.stream().map(EventDto::toDomain);
+  }
+
+  public Stream<EVENT> allEvents(String eventType) {
+    var events =
+        repository.findAllByEventType(eventType).stream()
             .map(
                 databaseEvent ->
                     new EventDto<EVENT>(

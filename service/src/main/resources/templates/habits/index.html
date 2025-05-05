@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:attr="data-bs-theme=${currentStoredTheme}">
+<head>
+  <th:block th:insert="~{fragments/main :: baseHead}"></th:block>
+  <title>Habit Tracker</title>
+</head>
+<body>
+<div th:replace="~{fragments/main :: navigation}"></div>
+<main>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-center sans-bold">Habit Tracker</h2>
+      <a href="/habits/create" class="btn btn-primary">Create New Habit</a>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card mb-4" th:each="habit : ${habits}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h5 class="card-title" th:text="${habit.name}">Habit Name</h5>
+                <p class="card-text" th:text="${habit.goal}">Habit Goal</p>
+                <p class="card-text">
+                  <small class="text-muted">
+                    Completed <span th:text="${habit.completions.size()}">0</span> times
+                  </small>
+                </p>
+              </div>
+              <form th:action="@{/habits/{id}/complete(id=${habit.id.id})}" method="post">
+                <button type="submit" class="btn btn-success">Complete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info" th:if="${#lists.isEmpty(habits)}">
+          No habits found. Create a new habit to get started!
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div th:replace="~{fragments/main :: footer}"></div>
+</footer>
+</body>
+</html>

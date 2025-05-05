@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 import no.jonasandersen.admin.application.port.EventStoreRepository;
 import org.occurrent.eventstore.api.blocking.EventStream;
 import org.occurrent.eventstore.mongodb.spring.blocking.SpringMongoEventStore;
@@ -46,6 +47,23 @@ public class DefaultEventStoreRepository implements EventStoreRepository {
             cloudEvent -> {
               return new DatabaseEvent(
                   id,
+                  cloudEvent.getTime().toInstant(),
+                  Integer.parseInt(cloudEvent.getId().split("-")[0]),
+                  cloudEvent.getType(),
+                  new String(cloudEvent.getData().toBytes()));
+            })
+        .toList();
+  }
+
+  @Override
+  public List<DatabaseEvent> findAllByEventType(String eventType) {
+    Stream<CloudEvent> events = eventStore.all();
+
+    return events.filter(cloudEvent -> cloudEvent.getType().equals(eventType))
+        .map(
+            cloudEvent -> {
+              return new DatabaseEvent(
+                  UUID.fromString(cloudEvent.getId()),
                   cloudEvent.getTime().toInstant(),
                   Integer.parseInt(cloudEvent.getId().split("-")[0]),
                   cloudEvent.getType(),
