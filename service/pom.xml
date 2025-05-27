@@ -89,7 +89,7 @@
     <dependency>
       <groupId>org.occurrent</groupId>
       <artifactId>eventstore-mongodb-spring-blocking</artifactId>
-      <version>0.19.10</version>
+      <version>0.19.11</version>
     </dependency>
 
 
