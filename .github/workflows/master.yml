@@ -24,6 +24,7 @@ jobs:
           java-version: 24
           java-distribution: liberica
           checkout-persist-credentials: true
+          cache-prefix: ${{ runner.arch }}
           settings-servers: |
             [{
                 "id": "reposilite-releases",
