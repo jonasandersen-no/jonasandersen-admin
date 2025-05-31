@@ -8,21 +8,16 @@ on:
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [ ubuntu-24.04 ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
-      packages: write
     steps:
       - name: Setup Maven Action
-        uses: s4u/setup-maven-action@v1.12.0
+        uses: s4u/setup-maven-action@v1.18.0
         with:
           java-version: 24
           java-distribution: liberica
           checkout-persist-credentials: true
-          cache-enabled: false
           settings-servers: |
             [{
                 "id": "reposilite-releases",
