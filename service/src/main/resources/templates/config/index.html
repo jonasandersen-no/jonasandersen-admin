@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:attr="data-bs-theme=${currentStoredTheme}">
+<head>
+  <th:block th:insert="~{fragments/main :: baseHead}"></th:block>
+  <title>Linode</title>
+</head>
+<body>
+<div th:replace="~{fragments/main :: navigation}"></div>
+<main>
+  <h2 class="text-center sans-bold">Config</h2>
+  <div class="container m-auto">
+  </div>
+</main>
+<footer>
+  <div th:replace="~{fragments/main :: footer}"></div>
+</footer>
+</body>
+</html>
