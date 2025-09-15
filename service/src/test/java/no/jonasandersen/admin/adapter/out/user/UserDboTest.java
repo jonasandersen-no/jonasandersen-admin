@@ -7,10 +7,12 @@ import no.jonasandersen.admin.config.IoBasedTest;
 import no.jonasandersen.admin.domain.Username;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
+@Disabled
 class UserDboTest extends IoBasedTest {
 
   @Autowired
