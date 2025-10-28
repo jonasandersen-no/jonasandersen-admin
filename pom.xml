@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.6</version>
+    <version>4.0.0-RC1</version>
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
 
@@ -32,7 +32,7 @@
   </scm>
   <properties>
     <java.version>25</java.version>
-    <spring-cloud.version>2025.0.0</spring-cloud.version>
+    <spring-cloud.version>2025.1.0-M4</spring-cloud.version>
     <jte.version>3.1.10</jte.version>
     <occurrent.version>0.19.11</occurrent.version>
     <uuid-generator.version>5.1.0</uuid-generator.version>
