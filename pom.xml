@@ -34,7 +34,7 @@
     <java.version>25</java.version>
     <spring-cloud.version>2025.1.0-M4</spring-cloud.version>
     <jte.version>3.1.10</jte.version>
-    <occurrent.version>0.19.11</occurrent.version>
+    <occurrent.version>0.19.14</occurrent.version>
     <uuid-generator.version>5.1.0</uuid-generator.version>
     <springdoc.version>2.8.13</springdoc.version>
     <jresult.version>0.0.4</jresult.version>
