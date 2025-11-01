@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import no.jonasandersen.admin.domain.AccountCreatedEvent;
+import no.jonasandersen.admin.domain.AccountId;
 import no.jonasandersen.admin.domain.Event;
 import no.jonasandersen.admin.domain.HabitCompletedEvent;
 import no.jonasandersen.admin.domain.HabitCreatedEvent;
@@ -87,13 +89,15 @@ class EventDtoTest {
 
   public static Stream<Arguments> events() {
     return Stream.concat(
-        Stream.of(
-            Arguments.of(new TestEvent(new TestId(UUID.randomUUID()))),
-            Arguments.of(new TestEvent2(new TestId(UUID.randomUUID()))),
-            Arguments.of(
-                new SaveFileCreatedEvent(
-                    new SaveFileId(UUID.randomUUID()), "save file name", "owner"))),
-        habitEvents());
+        Stream.concat(
+            Stream.of(
+                Arguments.of(new TestEvent(new TestId(UUID.randomUUID()))),
+                Arguments.of(new TestEvent2(new TestId(UUID.randomUUID()))),
+                Arguments.of(
+                    new SaveFileCreatedEvent(
+                        new SaveFileId(UUID.randomUUID()), "save file name", "owner"))),
+            habitEvents()),
+        accountEvents());
   }
 
   public static Stream<Arguments> habitEvents() {
@@ -101,5 +105,9 @@ class EventDtoTest {
         Arguments.of(new HabitCreatedEvent(UUID.randomUUID(), 1, "name", "goal")),
         Arguments.of(
             new HabitCompletedEvent(UUID.randomUUID(), 1, LocalDateTime.now(ZoneId.of("UTC")))));
+  }
+
+  public static Stream<Arguments> accountEvents() {
+    return Stream.of(Arguments.of(new AccountCreatedEvent(AccountId.random(), "accountname")));
   }
 }
