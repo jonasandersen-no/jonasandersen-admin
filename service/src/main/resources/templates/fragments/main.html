@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:attr="data-bs-theme=${currentStoredTheme}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:attr="data-bs-theme=${currentStoredTheme}">
 <head>
   <th:block th:fragment="baseHead">
     <meta charset="utf-8">
@@ -35,13 +36,6 @@
             <a class="nav-link" th:classappend="${currentPath.equals('/')} ? 'active' : ''"
                aria-current="page" href="/">Home</a>
           </li>
-          <th:block sec:authorize="hasRole('ROLE_SERVER')">
-            <li class="nav-item">
-              <a class="nav-link"
-                 th:classappend="${currentPath.startsWith('/linode')} ? 'active' : ''"
-                 href="/linode">Linode</a>
-            </li>
-          </th:block>
           <th:block sec:authorize="hasRole('ROLE_SERVER')">
             <li class="nav-item">
               <a class="nav-link"
