@@ -8,6 +8,9 @@ import no.jonasandersen.admin.adapter.out.store.EventDto;
 import no.jonasandersen.admin.application.port.EventBus;
 import no.jonasandersen.admin.application.port.EventStoreRepository;
 import no.jonasandersen.admin.application.port.InMemoryEventStoreRepository;
+import no.jonasandersen.admin.domain.Account;
+import no.jonasandersen.admin.domain.AccountEvent;
+import no.jonasandersen.admin.domain.AccountId;
 import no.jonasandersen.admin.domain.Event;
 import no.jonasandersen.admin.domain.EventSourcedAggregate;
 import no.jonasandersen.admin.domain.Id;
@@ -41,6 +44,16 @@ public class EventStore<
   public static EventStore<SaveFileId, SaveFileEvent, SaveFile> forSaveFiles(
       EventStoreRepository repository, EventBus eventBus) {
     return new EventStore<>(SaveFile::reconstitute, repository, eventBus);
+  }
+
+
+  public static EventStore<AccountId, AccountEvent, Account> forAccount() {
+    return forAccount(new InMemoryEventStoreRepository(), _ -> {});
+  }
+
+  public static EventStore<AccountId, AccountEvent, Account> forAccount(
+      EventStoreRepository repository, EventBus eventBus) {
+    return new EventStore<>(Account::reconstitute, repository, eventBus);
   }
 
   public static EventStore<TestId, TestEvent, Test> forTests() {
