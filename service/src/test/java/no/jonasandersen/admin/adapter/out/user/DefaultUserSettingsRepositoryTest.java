@@ -3,7 +3,6 @@ package no.jonasandersen.admin.adapter.out.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
-import no.jonasandersen.admin.application.port.UserSettingsRepository;
 import no.jonasandersen.admin.config.IoBasedTest;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.domain.Username;
@@ -15,29 +14,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 class DefaultUserSettingsRepositoryTest extends IoBasedTest {
 
-  private static final Logger log = LoggerFactory.getLogger(
-      DefaultUserSettingsRepositoryTest.class);
-  @Autowired
-  private UserSettingsRepository repository;
-  @Autowired
-  private CrudUserSettingsRepository jdbcRepository;
-  @Autowired
-  private CrudUserDboRepository userRepository;
+  private static final Logger log =
+      LoggerFactory.getLogger(DefaultUserSettingsRepositoryTest.class);
+  @Autowired private CrudUserDboRepository userRepository;
+
 
   @Test
-  @Transactional
   void findTheme() {
     UserDbo user = userRepository.save(new UserDbo(Username.create("findThemeUsername")));
 
-    UserSettingsDbo saved = jdbcRepository.save(new UserSettingsDbo(user, "theme"));
+    UserSettingsDbo dbo = new UserSettingsDbo("theme");
 
-    log.info("Saved: {}", saved);
-    Optional<Theme> theme = repository.findTheme(new Username(saved.getUser().getUsername()));
+    user.setSettings(dbo);
+    userRepository.save(user);
+
+    log.info("Saved: {}", user);
+    Optional<Theme> theme =
+        Optional.ofNullable(user.getSettings()).map(UserSettingsDbo::getTheme).map(Theme::new);
 
     log.info("Theme: {}", theme);
-    assertThat(theme).isNotEmpty()
-        .get()
-        .extracting(Theme::value)
-        .isEqualTo("theme");
+    assertThat(theme).isNotEmpty().get().extracting(Theme::value).isEqualTo("theme");
   }
 }

@@ -11,41 +11,45 @@ import org.springframework.transaction.annotation.Transactional;
 class DefaultUserSettingsRepository implements UserSettingsRepository {
 
   private final Logger log = LoggerFactory.getLogger(DefaultUserSettingsRepository.class);
-  private final CrudUserSettingsRepository repository;
   private final CrudUserDboRepository userRepository;
 
-  public DefaultUserSettingsRepository(
-      CrudUserSettingsRepository repository, CrudUserDboRepository userRepository) {
-    this.repository = repository;
+  public DefaultUserSettingsRepository(CrudUserDboRepository userRepository) {
     this.userRepository = userRepository;
   }
 
   @Override
   @Transactional(readOnly = true)
   public Optional<Theme> findTheme(Username username) {
-    Optional<UserSettingsDbo> userSettingsDbo = repository.findByUsername(username.value());
-
-    return userSettingsDbo.map(UserSettingsDbo::getTheme).map(Theme::new);
+    Optional<UserDbo> user = userRepository.findByUsername(username.value());
+    if (user.isPresent()) {
+      UserSettingsDbo settings = user.get().getSettings();
+      if (settings != null) {
+        return Optional.of(settings.getTheme()).map(Theme::new);
+      }
+    }
+    return Optional.empty();
   }
 
   @Override
   @Transactional
   public void saveTheme(Username username, Theme theme) {
-    Optional<UserSettingsDbo> settingsOpt = repository.findByUsername(username.value());
+    Optional<UserDbo> user = userRepository.findByUsername(username.value());
+    if (user.isEmpty()) {
+      throw new IllegalArgumentException("User not found: " + username);
+    }
+    Optional<UserSettingsDbo> settingsOpt = Optional.ofNullable(user.get().getSettings());
 
     if (settingsOpt.isPresent()) {
       UserSettingsDbo settings = settingsOpt.get();
       settings.setTheme(theme.value());
-      repository.save(settings);
+      user.get().setSettings(settings);
+      userRepository.save(user.get());
     } else {
-      Optional<UserDbo> user = userRepository.findByUsername(username.value());
-      if (user.isPresent()) {
-        UserDbo userDbo = user.get();
-        UserSettingsDbo settings = new UserSettingsDbo(userDbo, theme.value());
-        repository.save(settings);
-        return;
-      }
-      log.warn("User not found: {}", username);
+      UserSettingsDbo settings = new UserSettingsDbo(theme.value());
+      user.get().setSettings(settings);
+      userRepository.save(user.get());
+      return;
     }
+    log.warn("User not found: {}", username);
   }
 }
