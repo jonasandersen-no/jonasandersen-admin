@@ -6,11 +6,13 @@ import java.util.UUID;
 
 public interface EventStoreRepository {
 
-  record DatabaseEvent(
-      UUID aggregateRootId, Instant recordedAt, int eventId, String eventType, String content) {}
+  record DatabaseEvent(UUID aggregateRootId, Instant recordedAt, int eventId, String eventType,
+                       String content) {
 
-  void saveEvent(
-      UUID aggregateRootId, Instant recordedAt, int eventId, String eventType, String content);
+  }
+
+  void saveEvent(UUID aggregateRootId, Instant recordedAt, int eventId, String eventType,
+      String content);
 
   List<DatabaseEvent> findByAggregateRootId(UUID id);
 }

@@ -38,7 +38,8 @@ public class EventStore<
   }
 
   public static EventStore<SaveFileId, SaveFileEvent, SaveFile> forSaveFiles() {
-    return forSaveFiles(new InMemoryEventStoreRepository(), _ -> {});
+    return forSaveFiles(new InMemoryEventStoreRepository(), _ -> {
+    });
   }
 
   public static EventStore<SaveFileId, SaveFileEvent, SaveFile> forSaveFiles(
@@ -48,7 +49,8 @@ public class EventStore<
 
 
   public static EventStore<AccountId, AccountEvent, Account> forAccount() {
-    return forAccount(new InMemoryEventStoreRepository(), _ -> {});
+    return forAccount(new InMemoryEventStoreRepository(), _ -> {
+    });
   }
 
   public static EventStore<AccountId, AccountEvent, Account> forAccount(
@@ -57,7 +59,8 @@ public class EventStore<
   }
 
   public static EventStore<TestId, TestEvent, Test> forTests() {
-    return forTests(new InMemoryEventStoreRepository(), _ -> {});
+    return forTests(new InMemoryEventStoreRepository(), _ -> {
+    });
   }
 
   public static EventStore<TestId, TestEvent, Test> forTests(

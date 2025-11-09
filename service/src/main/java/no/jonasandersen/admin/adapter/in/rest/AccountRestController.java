@@ -3,9 +3,11 @@ package no.jonasandersen.admin.adapter.in.rest;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import java.util.UUID;
 import no.jonasandersen.admin.application.AccountBalanceProjection;
 import no.jonasandersen.admin.application.EventStore;
+import no.jonasandersen.admin.application.port.AccountStreamRepository;
 import no.jonasandersen.admin.domain.Account;
 import no.jonasandersen.admin.domain.AccountEvent;
 import no.jonasandersen.admin.domain.AccountId;
@@ -29,17 +31,34 @@ public class AccountRestController {
   private static final Logger log = LoggerFactory.getLogger(AccountRestController.class);
   private final AccountBalanceProjection accountBalanceProjection;
   private final EventStore<AccountId, AccountEvent, Account> eventStore;
+  private final AccountStreamRepository repository;
 
   public AccountRestController(
       AccountBalanceProjection accountBalanceProjection,
-      EventStore<AccountId, AccountEvent, Account> eventStore) {
+      EventStore<AccountId, AccountEvent, Account> eventStore, AccountStreamRepository repository) {
     this.accountBalanceProjection = accountBalanceProjection;
     this.eventStore = eventStore;
+    this.repository = repository;
   }
 
-  record CreateAccountRequest(@Parameter(description = "Account Name") String name) {}
+  record CreateAccountRequest(@Parameter(description = "Account Name") String name) {
 
-  record CreateAccountResponse(UUID accountId) {}
+  }
+
+  record CreateAccountResponse(UUID accountId) {
+
+  }
+
+  UUID myId = UUID.fromString("595cf6b7-73b9-400e-a232-3a41b853c442");
+
+  @GetMapping
+  List<CreateAccountResponse> getAllAccounts() {
+    List<AccountId> accounts = repository.getAccountsForUser(myId);
+
+    return accounts.stream().map(
+        accountId -> new CreateAccountResponse(accountId.id())
+    ).toList();
+  }
 
   @GetMapping("/{accountId}/balance")
   @ResponseStatus(HttpStatus.OK)
@@ -61,8 +80,8 @@ public class AccountRestController {
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "201", description = "Account created"),
-        @ApiResponse(responseCode = "400", description = "Bad request")
+          @ApiResponse(responseCode = "201", description = "Account created"),
+          @ApiResponse(responseCode = "400", description = "Bad request")
       })
   CreateAccountResponse create(@RequestBody CreateAccountRequest request) {
     log.info("Received request: {}", request);
@@ -71,7 +90,10 @@ public class AccountRestController {
     Account account = Account.create(accountId, request.name());
     eventStore.save(account);
 
-    return new CreateAccountResponse(accountId.id());
+    CreateAccountResponse response = new CreateAccountResponse(accountId.id());
+
+    repository.save(myId, accountId);
+    return response;
   }
 
   @ExceptionHandler(IllegalArgumentException.class)
