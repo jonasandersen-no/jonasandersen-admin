@@ -36,19 +36,16 @@ public class AccountRestController {
 
   public AccountRestController(
       AccountBalanceProjection accountBalanceProjection,
-      EventStore<AccountId, AccountEvent, Account> eventStore, AccountStreamRepository repository) {
+      EventStore<AccountId, AccountEvent, Account> eventStore,
+      AccountStreamRepository repository) {
     this.accountBalanceProjection = accountBalanceProjection;
     this.eventStore = eventStore;
     this.repository = repository;
   }
 
-  record CreateAccountRequest(@Parameter(description = "Account Name") String name) {
+  record CreateAccountRequest(@Parameter(description = "Account Name") String name) {}
 
-  }
-
-  record CreateAccountResponse(UUID accountId) {
-
-  }
+  record CreateAccountResponse(UUID accountId) {}
 
   UUID myId = UUID.fromString("595cf6b7-73b9-400e-a232-3a41b853c442");
 
@@ -56,19 +53,16 @@ public class AccountRestController {
   List<CreateAccountResponse> getAllAccounts() {
     List<AccountId> accounts = repository.getAccountsForUser(myId);
 
-    return accounts.stream().map(
-        accountId -> new CreateAccountResponse(accountId.id())
-    ).toList();
+    return accounts.stream().map(accountId -> new CreateAccountResponse(accountId.id())).toList();
   }
 
   @GetMapping("/{accountId}/balance")
   @ResponseStatus(HttpStatus.OK)
   @ApiResponses(
       value = {
-          @ApiResponse(responseCode = "200", description = "Account balance"),
-          @ApiResponse(responseCode = "400", description = "Account does not exist")
-      }
-  )
+        @ApiResponse(responseCode = "200", description = "Account balance"),
+        @ApiResponse(responseCode = "400", description = "Account does not exist")
+      })
   Long accountBalance(@PathVariable UUID accountId) {
     Long balance = accountBalanceProjection.forAccount(new AccountId(accountId));
     if (balance == null) {
@@ -77,27 +71,26 @@ public class AccountRestController {
     return balance;
   }
 
-  record LogExpenseRequest(Long amount, String description) {
-
-  }
+  record LogExpenseRequest(Long amount, String description) {}
 
   @PostMapping("/{accountId}/expense")
   void expense(@RequestBody LogExpenseRequest request, @PathVariable String accountId) {
     Optional<Account> account = eventStore.findById(AccountId.of(accountId));
 
-    account.ifPresent(account1 -> {
-      account1.expense(request.amount(),  request.description());
+    account.ifPresent(
+        account1 -> {
+          account1.expense(request.amount(), request.description());
 
-      eventStore.save(account1);
-    });
+          eventStore.save(account1);
+        });
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   @ApiResponses(
       value = {
-          @ApiResponse(responseCode = "201", description = "Account created"),
-          @ApiResponse(responseCode = "400", description = "Bad request")
+        @ApiResponse(responseCode = "201", description = "Account created"),
+        @ApiResponse(responseCode = "400", description = "Bad request")
       })
   CreateAccountResponse create(@RequestBody CreateAccountRequest request) {
     log.info("Received request: {}", request);

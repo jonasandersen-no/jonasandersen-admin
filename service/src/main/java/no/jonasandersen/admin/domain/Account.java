@@ -8,8 +8,7 @@ public class Account extends EventSourcedAggregate<AccountEvent, AccountId> {
   private Long balance = 0L;
   private String accountName;
 
-  private Account() {
-  }
+  private Account() {}
 
   public static Account create(AccountId accountId, String name) {
     Account account = new Account();
