@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import no.jonasandersen.admin.application.AccountBalanceProjection;
 import no.jonasandersen.admin.application.EventStore;
@@ -74,6 +75,21 @@ public class AccountRestController {
       throw new IllegalArgumentException("No account with id " + accountId);
     }
     return balance;
+  }
+
+  record LogExpenseRequest(Long amount, String description) {
+
+  }
+
+  @PostMapping("/{accountId}/expense")
+  void expense(@RequestBody LogExpenseRequest request, @PathVariable String accountId) {
+    Optional<Account> account = eventStore.findById(AccountId.of(accountId));
+
+    account.ifPresent(account1 -> {
+      account1.expense(request.amount(),  request.description());
+
+      eventStore.save(account1);
+    });
   }
 
   @PostMapping

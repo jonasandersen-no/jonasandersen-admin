@@ -11,4 +11,8 @@ public record AccountId(UUID id) implements Id {
   public static AccountId of(UUID aggregateId) {
     return new AccountId(aggregateId);
   }
+
+  public static AccountId of(String accountId) {
+    return new AccountId(UUID.fromString(accountId));
+  }
 }
