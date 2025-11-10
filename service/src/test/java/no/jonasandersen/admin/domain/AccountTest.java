@@ -24,16 +24,16 @@ class AccountTest {
 
     @Test
     void logExpenseGeneratesExpenseLoggedEvent() {
-      UUID aggregateId = UUID.randomUUID();
+      AccountId accountId = AccountId.random();
       String name = "myAccount";
 
       Account account =
-          Account.reconstitute(List.of(new AccountCreatedEvent(new AccountId(aggregateId), name)));
+          Account.reconstitute(List.of(new AccountCreatedEvent(accountId, name)));
 
       account.expense(1000L, "Water");
 
       assertThat(account.uncommittedEvents())
-          .containsExactly(new ExpenseLoggedEvent(AccountId.of(aggregateId)));
+          .containsExactly(new ExpenseLoggedEvent(accountId, 1000L, "Water"));
     }
 
   }
@@ -52,6 +52,15 @@ class AccountTest {
       assertThat(account.getId()).isEqualTo(new AccountId(aggregateId));
       assertThat(account.getAccountName()).isEqualTo(name);
       assertThat(account.getBalance()).isNotNull();
+    }
+
+    @Test
+    void expenseLoggedEventsSubtractsBalance() {
+      AccountId random = AccountId.random();
+
+      Account account = Account.reconstitute(List.of(new ExpenseLoggedEvent(random, 10L, "")));
+
+      assertThat(account.getBalance()).isEqualTo(-10L);
     }
   }
 }

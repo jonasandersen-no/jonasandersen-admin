@@ -5,10 +5,11 @@ import java.util.List;
 public class Account extends EventSourcedAggregate<AccountEvent, AccountId> {
 
   private AccountId id;
-  private Long balance;
+  private Long balance = 0L;
   private String accountName;
 
-  private Account() {}
+  private Account() {
+  }
 
   public static Account create(AccountId accountId, String name) {
     Account account = new Account();
@@ -19,7 +20,7 @@ public class Account extends EventSourcedAggregate<AccountEvent, AccountId> {
 
   public void expense(Long amount, String description) {
 
-    enqueue(new ExpenseLoggedEvent(this.id));
+    enqueue(new ExpenseLoggedEvent(this.id, amount, description));
   }
 
   @Override
@@ -28,9 +29,9 @@ public class Account extends EventSourcedAggregate<AccountEvent, AccountId> {
       case AccountCreatedEvent(AccountId aggregateId, String name) -> {
         this.id = aggregateId;
         this.accountName = name;
-        this.balance = 0L;
       }
-      case ExpenseLoggedEvent expenseLoggedEvent -> {
+      case ExpenseLoggedEvent(_, Long amount, _) -> {
+        this.balance -= amount;
       }
     }
   }

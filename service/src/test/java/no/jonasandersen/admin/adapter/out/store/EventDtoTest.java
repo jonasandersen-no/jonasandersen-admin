@@ -110,6 +110,6 @@ class EventDtoTest {
 
   public static Stream<Arguments> accountEvents() {
     return Stream.of(Arguments.of(new AccountCreatedEvent(AccountId.random(), "accountname")),
-        Arguments.of(new ExpenseLoggedEvent(AccountId.random())));
+        Arguments.of(new ExpenseLoggedEvent(AccountId.random(), 0L, "")));
   }
 }
