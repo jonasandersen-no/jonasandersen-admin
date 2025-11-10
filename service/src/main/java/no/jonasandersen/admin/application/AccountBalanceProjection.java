@@ -7,6 +7,7 @@ import no.jonasandersen.admin.domain.Account;
 import no.jonasandersen.admin.domain.AccountCreatedEvent;
 import no.jonasandersen.admin.domain.AccountEvent;
 import no.jonasandersen.admin.domain.AccountId;
+import no.jonasandersen.admin.domain.ExpenseLoggedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -32,7 +33,11 @@ public class AccountBalanceProjection {
       case AccountCreatedEvent(AccountId aggregateId, _) -> {
         balance.put(aggregateId, 0L);
       }
-      default -> throw new IllegalStateException("Unexpected value: " + event);
+      case ExpenseLoggedEvent(AccountId aggregateId, Long amount, _) -> {
+        Long l = balance.get(aggregateId);
+        l -= amount;
+        balance.put(aggregateId, l);
+      }
     }
   }
 
