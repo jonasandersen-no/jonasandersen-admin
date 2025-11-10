@@ -1,6 +1,6 @@
 package no.jonasandersen.admin.domain;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +13,7 @@ class AccountTest {
   class CommandsGenerateEvents {
 
     @Test
-    void createAccountCommandGeneratesIdAndName() {
+    void createGeneratesAccountCreatedEvent() {
       UUID uuid = UUID.randomUUID();
 
       Account account = Account.create(new AccountId(uuid), "myAccount");
@@ -21,10 +21,26 @@ class AccountTest {
       assertThat(account.uncommittedEvents())
           .containsExactly(new AccountCreatedEvent(new AccountId(uuid), "myAccount"));
     }
+
+    @Test
+    void logExpenseGeneratesExpenseLoggedEvent() {
+      UUID aggregateId = UUID.randomUUID();
+      String name = "myAccount";
+
+      Account account =
+          Account.reconstitute(List.of(new AccountCreatedEvent(new AccountId(aggregateId), name)));
+
+      account.expense(1000L, "Water");
+
+      assertThat(account.uncommittedEvents())
+          .containsExactly(new ExpenseLoggedEvent(AccountId.of(aggregateId)));
+    }
+
   }
 
   @Nested
   class EventsGenerateState {
+
     @Test
     void accountCreatedEventUpdatesIdAndName() {
       UUID aggregateId = UUID.randomUUID();

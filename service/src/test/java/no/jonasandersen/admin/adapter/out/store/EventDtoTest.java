@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import no.jonasandersen.admin.domain.AccountCreatedEvent;
 import no.jonasandersen.admin.domain.AccountId;
 import no.jonasandersen.admin.domain.Event;
+import no.jonasandersen.admin.domain.ExpenseLoggedEvent;
 import no.jonasandersen.admin.domain.HabitCompletedEvent;
 import no.jonasandersen.admin.domain.HabitCreatedEvent;
 import no.jonasandersen.admin.domain.SaveFileCreatedEvent;
@@ -108,6 +109,7 @@ class EventDtoTest {
   }
 
   public static Stream<Arguments> accountEvents() {
-    return Stream.of(Arguments.of(new AccountCreatedEvent(AccountId.random(), "accountname")));
+    return Stream.of(Arguments.of(new AccountCreatedEvent(AccountId.random(), "accountname")),
+        Arguments.of(new ExpenseLoggedEvent(AccountId.random())));
   }
 }

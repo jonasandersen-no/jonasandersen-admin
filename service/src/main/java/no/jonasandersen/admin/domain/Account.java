@@ -17,6 +17,11 @@ public class Account extends EventSourcedAggregate<AccountEvent, AccountId> {
     return account;
   }
 
+  public void expense(Long amount, String description) {
+
+    enqueue(new ExpenseLoggedEvent(this.id));
+  }
+
   @Override
   protected void apply(AccountEvent event) {
     switch (event) {
@@ -24,6 +29,8 @@ public class Account extends EventSourcedAggregate<AccountEvent, AccountId> {
         this.id = aggregateId;
         this.accountName = name;
         this.balance = 0L;
+      }
+      case ExpenseLoggedEvent expenseLoggedEvent -> {
       }
     }
   }

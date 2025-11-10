@@ -32,6 +32,7 @@ public class AccountBalanceProjection {
       case AccountCreatedEvent(AccountId aggregateId, _) -> {
         balance.put(aggregateId, 0L);
       }
+      default -> throw new IllegalStateException("Unexpected value: " + event);
     }
   }
 
