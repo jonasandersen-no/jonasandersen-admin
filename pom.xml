@@ -43,7 +43,7 @@
     <jetbrains-annotations.version>26.0.2-1</jetbrains-annotations.version>
     <loki-logback-appender.version>1.6.0</loki-logback-appender.version>
     <testcontainers-mock.version>1.0.2</testcontainers-mock.version>
-    <jda.version>5.5.1</jda.version>
+    <jda.version>6.1.1</jda.version>
   </properties>
 
   <dependencyManagement>
