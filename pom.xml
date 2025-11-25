@@ -32,7 +32,7 @@
   </scm>
   <properties>
     <java.version>25</java.version>
-    <spring-cloud.version>2025.1.0-RC1</spring-cloud.version>
+    <spring-cloud.version>2025.1.0</spring-cloud.version>
     <jte.version>3.1.10</jte.version>
     <occurrent.version>0.19.14</occurrent.version>
     <uuid-generator.version>5.1.1</uuid-generator.version>
