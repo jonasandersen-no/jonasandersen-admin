@@ -39,7 +39,7 @@
     <springdoc.version>3.0.0</springdoc.version>
     <jresult.version>0.0.4</jresult.version>
     <instancio.version>5.5.1</instancio.version>
-    <jsch.version>2.27.6</jsch.version>
+    <jsch.version>2.27.7</jsch.version>
     <jetbrains-annotations.version>26.0.2-1</jetbrains-annotations.version>
     <loki-logback-appender.version>1.6.0</loki-logback-appender.version>
     <testcontainers-mock.version>1.0.2</testcontainers-mock.version>
