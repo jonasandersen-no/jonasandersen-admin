@@ -35,7 +35,7 @@
     <spring-cloud.version>2025.1.0</spring-cloud.version>
     <jte.version>3.1.10</jte.version>
     <occurrent.version>0.19.14</occurrent.version>
-    <uuid-generator.version>5.1.1</uuid-generator.version>
+    <uuid-generator.version>5.2.0</uuid-generator.version>
     <springdoc.version>3.0.0</springdoc.version>
     <jresult.version>0.0.4</jresult.version>
     <instancio.version>5.5.1</instancio.version>
