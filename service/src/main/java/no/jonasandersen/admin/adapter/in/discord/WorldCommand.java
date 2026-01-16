@@ -11,7 +11,7 @@ import no.jonasandersen.admin.application.CreateSaveFileUseCase;
 import no.jonasandersen.admin.domain.SaveFilesForOwner;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class WorldCommand extends BaseCommand {
 
   private final CreateSaveFileUseCase createSaveFileUseCase;
