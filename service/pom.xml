@@ -243,6 +243,7 @@
           </execution>
         </executions>
         <configuration>
+          <skip>${docker.skip}</skip>
           <image>
             <builder>paketobuildpacks/builder-jammy-buildpackless-tiny</builder>
             <name>bjoggis/jonasandersen-admin:v${project.version}-${os.detected.arch}</name>

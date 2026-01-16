@@ -32,6 +32,7 @@
   </scm>
   <properties>
     <java.version>25</java.version>
+    <docker.skip>false</docker.skip>
     <spring-cloud.version>2025.1.0</spring-cloud.version>
     <jte.version>3.1.10</jte.version>
     <occurrent.version>0.19.14</occurrent.version>
