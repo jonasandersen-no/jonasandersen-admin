@@ -45,7 +45,6 @@
     <loki-logback-appender.version>1.6.0</loki-logback-appender.version>
 <!--    <loki-logback-appender.version>2.0.1</loki-logback-appender.version>-->
     <testcontainers-mock.version>1.0.2</testcontainers-mock.version>
-    <jda.version>6.2.1</jda.version>
   </properties>
 
   <dependencyManagement>
@@ -107,12 +106,6 @@
         <artifactId>testcontainers-junit4-mock</artifactId>
         <version>${testcontainers-mock.version}</version>
       </dependency>
-      <dependency>
-        <groupId>net.dv8tion</groupId>
-        <artifactId>JDA</artifactId>
-        <version>${jda.version}</version>
-      </dependency>
-
 
       <dependency>
         <groupId>no.jonasandersen.admin</groupId>
