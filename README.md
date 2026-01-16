@@ -44,7 +44,10 @@ Docker image configuration. Use to toggle between native image and jvm image.
 
 # Perform  a release
 ```bash
-mvn release:prepare release:perform
+mvn release:prepare -B -Ddocker.skip
+
+# After pushing
+mvn release:clean
 ```
 
 # First time setup
