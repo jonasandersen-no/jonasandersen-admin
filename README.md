@@ -42,6 +42,11 @@ Docker image configuration. Use to toggle between native image and jvm image.
 </configuration>
 ```
 
+# Perform  a release
+```bash
+mvn release:prepare release:perform
+```
+
 # First time setup
 
 Create docker volumes for grafana and prometheus to avoid having to set up the configuration every time the containers
