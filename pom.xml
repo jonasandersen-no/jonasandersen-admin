@@ -33,7 +33,7 @@
   <properties>
     <java.version>25</java.version>
     <docker.skip>false</docker.skip>
-    <spring-cloud.version>2025.1.0</spring-cloud.version>
+    <spring-cloud.version>2025.1.1</spring-cloud.version>
     <jte.version>3.1.10</jte.version>
     <occurrent.version>0.20.3</occurrent.version>
     <uuid-generator.version>5.2.0</uuid-generator.version>
