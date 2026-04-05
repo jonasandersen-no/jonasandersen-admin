@@ -2,6 +2,7 @@
   <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
   <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+  <springProperty scope="context" name="springAppName" source="loki.url"/>
 
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -15,7 +16,7 @@
 
   <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
     <http>
-      <url>http://five:3100/loki/api/v1/push</url>
+      <url>${loki.url}</url>
     </http>
     <format>
       <label>
