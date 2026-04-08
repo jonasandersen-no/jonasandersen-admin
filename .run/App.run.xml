@@ -2,6 +2,9 @@
   <configuration default="false" name="App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev,intellij" />
     <option name="SCHEDULED_DEBUGGER" value="true" />
+    <envs>
+      <env name="loki.url" value="http://five:3100/loki/api/v1/push" />
+    </envs>
     <module name="service" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="no.jonasandersen.admin.AdminApplication" />
     <extension name="com.fapiko.jetbrains.plugins.better_direnv.runconfigs.IdeaRunConfigurationExtension">

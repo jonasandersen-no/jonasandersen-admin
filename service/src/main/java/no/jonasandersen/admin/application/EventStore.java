@@ -76,13 +76,13 @@ public class EventStore<
 
     List<EventDto<EVENT>> freshEventDtos =
         uncommittedEvents.stream()
-            .map(event -> EventDto.from(aggregate.getId().id(), 0, event))
+            .map(event -> EventDto.from(aggregate.getId().id(), aggregate.getVersion(), event))
             .toList();
     for (EventDto<EVENT> freshEventDto : freshEventDtos) {
       repository.saveEvent(
           aggregate.getId().id(),
           freshEventDto.getRecordedAt(),
-          freshEventDto.getEventId(),
+          freshEventDto.getVersion(),
           freshEventDto.getEventType(),
           freshEventDto.getJson());
     }
@@ -104,7 +104,7 @@ public class EventStore<
                 databaseEvent ->
                     new EventDto<EVENT>(
                         databaseEvent.aggregateRootId(),
-                        databaseEvent.eventId(),
+                        databaseEvent.version(),
                         databaseEvent.eventType(),
                         databaseEvent.content()))
             .toList();
@@ -119,7 +119,7 @@ public class EventStore<
                 databaseEvent ->
                     new EventDto<EVENT>(
                         databaseEvent.aggregateRootId(),
-                        databaseEvent.eventId(),
+                        databaseEvent.version(),
                         databaseEvent.eventType(),
                         databaseEvent.content()))
             .toList();

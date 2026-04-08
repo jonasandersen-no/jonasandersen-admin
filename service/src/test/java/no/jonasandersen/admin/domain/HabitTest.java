@@ -91,7 +91,7 @@ public class HabitTest {
 
     assertThat(habit.getVersion()).isEqualTo(0);
 
-    habit.apply(new HabitCreatedEvent(UUID.randomUUID(), habit.getVersion() + 1, "name", "goal"));
+    habit.apply(new HabitCreatedEvent(UUID.randomUUID(), habit.getVersion2() + 1, "name", "goal"));
 
     assertThat(habit.getVersion()).isEqualTo(1);
   }

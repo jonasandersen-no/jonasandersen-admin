@@ -6,9 +6,11 @@ import java.util.List;
 public abstract class EventSourcedAggregate<EVENT extends Event, ID extends Id> {
   private final List<EVENT> uncommittedEvents = new ArrayList<>();
   private ID id;
+  private long version;
 
   protected void enqueue(EVENT event) {
     uncommittedEvents.add(event);
+    version += 1;
     apply(event);
   }
 
@@ -24,5 +26,9 @@ public abstract class EventSourcedAggregate<EVENT extends Event, ID extends Id> 
 
   public void setId(ID id) {
     this.id = id;
+  }
+
+  public long getVersion() {
+    return version;
   }
 }

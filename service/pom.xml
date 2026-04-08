@@ -72,18 +72,9 @@
       <scope>runtime</scope>
       <optional>true</optional>
     </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-mongodb</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.occurrent</groupId>
       <artifactId>eventstore-inmemory</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.occurrent</groupId>
-      <artifactId>eventstore-mongodb-spring-blocking</artifactId>
     </dependency>
 
     <dependency>
@@ -157,11 +148,6 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers-junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>testcontainers-mongodb</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

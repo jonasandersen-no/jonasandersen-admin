@@ -17,7 +17,7 @@ public class InMemoryEventStoreRepository implements EventStoreRepository {
 
   @Override
   public void saveEvent(
-      UUID aggregateRootId, Instant recordedAt, int eventId, String eventType, String content) {
+      UUID aggregateRootId, Instant recordedAt, long eventId, String eventType, String content) {
 
     CloudEvent event =
         CloudEventBuilder.v1()
