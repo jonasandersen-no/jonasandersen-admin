@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.core.minecraft.domain;
+package no.jonasandersen.admin.domain;
 
 
 import static org.assertj.core.api.Assertions.assertThatCode;
