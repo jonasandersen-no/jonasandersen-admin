@@ -10,9 +10,9 @@
   <artifactId>service</artifactId>
 
   <properties>
-    <java.version>25</java.version>
-    <maven.compiler.source>25</maven.compiler.source>
-    <maven.compiler.target>25</maven.compiler.target>
+    <java.version>26</java.version>
+    <maven.compiler.source>26</maven.compiler.source>
+    <maven.compiler.target>26</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -221,7 +221,7 @@
               <buildpack>paketobuildpacks/java</buildpack>
             </buildpacks>
             <env>
-              <BP_JVM_VERSION>25</BP_JVM_VERSION>
+              <BP_JVM_VERSION>26</BP_JVM_VERSION>
             </env>
           </image>
         </configuration>
