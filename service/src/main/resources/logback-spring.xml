@@ -18,21 +18,15 @@
     <http>
       <url>${lokiUrl}</url>
     </http>
-    <format>
-      <label>
-        <pattern>app=${springAppName},host=${HOSTNAME},level=%level</pattern>
-        <structuredMetadataPattern>
-          level = %level,
-          thread = %thread,
-          class = %logger,
-          traceId = %mdc{traceId:-none}
-        </structuredMetadataPattern>
-        <readMarkers>true</readMarkers>
-      </label>
-      <message>
-        <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-      </message>
-    </format>
+    <labels>
+      app=${springAppName}
+      host=${HOSTNAME}
+      level=%level
+    </labels>
+    <message>
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+    </message>
+    <readMarkers>true</readMarkers>
   </appender>
 
   <logger name="org" level="INFO"/>
