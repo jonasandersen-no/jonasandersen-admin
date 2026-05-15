@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableMethodSecurity(securedEnabled = true)
 public class AdminApplication {
 
-  public static void main(String[] args) {
+  static void main(String[] args) {
     SpringApplication.run(AdminApplication.class, args);
   }
 }
