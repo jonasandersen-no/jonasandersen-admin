@@ -10,7 +10,7 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-@ControllerAdvice(basePackages = "no.jonasandersen.admin.user.adapter.in.web")
+@ControllerAdvice
 public class GlobalControllerAdvice {
 
   private static final Logger log = LoggerFactory.getLogger(GlobalControllerAdvice.class);
