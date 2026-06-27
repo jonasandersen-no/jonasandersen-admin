@@ -2,7 +2,7 @@ package no.jonasandersen.admin.application.port;
 
 import java.util.List;
 import no.jonasandersen.admin.domain.SaveFileOld;
-import no.jonasandersen.admin.domain.User;
+import no.jonasandersen.admin.user.User;
 
 public interface SaveFiles {
 

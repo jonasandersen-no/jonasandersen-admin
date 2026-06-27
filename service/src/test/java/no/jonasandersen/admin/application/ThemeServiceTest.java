@@ -3,7 +3,8 @@ package no.jonasandersen.admin.application;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import no.jonasandersen.admin.domain.Theme;
-import no.jonasandersen.admin.domain.Username;
+import no.jonasandersen.admin.user.application.ThemeService;
+import no.jonasandersen.admin.user.domain.Username;
 import org.junit.jupiter.api.Test;
 
 class ThemeServiceTest {

@@ -1,7 +1,7 @@
 package no.jonasandersen.admin.config;
 
 import java.util.Properties;
-import no.jonasandersen.admin.application.ThemeService;
+import no.jonasandersen.admin.user.application.ThemeService;
 import no.jonasandersen.admin.infrastructure.AdminProperties;
 import org.junit.jupiter.api.Tag;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

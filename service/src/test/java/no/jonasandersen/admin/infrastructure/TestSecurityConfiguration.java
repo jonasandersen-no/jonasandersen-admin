@@ -2,7 +2,7 @@ package no.jonasandersen.admin.infrastructure;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import no.jonasandersen.admin.application.AccessControl;
+import no.jonasandersen.admin.user.application.AccessControl;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;

@@ -45,6 +45,9 @@
     <loki-logback-appender.version>2.0.3</loki-logback-appender.version>
 <!--    <loki-logback-appender.version>2.0.1</loki-logback-appender.version>-->
     <testcontainers-mock.version>1.0.2</testcontainers-mock.version>
+
+    <spring-modulith.version>2.1.0</spring-modulith.version>
+
   </properties>
 
   <dependencyManagement>
@@ -63,6 +66,13 @@
         <scope>import</scope>
         <version>${occurrent.version}</version>
       </dependency>
+        <dependency>
+          <groupId>org.springframework.modulith</groupId>
+          <artifactId>spring-modulith-bom</artifactId>
+          <version>${spring-modulith.version}</version>
+          <type>pom</type>
+          <scope>import</scope>
+        </dependency>
 
 
       <dependency>

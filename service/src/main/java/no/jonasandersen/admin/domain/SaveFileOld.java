@@ -1,5 +1,7 @@
 package no.jonasandersen.admin.domain;
 
+import no.jonasandersen.admin.user.User;
+
 public class SaveFileOld {
 
   private String name;

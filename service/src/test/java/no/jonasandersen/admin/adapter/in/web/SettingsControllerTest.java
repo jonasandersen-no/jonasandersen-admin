@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.util.List;
-import no.jonasandersen.admin.adapter.out.user.CrudPermittedUserRepository;
-import no.jonasandersen.admin.adapter.out.user.PermittedUserDbo;
+import no.jonasandersen.admin.user.adapter.out.user.CrudPermittedUserRepository;
+import no.jonasandersen.admin.user.adapter.out.user.PermittedUserDbo;
 import no.jonasandersen.admin.config.IoBasedTest;
-import no.jonasandersen.admin.domain.User;
+import no.jonasandersen.admin.user.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

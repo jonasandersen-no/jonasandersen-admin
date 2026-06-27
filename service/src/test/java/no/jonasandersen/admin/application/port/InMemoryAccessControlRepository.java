@@ -2,7 +2,8 @@ package no.jonasandersen.admin.application.port;
 
 import java.util.ArrayList;
 import java.util.List;
-import no.jonasandersen.admin.domain.User;
+import no.jonasandersen.admin.user.application.port.AccessControlRepository;
+import no.jonasandersen.admin.user.User;
 
 public class InMemoryAccessControlRepository implements AccessControlRepository {
 

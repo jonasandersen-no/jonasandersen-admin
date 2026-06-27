@@ -1,9 +1,9 @@
 package no.jonasandersen.admin.infrastructure.intellij;
 
 import java.util.Set;
-import no.jonasandersen.admin.application.UserService;
+import no.jonasandersen.admin.user.application.UserService;
 import no.jonasandersen.admin.domain.Roles;
-import no.jonasandersen.admin.domain.User;
+import no.jonasandersen.admin.user.User;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

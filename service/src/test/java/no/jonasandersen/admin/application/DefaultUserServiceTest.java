@@ -4,8 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
 import no.jonasandersen.admin.domain.Roles;
-import no.jonasandersen.admin.domain.User;
-import no.jonasandersen.admin.domain.Username;
+import no.jonasandersen.admin.user.application.DefaultUserService;
+import no.jonasandersen.admin.user.User;
+import no.jonasandersen.admin.user.domain.Username;
 import org.junit.jupiter.api.Test;
 
 class DefaultUserServiceTest {

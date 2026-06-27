@@ -6,9 +6,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import no.jonasandersen.admin.application.port.InMemoryAccessControlRepository;
 import no.jonasandersen.admin.domain.Roles;
-import no.jonasandersen.admin.domain.User;
-import no.jonasandersen.admin.domain.UserAlreadyExistsException;
-import no.jonasandersen.admin.domain.UserNotFoundException;
+import no.jonasandersen.admin.user.application.AccessControl;
+import no.jonasandersen.admin.user.application.DefaultAccessControl;
+import no.jonasandersen.admin.user.User;
+import no.jonasandersen.admin.user.domain.UserAlreadyExistsException;
+import no.jonasandersen.admin.user.domain.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 
 class AccessControlTest {

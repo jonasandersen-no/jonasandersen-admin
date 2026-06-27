@@ -5,7 +5,7 @@ import java.util.List;
 import no.jonasandersen.admin.application.port.SaveFiles;
 import no.jonasandersen.admin.domain.SaveFileOld;
 import no.jonasandersen.admin.domain.SaveFileOld.SaveFileSnapshot;
-import no.jonasandersen.admin.domain.User;
+import no.jonasandersen.admin.user.User;
 import org.springframework.stereotype.Service;
 
 @Service
