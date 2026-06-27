@@ -3,28 +3,26 @@ package no.jonasandersen.admin.user.adapter.out.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
-import no.jonasandersen.admin.user.application.port.UserRepository;
-import no.jonasandersen.admin.config.IoBasedTest;
+import no.jonasandersen.admin.ModuleTest;
 import no.jonasandersen.admin.domain.Roles;
 import no.jonasandersen.admin.user.User;
+import no.jonasandersen.admin.user.application.port.UserRepository;
 import no.jonasandersen.admin.user.domain.Username;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class DefaultUserRepositoryTest extends IoBasedTest {
+@ModuleTest
+class DefaultUserRepositoryTest {
 
-  @Autowired
-  private CrudUserDboRepository crudRepository;
+  @Autowired private CrudUserDboRepository crudRepository;
 
-  @Autowired
-  private UserRepository repository;
+  @Autowired private UserRepository repository;
 
   @BeforeEach
   @AfterEach
   void setUp() {
-
     crudRepository.deleteAll();
   }
 

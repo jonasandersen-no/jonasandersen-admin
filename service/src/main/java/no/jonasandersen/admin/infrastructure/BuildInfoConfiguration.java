@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile({"intellij", "integration"})
-class BuildInfoConfiguration {
+public class BuildInfoConfiguration {
 
   @Bean
   BuildProperties buildProperties() {

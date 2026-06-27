@@ -3,19 +3,18 @@ package no.jonasandersen.admin.user.adapter.out.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import no.jonasandersen.admin.config.IoBasedTest;
+import no.jonasandersen.admin.ModuleTest;
 import no.jonasandersen.admin.user.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class DatabaseAccessControlRepositoryTest extends IoBasedTest {
+@ModuleTest
+class DatabaseAccessControlRepositoryTest {
 
-  @Autowired
-  DatabaseAccessControlRepository repository;
+  @Autowired DatabaseAccessControlRepository repository;
 
-  @Autowired
-  CrudPermittedUserRepository db;
+  @Autowired CrudPermittedUserRepository db;
 
   @AfterEach
   void tearDown() {

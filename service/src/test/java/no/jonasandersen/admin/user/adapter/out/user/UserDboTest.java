@@ -3,7 +3,7 @@ package no.jonasandersen.admin.user.adapter.out.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
-import no.jonasandersen.admin.config.IoBasedTest;
+import no.jonasandersen.admin.ModuleTest;
 import no.jonasandersen.admin.user.domain.Username;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 @Disabled
-class UserDboTest extends IoBasedTest {
+@ModuleTest
+class UserDboTest {
 
-  @Autowired
-  private CrudUserDboRepository crudUserDboRepository;
+  @Autowired private CrudUserDboRepository crudUserDboRepository;
 
-  @Autowired
-  private JdbcClient jdbcClient;
+  @Autowired private JdbcClient jdbcClient;
 
   @BeforeEach
   @AfterEach
@@ -34,9 +33,7 @@ class UserDboTest extends IoBasedTest {
 
     crudUserDboRepository.save(userDbo);
 
-    String dbData = jdbcClient.sql("select roles from users")
-        .query(String.class)
-        .single();
+    String dbData = jdbcClient.sql("select roles from users").query(String.class).single();
 
     assertThat(dbData).contains("USER", "ADMIN");
   }

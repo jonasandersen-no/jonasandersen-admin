@@ -7,7 +7,7 @@
     <option name="TEST_SEARCH_SCOPE">
       <value defaultName="wholeProject" />
     </option>
-    <tag value="!manual &amp; !integration &amp; !mvc &amp; !architecture" />
+    <tag value="!manual &amp; !integration &amp; !mvc &amp; !architecture &amp; !module" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
