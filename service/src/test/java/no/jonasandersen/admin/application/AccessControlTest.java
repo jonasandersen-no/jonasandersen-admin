@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import no.jonasandersen.admin.application.port.InMemoryAccessControlRepository;
 import no.jonasandersen.admin.domain.Roles;
-import no.jonasandersen.admin.user.application.AccessControl;
+import no.jonasandersen.admin.user.AccessControl;
 import no.jonasandersen.admin.user.application.DefaultAccessControl;
 import no.jonasandersen.admin.user.User;
 import no.jonasandersen.admin.user.domain.UserAlreadyExistsException;

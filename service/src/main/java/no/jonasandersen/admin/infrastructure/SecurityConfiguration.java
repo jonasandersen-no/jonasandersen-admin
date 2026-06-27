@@ -2,8 +2,9 @@ package no.jonasandersen.admin.infrastructure;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import no.jonasandersen.admin.user.application.AccessControl;
-import no.jonasandersen.admin.infrastructure.security.DefaultOidcUserService;
+import no.jonasandersen.admin.user.PermittedUserFilter;
+import no.jonasandersen.admin.user.AccessControl;
+import no.jonasandersen.admin.user.DefaultOidcUserService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,8 +44,7 @@ class SecurityConfiguration {
   @Bean
   @Order(2)
   SecurityFilterChain securityFilterChain(
-      HttpSecurity http, AccessControl accessControl, DefaultOidcUserService defaultOidcUserService)
-      throws Exception {
+      HttpSecurity http, AccessControl accessControl, DefaultOidcUserService defaultOidcUserService) {
 
     http.authorizeHttpRequests(
             authorizeRequests ->

@@ -2,7 +2,7 @@ package no.jonasandersen.admin.user.adapter.in.web;
 
 import java.util.List;
 import no.jonasandersen.admin.user.adapter.UsernameResolver;
-import no.jonasandersen.admin.user.application.AccessControl;
+import no.jonasandersen.admin.user.AccessControl;
 import no.jonasandersen.admin.user.application.ThemeService;
 import no.jonasandersen.admin.domain.Theme;
 import no.jonasandersen.admin.user.User;

@@ -1,7 +1,6 @@
-package no.jonasandersen.admin.user.application;
+package no.jonasandersen.admin.user;
 
 import java.util.List;
-import no.jonasandersen.admin.user.User;
 
 public interface AccessControl {
 

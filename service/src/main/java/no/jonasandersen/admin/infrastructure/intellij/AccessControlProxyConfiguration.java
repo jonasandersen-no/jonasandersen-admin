@@ -1,7 +1,7 @@
 package no.jonasandersen.admin.infrastructure.intellij;
 
 import java.util.List;
-import no.jonasandersen.admin.user.application.AccessControl;
+import no.jonasandersen.admin.user.AccessControl;
 import no.jonasandersen.admin.user.User;
 import no.jonasandersen.admin.user.domain.UserAlreadyExistsException;
 import org.jetbrains.annotations.NotNull;

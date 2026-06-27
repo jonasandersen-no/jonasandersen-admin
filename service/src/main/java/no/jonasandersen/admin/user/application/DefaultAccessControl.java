@@ -1,6 +1,7 @@
 package no.jonasandersen.admin.user.application;
 
 import java.util.List;
+import no.jonasandersen.admin.user.AccessControl;
 import no.jonasandersen.admin.user.application.port.AccessControlRepository;
 import no.jonasandersen.admin.user.User;
 import no.jonasandersen.admin.user.domain.UserAlreadyExistsException;

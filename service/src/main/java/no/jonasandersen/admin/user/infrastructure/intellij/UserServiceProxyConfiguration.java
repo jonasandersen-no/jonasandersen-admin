@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.infrastructure.intellij;
+package no.jonasandersen.admin.user.infrastructure.intellij;
 
 import java.util.Set;
 import no.jonasandersen.admin.user.application.UserService;
