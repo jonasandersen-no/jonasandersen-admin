@@ -11,7 +11,10 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "jonasandersen.admin")
 @Validated
 public record AdminProperties(
-    Map<Feature, Boolean> features, @Valid Actuator actuator, @Valid Discord discord) {
+    Map<Feature, Boolean> features,
+    @Valid Actuator actuator,
+    @Valid Discord discord,
+    @Valid Minecraft minecraft) {
 
   public AdminProperties {
 
@@ -25,4 +28,10 @@ public record AdminProperties(
 
   @Valid
   public record Discord(@NotNull String token) {}
+
+  @Valid
+  public record Minecraft(Andersen andersen) {
+
+    public record Andersen(String username, String password, String hostname) {}
+  }
 }

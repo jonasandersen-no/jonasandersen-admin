@@ -8,6 +8,7 @@ import no.jonasandersen.admin.OutputTracker;
 import no.jonasandersen.admin.domain.Ip;
 import no.jonasandersen.admin.domain.PasswordConnectionInfo;
 import no.jonasandersen.admin.domain.SensitiveString;
+import no.jonasandersen.admin.ssh.CommandExecutor;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 

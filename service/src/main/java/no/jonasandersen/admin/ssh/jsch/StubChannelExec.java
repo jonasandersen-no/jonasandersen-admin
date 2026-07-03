@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.adapter.out.ssh.jsch;
+package no.jonasandersen.admin.ssh.jsch;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -39,6 +39,11 @@ public final class StubChannelExec implements ChannelExecWrapper {
   @Override
   public void setErrStream(OutputStream errStream) {
     log.info("StubChannelExec: setErrStream({})", errStream);
+  }
+
+  @Override
+  public void setOutputStream(OutputStream outputStream) {
+    log.info("StubChannelExec: setOutputStream({})", outputStream);
   }
 
   @Override

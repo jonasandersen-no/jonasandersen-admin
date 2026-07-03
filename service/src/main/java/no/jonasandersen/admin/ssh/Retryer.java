@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.adapter.out.ssh;
+package no.jonasandersen.admin.ssh;
 
 import java.time.Duration;
 import org.springframework.retry.support.RetryTemplate;

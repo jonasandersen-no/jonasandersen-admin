@@ -4,13 +4,14 @@ public final class PrivateKeyConnectionInfo implements ConnectionInfo {
 
   private final String username;
   private final SensitiveString privateKey;
-  private final Ip ip;
+  private final Connection address;
   private final int port;
 
-  public PrivateKeyConnectionInfo(String username, SensitiveString privateKey, Ip ip, int port) {
+  public PrivateKeyConnectionInfo(
+      String username, SensitiveString privateKey, Connection address, int port) {
     this.username = username;
     this.privateKey = privateKey;
-    this.ip = ip;
+    this.address = address;
     this.port = port;
   }
 
@@ -25,8 +26,8 @@ public final class PrivateKeyConnectionInfo implements ConnectionInfo {
   }
 
   @Override
-  public Ip ip() {
-    return ip;
+  public Connection address() {
+    return address;
   }
 
   @Override
@@ -47,14 +48,14 @@ public final class PrivateKeyConnectionInfo implements ConnectionInfo {
     return port == that.port
         && username.equals(that.username)
         && privateKey.equals(that.privateKey)
-        && ip.equals(that.ip);
+        && address.equals(that.address);
   }
 
   @Override
   public int hashCode() {
     int result = username.hashCode();
     result = 31 * result + privateKey.hashCode();
-    result = 31 * result + ip.hashCode();
+    result = 31 * result + address.hashCode();
     result = 31 * result + port;
     return result;
   }
@@ -67,8 +68,8 @@ public final class PrivateKeyConnectionInfo implements ConnectionInfo {
         + '\''
         + ", privateKey="
         + privateKey
-        + ", ip="
-        + ip
+        + ", address="
+        + address
         + ", port="
         + port
         + '}';

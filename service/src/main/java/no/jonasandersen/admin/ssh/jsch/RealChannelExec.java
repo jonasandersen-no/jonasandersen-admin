@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.adapter.out.ssh.jsch;
+package no.jonasandersen.admin.ssh.jsch;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
@@ -43,6 +43,11 @@ public final class RealChannelExec implements ChannelExecWrapper {
   @Override
   public void setErrStream(OutputStream errStream) {
     channel.setErrStream(errStream);
+  }
+
+  @Override
+  public void setOutputStream(OutputStream outputStream) {
+    channel.setOutputStream(outputStream);
   }
 
   @Override

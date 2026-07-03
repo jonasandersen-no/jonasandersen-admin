@@ -1,7 +1,7 @@
 package no.jonasandersen.admin.domain;
 
 public enum Feature {
-  LINODE_STUB(true);
+  STUB(true);
 
   private final boolean defaultValue;
 

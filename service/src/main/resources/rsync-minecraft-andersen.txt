@@ -1,0 +1,1 @@
+rsync --delete -av --exclude-from='exclude-andersen.txt' /root/andersen/ gollien@mira2:/mnt/nas/public/backups/minecraft/andersen

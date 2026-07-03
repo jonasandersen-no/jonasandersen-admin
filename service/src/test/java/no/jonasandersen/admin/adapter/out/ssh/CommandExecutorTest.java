@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import no.jonasandersen.admin.OutputTracker;
+import no.jonasandersen.admin.ssh.CommandExecutor;
 import org.junit.jupiter.api.Test;
 
 class CommandExecutorTest {

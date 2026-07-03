@@ -6,13 +6,13 @@ public final class PasswordConnectionInfo implements ConnectionInfo {
 
   private final String username;
   private final SensitiveString password;
-  private final Ip ip;
+  private final Connection address;
   private final int port;
 
-  public PasswordConnectionInfo(String username, SensitiveString password, Ip ip, int port) {
+  public PasswordConnectionInfo(String username, SensitiveString password, Connection address, int port) {
     this.username = username;
     this.password = password;
-    this.ip = ip;
+    this.address = address;
     this.port = port;
   }
 
@@ -35,8 +35,8 @@ public final class PasswordConnectionInfo implements ConnectionInfo {
   }
 
   @Override
-  public Ip ip() {
-    return ip;
+  public Connection address() {
+    return address;
   }
 
   @Override
@@ -55,29 +55,29 @@ public final class PasswordConnectionInfo implements ConnectionInfo {
     var that = (PasswordConnectionInfo) obj;
     return Objects.equals(this.username, that.username)
         && Objects.equals(this.password, that.password)
-        && Objects.equals(this.ip, that.ip)
+        && Objects.equals(this.address, that.address)
         && this.port == that.port;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, password, ip, port);
+    return Objects.hash(username, password, address, port);
   }
 
   @Override
   public String toString() {
     return "ConnectionInfo["
-        + "username="
-        + username
-        + ", "
-        + "password="
-        + password
-        + ", "
-        + "ip="
-        + ip
-        + ", "
-        + "port="
-        + port
-        + ']';
+           + "username="
+           + username
+           + ", "
+           + "password="
+           + password
+           + ", "
+           + "address="
+           + address
+           + ", "
+           + "port="
+           + port
+           + ']';
   }
 }

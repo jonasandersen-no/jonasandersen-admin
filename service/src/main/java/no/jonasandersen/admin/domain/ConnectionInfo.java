@@ -6,7 +6,7 @@ public sealed interface ConnectionInfo permits PasswordConnectionInfo, PrivateKe
 
   SensitiveString credentials();
 
-  Ip ip();
+  Connection address();
 
   int port();
 }

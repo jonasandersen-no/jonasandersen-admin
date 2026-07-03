@@ -12,19 +12,19 @@ class FeaturesTest {
 
   @Test
   void featureIsEnabledWhenDefaultIsEnabledAndNoOverrideExists() {
-    assertThat(Features.isEnabled(Feature.LINODE_STUB)).isTrue();
+    assertThat(Features.isEnabled(Feature.STUB)).isTrue();
   }
 
   @Test
   void featureIsDisabledWhenDefaultIsEnabledAndOverrideExists() {
-    Features.setFeature(Feature.LINODE_STUB, false);
-    assertThat(Features.isEnabled(Feature.LINODE_STUB)).isFalse();
+    Features.setFeature(Feature.STUB, false);
+    assertThat(Features.isEnabled(Feature.STUB)).isFalse();
   }
 
   @Test
   void listAllFeatures() {
-    assertThat(Features.isEnabled(Feature.LINODE_STUB)).isTrue();
-    Features.setFeature(Feature.LINODE_STUB, false);
+    assertThat(Features.isEnabled(Feature.STUB)).isTrue();
+    Features.setFeature(Feature.STUB, false);
     assertThat(Features.getAllFeatures()).hasSize(1);
   }
 }

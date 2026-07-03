@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.adapter.out.ssh;
+package no.jonasandersen.admin.ssh;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

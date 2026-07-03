@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.adapter.out.ssh.jsch;
+package no.jonasandersen.admin.ssh.jsch;
 
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;

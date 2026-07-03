@@ -1,5 +1,7 @@
 package no.jonasandersen.admin.domain;
 
+import org.jspecify.annotations.NonNull;
+
 public record SensitiveString(String value) {
 
   public static SensitiveString of(String value) {
@@ -15,7 +17,7 @@ public record SensitiveString(String value) {
   }
 
   @Override
-  public String toString() {
+  public @NonNull String toString() {
     return isPresent() ? "<present>" : "<not present>";
   }
 }

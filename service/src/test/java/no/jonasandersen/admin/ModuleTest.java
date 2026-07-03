@@ -1,5 +1,7 @@
 package no.jonasandersen.admin;
 
+import static org.springframework.modulith.test.ApplicationModuleTest.BootstrapMode.DIRECT_DEPENDENCIES;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -14,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 @Documented
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@ApplicationModuleTest(classes = {ModuleTestConfiguration.class})
+@ApplicationModuleTest(classes = {ModuleTestConfiguration.class}, mode = DIRECT_DEPENDENCIES)
 @ActiveProfiles("integration")
 @Tag("integration")
 @Tag("module")

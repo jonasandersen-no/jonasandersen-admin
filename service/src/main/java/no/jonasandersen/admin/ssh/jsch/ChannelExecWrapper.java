@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.adapter.out.ssh.jsch;
+package no.jonasandersen.admin.ssh.jsch;
 
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
@@ -18,6 +18,8 @@ public sealed interface ChannelExecWrapper permits RealChannelExec, StubChannelE
   int getExitStatus();
 
   void setErrStream(OutputStream errStream);
+
+  void setOutputStream(OutputStream outputStream);
 
   InputStream getInputStream() throws IOException;
 }

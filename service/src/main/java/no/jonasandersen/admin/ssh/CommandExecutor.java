@@ -1,19 +1,20 @@
-package no.jonasandersen.admin.adapter.out.ssh;
+package no.jonasandersen.admin.ssh;
 
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 import no.jonasandersen.admin.OutputListener;
 import no.jonasandersen.admin.OutputTracker;
-import no.jonasandersen.admin.adapter.out.ssh.jsch.ChannelExecWrapper;
-import no.jonasandersen.admin.adapter.out.ssh.jsch.JSchWrapper;
-import no.jonasandersen.admin.adapter.out.ssh.jsch.RealJSchWrapper;
-import no.jonasandersen.admin.adapter.out.ssh.jsch.SessionWrapper;
-import no.jonasandersen.admin.adapter.out.ssh.jsch.StubJSchWrapper;
 import no.jonasandersen.admin.domain.ConnectionInfo;
 import no.jonasandersen.admin.domain.PasswordConnectionInfo;
 import no.jonasandersen.admin.domain.PrivateKeyConnectionInfo;
+import no.jonasandersen.admin.ssh.jsch.ChannelExecWrapper;
+import no.jonasandersen.admin.ssh.jsch.JSchWrapper;
+import no.jonasandersen.admin.ssh.jsch.RealJSchWrapper;
+import no.jonasandersen.admin.ssh.jsch.SessionWrapper;
+import no.jonasandersen.admin.ssh.jsch.StubJSchWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,7 +75,7 @@ public class CommandExecutor {
       exec.connect();
       exec.setErrStream(System.err);
       log.info("Running command {}", command);
-      String channelOutput = getChannelOutput(exec, exec.getInputStream());
+      String channelOutput = getChannelOutput(exec.getInputStream());
       log.info("Command output: {}", channelOutput);
       outputListener.track(command);
       return new ExecutedCommand(channelOutput, exec.getExitStatus());
@@ -87,7 +88,7 @@ public class CommandExecutor {
     log.info("Connecting to {}", connectionInfo);
     switch (connectionInfo) {
       case PasswordConnectionInfo password -> {
-        session = jsch.getSession(password.username(), password.ip().value(), password.port());
+        session = jsch.getSession(password.username(), password.address().value(), password.port());
         session.setPassword(password.credentials().value());
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
@@ -98,31 +99,17 @@ public class CommandExecutor {
         Properties config = new Properties();
         config.put("StrictHostKeyChecking", "no");
         session =
-            jsch.getSession(privateKey.username(), privateKey.ip().value(), privateKey.port());
+            jsch.getSession(privateKey.username(), privateKey.address().value(), privateKey.port());
         session.setConfig(config);
       }
     }
   }
 
-  private String getChannelOutput(ChannelExecWrapper channel, InputStream in)
-      throws IOException, InterruptedException {
+  private String getChannelOutput(InputStream in)
+      throws IOException {
 
-    byte[] buffer = new byte[1024];
-    StringBuilder strBuilder = new StringBuilder();
-
-    while (!channel.isClosed()) {
-      while (in.available() > 0) {
-        int i = in.read(buffer, 0, 1024);
-        if (i < 0) {
-          break;
-        }
-        String line = new String(buffer, 0, i);
-        strBuilder.append(line);
-        log.info("{}{}", System.lineSeparator(), line);
-      }
-      Thread.sleep(1000);
+    try (InputStreamReader inputStreamReader = new InputStreamReader(in)) {
+      return inputStreamReader.readAllAsString();
     }
-
-    return strBuilder.toString();
   }
 }
