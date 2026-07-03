@@ -63,24 +63,28 @@ public class FileExecutor {
     Path path = getPath(file);
 
     try (Stream<String> lines = Files.lines(path)) {
-      commandExecutor.connect();
-
-      List<String> list = lines.toList();
-
-      for (String line : list) {
-        try {
-          commandExecutor.executeCommand(line);
-        } catch (JSchException | IOException e) {
-          throw new CommandExecutionFailedException(e);
-        } catch (InterruptedException e) {
-          log.error("Interrupted while executing command: {}", line);
-          throw e;
-        }
-      }
-      commandExecutor.disconnect();
+      runLines(lines);
     } catch (JSchException e) {
       throw new IOException(e);
     }
+  }
+
+  public void runLines(Stream<String> lines) throws JSchException, InterruptedException {
+    commandExecutor.connect();
+
+    List<String> list = lines.toList();
+
+    for (String line : list) {
+      try {
+        commandExecutor.executeCommand(line);
+      } catch (JSchException | IOException e) {
+        throw new CommandExecutionFailedException(e);
+      } catch (InterruptedException e) {
+        log.error("Interrupted while executing command: {}", line);
+        throw e;
+      }
+    }
+    commandExecutor.disconnect();
   }
 
   Path getPath(String file) throws FileNotFoundException {

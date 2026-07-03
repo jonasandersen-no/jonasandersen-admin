@@ -63,7 +63,7 @@ public class CommandExecutor {
     session.disconnect();
   }
 
-  public ExecutedCommand executeCommand(String command)
+  public void executeCommand(String command)
       throws JSchException, IOException, InterruptedException {
     if (session == null || !session.isConnected()) {
       throw new IllegalStateException("Session is not connected");
@@ -75,10 +75,9 @@ public class CommandExecutor {
       exec.connect();
       exec.setErrStream(System.err);
       log.info("Running command {}", command);
-      String channelOutput = getChannelOutput(exec.getInputStream());
-      log.info("Command output: {}", channelOutput);
+      streamChannelOutput(exec.getInputStream());
+      log.info("Done with command");
       outputListener.track(command);
-      return new ExecutedCommand(channelOutput, exec.getExitStatus());
     } finally {
       exec.disconnect();
     }
@@ -105,11 +104,17 @@ public class CommandExecutor {
     }
   }
 
-  private String getChannelOutput(InputStream in)
-      throws IOException {
+  private void streamChannelOutput(InputStream in) throws IOException {
+    try (InputStreamReader reader = new InputStreamReader(in)) {
+      char[] buffer = new char[1024];
+      int charsRead;
 
-    try (InputStreamReader inputStreamReader = new InputStreamReader(in)) {
-      return inputStreamReader.readAllAsString();
+      // read() blocks until data is available or the stream ends (-1)
+      while ((charsRead = reader.read(buffer)) != -1) {
+        String chunk = new String(buffer, 0, charsRead);
+
+        System.out.print(chunk);
+      }
     }
   }
 }

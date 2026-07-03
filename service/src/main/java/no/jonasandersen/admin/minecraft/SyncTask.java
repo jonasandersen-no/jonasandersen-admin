@@ -1,5 +1,6 @@
 package no.jonasandersen.admin.minecraft;
 
+import com.jcraft.jsch.JSchException;
 import java.io.IOException;
 import java.time.Instant;
 import org.slf4j.Logger;
@@ -22,9 +23,8 @@ class SyncTask {
     try {
       syncService.sync();
       log.info("Finished with syncing");
-    } catch (IOException | InterruptedException e) {
+    } catch (IOException | InterruptedException | JSchException e) {
       throw new RuntimeException(e);
     }
   }
-
 }
