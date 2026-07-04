@@ -6,7 +6,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
+import org.jspecify.annotations.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,20 +20,42 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommandLoader {
 
+  private static final Logger log = LoggerFactory.getLogger(CommandLoader.class);
   private final GitConfigService gitConfigService;
   private final YAMLMapper mapper;
 
-  public CommandLoader(GitConfigService gitConfigService) {
+  private final @NonNull Cache cache;
+
+  public CommandLoader(GitConfigService gitConfigService, CacheManager cacheManager) {
     this.gitConfigService = gitConfigService;
+    cache = Objects.requireNonNull(cacheManager.getCache("commands"));
+
     this.mapper = new YAMLMapper();
   }
 
-  public Page<String> allCommands() {
-    List<String> commands = gitConfigService.allCommands();
+  public Page<CommandConfig> allCommands() {
+    List<CommandConfig> commands =
+        gitConfigService.allCommands().stream()
+            .map(
+                commandName -> {
+                  try {
+                    return load(commandName);
+                  } catch (IOException e) {
+                    throw new RuntimeException(e);
+                  }
+                })
+            .toList();
     return new PageImpl<>(commands, Pageable.unpaged(), commands.size());
   }
 
   public CommandConfig load(String commandName) throws IOException {
+    CommandConfig config = cache.get(commandName, CommandConfig.class);
+
+    if (config != null) {
+      log.info("Found in cache {}", config);
+      return config;
+    }
+
     Path path = gitConfigService.resolve("commands/" + commandName + ".yaml");
 
     if (!Files.exists(path)) {
@@ -38,6 +65,8 @@ public class CommandLoader {
     CommandConfig cfg = mapper.readValue(path.toFile(), CommandConfig.class);
     validateTopLevel(cfg);
     validateSpec(cfg);
+
+    cache.put(commandName, cfg);
     return cfg;
   }
 

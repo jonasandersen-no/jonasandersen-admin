@@ -70,4 +70,8 @@ public class CommandConfig {
         + spec
         + '}';
   }
+
+  public String getName() {
+    return metadata.getName();
+  }
 }
