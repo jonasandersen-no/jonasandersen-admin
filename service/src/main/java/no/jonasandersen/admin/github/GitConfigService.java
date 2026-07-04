@@ -2,6 +2,8 @@ package no.jonasandersen.admin.github;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,12 @@ public class GitConfigService {
   @Scheduled(initialDelay = 300_300, fixedDelay = 300_000) // 5 minutes
   public void refresh() throws Exception {
     git.pull().call();
+  }
+
+  public List<String> allCommands() {
+    return Arrays.stream(new File(localDir, "commands").list())
+        .map(s -> s.replace(".yaml", ""))
+        .toList();
   }
 
   public Path resolve(String relativePath) {

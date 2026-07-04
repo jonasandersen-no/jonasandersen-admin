@@ -33,6 +33,8 @@ class SecurityConfiguration {
                 authorizeRequests
                     .requestMatchers("/api/temperature")
                     .authenticated()
+                    .requestMatchers("/api/commands/**")
+                    .permitAll()
                     .requestMatchers("/api/**")
                     .authenticated())
         .oauth2ResourceServer(configurer -> configurer.jwt(withDefaults()))

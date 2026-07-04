@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.minecraft;
+package no.jonasandersen.admin.minecraft.internal;
 
 import com.github.kagkarlsson.scheduler.task.helper.RecurringTask;
 import com.github.kagkarlsson.scheduler.task.helper.Tasks;

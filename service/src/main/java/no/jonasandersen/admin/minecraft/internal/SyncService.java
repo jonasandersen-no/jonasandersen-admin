@@ -1,4 +1,4 @@
-package no.jonasandersen.admin.minecraft;
+package no.jonasandersen.admin.minecraft.internal;
 
 import com.jcraft.jsch.JSchException;
 import java.io.IOException;

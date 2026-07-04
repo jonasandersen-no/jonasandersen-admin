@@ -5,6 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +21,11 @@ public class CommandLoader {
   public CommandLoader(GitConfigService gitConfigService) {
     this.gitConfigService = gitConfigService;
     this.mapper = new YAMLMapper();
+  }
+
+  public Page<String> allCommands() {
+    List<String> commands = gitConfigService.allCommands();
+    return new PageImpl<>(commands, Pageable.unpaged(), commands.size());
   }
 
   public CommandConfig load(String commandName) throws IOException {
