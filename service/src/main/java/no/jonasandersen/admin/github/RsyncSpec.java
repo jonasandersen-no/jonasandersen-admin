@@ -1,6 +1,6 @@
 package no.jonasandersen.admin.github;
 
-public class RsyncSpec {
+public class RsyncSpec implements Spec {
     private String source;
     private String destination;
     private RsyncOptions options;
