@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,5 +44,10 @@ public class CommandsRestController {
     Page<CommandConfig> commands = commandLoader.allCommands();
 
     return pagedResourcesAssembler.toModel(commands, commandAssembler);
+  }
+
+  @DeleteMapping("/{name}")
+  ResponseEntity<Void> delete(@PathVariable String name) {
+    return ResponseEntity.ok(null);
   }
 }

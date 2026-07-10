@@ -20,11 +20,13 @@ public class CommandAssembler
       return EntityModel.of(
           command,
           linkTo(methodOn(CommandsRestController.class).command(command.getName())).withSelfRel(),
-          linkTo(methodOn(CommandsRestController.class).commands()).withRel("commands"));
+          linkTo(methodOn(CommandsRestController.class).commands()).withRel("commands"),
+          linkTo(methodOn(CommandsRestController.class).delete(command.getName()))
+              .withRel("delete"));
+
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
     //
-    // linkTo(methodOn(CommandsRestController.class).deleteMerchant(command.getId())).withRel("delete"));
   }
 }
