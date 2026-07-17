@@ -20,12 +20,11 @@ class SyncTask {
 
   void executeSyncTask(Instant date) {
     log.info("Task is running at {}", date);
-//    try {
-      log.info("Sync is disabled");
-//      syncService.sync();
-//      log.info("Finished with syncing");
-//    } catch (IOException | InterruptedException | JSchException e) {
-//      throw new RuntimeException(e);
-//    }
+    try {
+      syncService.sync();
+      log.info("Finished with syncing");
+    } catch (IOException | InterruptedException | JSchException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
