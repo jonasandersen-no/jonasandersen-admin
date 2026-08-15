@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 class SyncService {
 
   public static final String COMMAND =
-      "rsync --delete -av --exclude-from='exclude-andersen.txt' /root/andersen/ gollien@mira2:/mnt/nas/public/backups/minecraft/andersen";
+      "rsync --delete -av --exclude-from='exclude-andersen.txt' ~/server/ /mnt/nas/public/backups/minecraft/bluewool";
 
   private final AdminProperties properties;
 
