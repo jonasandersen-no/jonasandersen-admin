@@ -51,8 +51,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build with Maven
-        run: mvn clean deploy
+      - name: Run unit tests
+        run: mvn clean test
+
+      - name: Run integration tests
+        run: mvn test-compile surefire:test@integration-tests
+
+      - name: Build and deploy with Maven
+        run: mvn deploy -DskipTests
 
       - name: Push Images to Docker Registry
         run: docker push -a bjoggis/jonasandersen-admin
