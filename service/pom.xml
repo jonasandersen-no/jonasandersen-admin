@@ -74,7 +74,7 @@
     </dependency>
     <dependency>
       <groupId>org.occurrent</groupId>
-      <artifactId>eventstore-inmemory</artifactId>
+      <artifactId>occurrent-eventstore-inmemory</artifactId>
     </dependency>
 
     <dependency>
