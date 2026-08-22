@@ -32,4 +32,4 @@ jobs:
             }]
 
       - name: Build with Maven
-        run: mvn clean test
+        run: mvn clean test -T 1C
