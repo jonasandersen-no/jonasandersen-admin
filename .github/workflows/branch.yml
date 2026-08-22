@@ -6,6 +6,10 @@ on:
     branches:
       - master
 
+concurrency:
+  cancel-in-progress: true
+  group: pr-${{ github.event.pull_request.number }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -34,8 +38,6 @@ jobs:
       - name: Run unit tests
         run: mvn clean test -T 1C
 
-      - name: Run integration tests
-        run: mvn test-compile surefire:test@integration-tests -T 1C
   itest:
     runs-on: ubuntu-latest
     permissions:
