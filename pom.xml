@@ -46,7 +46,7 @@
 <!--    <loki-logback-appender.version>2.0.1</loki-logback-appender.version>-->
     <testcontainers-mock.version>1.0.2</testcontainers-mock.version>
 
-    <spring-modulith.version>2.1.0</spring-modulith.version>
+    <spring-modulith.version>2.1.1</spring-modulith.version>
 
   </properties>
 
