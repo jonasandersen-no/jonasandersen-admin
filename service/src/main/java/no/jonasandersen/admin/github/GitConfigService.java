@@ -26,7 +26,7 @@ public class GitConfigService {
     this.cacheManager = cacheManager;
   }
 
-  @EventListener(ApplicationStartedEvent.class)
+//  @EventListener(ApplicationStartedEvent.class)
   public void init() throws Exception {
     if (!localDir.exists()) {
       log.info("Cloning commands repository");
@@ -42,7 +42,7 @@ public class GitConfigService {
     }
   }
 
-  @Scheduled(initialDelay = 300_300, fixedDelay = 300_000) // 5 minutes
+//  @Scheduled(initialDelay = 300_300, fixedDelay = 300_000) // 5 minutes
   public void refresh() throws Exception {
     git.pull().call();
     Cache commands = cacheManager.getCache("commands");

@@ -14,7 +14,7 @@ class MinecraftConfig {
     return Tasks.recurring("rsync-andersen-minecraft", FixedDelay.ofHours(1))
         .execute(
             (taskInstance, executionContext) -> {
-              syncTask.executeSyncTask(executionContext.getExecution().getExecutionTime());
+//              syncTask.executeSyncTask(executionContext.getExecution().getExecutionTime());
             });
   }
 }
