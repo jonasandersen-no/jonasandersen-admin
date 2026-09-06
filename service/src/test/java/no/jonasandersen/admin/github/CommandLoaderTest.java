@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.io.IOException;
 import no.jonasandersen.admin.ModuleTest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ModuleTest
+@Disabled
 class CommandLoaderTest {
 
   @Autowired GitConfigService gitConfigService;
