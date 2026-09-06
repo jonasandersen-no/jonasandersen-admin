@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/config")
-@Secured("ROLE_ADMIN")
+@Secured("ADMIN")
 public class ConfigController {
 
   @GetMapping

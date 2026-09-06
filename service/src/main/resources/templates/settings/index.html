@@ -34,7 +34,7 @@
       <button class="btn btn-primary">Save</button>
     </form>
 
-    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+    <th:block sec:authorize="hasAuthority('ADMIN')">
       <div class="container mt-5">
         <h3>Access control</h3>
         <p>Allowed users</p>

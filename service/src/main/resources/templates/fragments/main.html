@@ -36,7 +36,7 @@
             <a class="nav-link" th:classappend="${currentPath.equals('/')} ? 'active' : ''"
                aria-current="page" href="/">Home</a>
           </li>
-          <th:block sec:authorize="hasRole('ROLE_SERVER')">
+          <th:block sec:authorize="hasAuthority('SERVER')">
             <li class="nav-item">
               <a class="nav-link"
                  th:classappend="${currentPath.startsWith('/save-file')} ? 'active' : ''"
@@ -48,14 +48,14 @@
                th:classappend="${currentPath.startsWith('/settings')} ? 'active' : ''"
                href="/settings">Settings</a>
           </li>
-          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+          <th:block sec:authorize="hasAuthority('ADMIN')">
             <li class="nav-item">
               <a class="nav-link"
                  th:classappend="${currentPath.startsWith('/config')} ? 'active' : ''"
                  href="/config">Config</a>
             </li>
           </th:block>
-          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+          <th:block sec:authorize="hasAuthority('ADMIN')">
             <li class="nav-item">
               <a class="nav-link"
                  th:classappend="${currentPath.startsWith('/swagger-ui')} ? 'active' : ''"

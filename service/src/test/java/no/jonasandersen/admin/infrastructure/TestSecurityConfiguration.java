@@ -33,7 +33,7 @@ public class TestSecurityConfiguration {
   SecurityFilterChain securityFilterChain(HttpSecurity http, AccessControl accessControl) throws Exception {
     http
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-            .requestMatchers("/actuator/**").hasRole("ACTUATOR")
+            .requestMatchers("/actuator/**").hasAuthority("ACTUATOR")
             .anyRequest().authenticated())
         .addFilterBefore(new PermittedUserFilter(accessControl), AuthorizationFilter.class)
         .oauth2Login(AbstractHttpConfigurer::disable)

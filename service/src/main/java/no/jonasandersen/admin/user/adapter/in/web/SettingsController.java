@@ -50,14 +50,14 @@ public class SettingsController {
   }
 
   @PostMapping("/allow-user")
-  @Secured("ROLE_ADMIN")
+  @Secured("ADMIN")
   String addUserToAccessControl(@RequestParam String email) {
     accessControl.allowUser(email);
     return REDIRECT_SETTINGS;
   }
 
   @DeleteMapping("/revoke-user")
-  @Secured("ROLE_ADMIN")
+  @Secured("ADMIN")
   String removeUserFromAccessControl(@RequestParam String email) {
     accessControl.revokeUser(email);
     return REDIRECT_SETTINGS;

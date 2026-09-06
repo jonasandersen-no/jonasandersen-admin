@@ -3,9 +3,7 @@ package no.jonasandersen.admin.infrastructure;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 import java.util.List;
-import no.jonasandersen.admin.user.PermittedUserFilter;
-import no.jonasandersen.admin.user.AccessControl;
-import no.jonasandersen.admin.user.DefaultOidcUserService;
+import javax.sql.DataSource;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +14,11 @@ import org.springframework.security.authentication.DefaultAuthenticationEventPub
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -59,24 +59,42 @@ class SecurityConfiguration {
     source.registerCorsConfiguration("/**", configuration);
     return source;
   }
+
   @Bean
   @Order(2)
   SecurityFilterChain securityFilterChain(
-      HttpSecurity http, AccessControl accessControl, DefaultOidcUserService defaultOidcUserService) {
+      HttpSecurity http,
+      UserDetailsService userDetailsService,
+      PersistentTokenRepository persistentTokenRepository) {
 
     http.authorizeHttpRequests(
             authorizeRequests ->
                 authorizeRequests
                     .requestMatchers("/actuator/**")
-                    .hasRole("ACTUATOR")
+                    .hasAuthority("ACTUATOR")
                     .anyRequest()
                     .authenticated())
-        .addFilterBefore(new PermittedUserFilter(accessControl), AuthorizationFilter.class)
-        .oauth2Login(
-            c -> c.userInfoEndpoint(userInfo -> userInfo.oidcUserService(defaultOidcUserService)))
-        .oauth2Client(withDefaults())
-        .httpBasic(withDefaults());
+        .formLogin(withDefaults())
+        .rememberMe(
+            remember ->
+                remember
+                    .tokenRepository(persistentTokenRepository)
+                    .userDetailsService(userDetailsService)
+                    .tokenValiditySeconds(86400 * 7))
+        .userDetailsService(userDetailsService);
     return http.build();
+  }
+
+  @Bean
+  public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) {
+    JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+    tokenRepository.setDataSource(dataSource);
+    return tokenRepository;
+  }
+
+  @Bean
+  public UserDetailsService userDetailsService(DataSource dataSource) {
+    return new JdbcUserDetailsManager(dataSource);
   }
 
   @Bean

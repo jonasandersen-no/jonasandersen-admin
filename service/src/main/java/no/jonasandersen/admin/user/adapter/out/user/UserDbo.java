@@ -30,6 +30,10 @@ class UserDbo {
   @JoinColumn(name = "settings")
   private UserSettingsDbo settings;
 
+  private String password;
+
+  private boolean enabled;
+
   public UserDbo() {}
 
   public UserDbo(Username username) {
@@ -71,6 +75,22 @@ class UserDbo {
 
   public void setSettings(UserSettingsDbo settings) {
     this.settings = settings;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 
   public User toDomain() {
