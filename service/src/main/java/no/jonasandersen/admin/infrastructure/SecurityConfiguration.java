@@ -2,7 +2,6 @@ package no.jonasandersen.admin.infrastructure;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +18,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @Profile("!integration")
@@ -32,7 +28,7 @@ class SecurityConfiguration {
   @Order(1)
   SecurityFilterChain securityFilterChainResourceServer(HttpSecurity http) {
     http.csrf(AbstractHttpConfigurer::disable)
-        .cors(_ -> withDefaults())
+        .cors(withDefaults())
         .securityMatcher("/api/**")
         .authorizeHttpRequests(
             authorizeRequests ->
@@ -47,17 +43,6 @@ class SecurityConfiguration {
         .httpBasic(withDefaults());
 
     return http.build();
-  }
-
-  @Bean
-  CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-    configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "DELETE"));
-    configuration.setAllowedHeaders(List.of("*"));
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
   }
 
   @Bean
