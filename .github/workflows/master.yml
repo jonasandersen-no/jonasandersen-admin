@@ -9,7 +9,7 @@ on:
 
 concurrency:
   cancel-in-progress: true
-  group: master
+  group: master-${{ github.ref }}
 
 jobs:
   build:
