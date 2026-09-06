@@ -30,7 +30,7 @@ class SecurityConfiguration {
 
   @Bean
   @Order(1)
-  SecurityFilterChain securityFilterChainResourceServer(HttpSecurity http) throws Exception {
+  SecurityFilterChain securityFilterChainResourceServer(HttpSecurity http) {
     http.csrf(AbstractHttpConfigurer::disable)
         .cors(_ -> withDefaults())
         .securityMatcher("/api/**")
