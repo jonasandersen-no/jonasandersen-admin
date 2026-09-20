@@ -46,6 +46,8 @@
 <!--    <loki-logback-appender.version>2.0.1</loki-logback-appender.version>-->
     <testcontainers-mock.version>1.0.2</testcontainers-mock.version>
 
+    <docker-java.version>3.7.1</docker-java.version>
+
     <spring-modulith.version>2.1.1</spring-modulith.version>
 
   </properties>
@@ -66,7 +68,15 @@
         <scope>import</scope>
         <version>${occurrent.version}</version>
       </dependency>
-        <dependency>
+      <dependency>
+        <groupId>com.github.docker-java</groupId>
+        <artifactId>docker-java-bom</artifactId>
+        <type>pom</type>
+        <scope>import</scope>
+        <version>${docker-java.version}</version>
+      </dependency>
+
+      <dependency>
           <groupId>org.springframework.modulith</groupId>
           <artifactId>spring-modulith-bom</artifactId>
           <version>${spring-modulith.version}</version>

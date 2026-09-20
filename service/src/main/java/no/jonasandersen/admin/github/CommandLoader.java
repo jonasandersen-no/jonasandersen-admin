@@ -21,12 +21,12 @@ import org.springframework.stereotype.Service;
 public class CommandLoader {
 
   private static final Logger log = LoggerFactory.getLogger(CommandLoader.class);
-  private final GitConfigService gitConfigService;
+  private final GitCommandsService gitConfigService;
   private final YAMLMapper mapper;
 
   private final @NonNull Cache cache;
 
-  public CommandLoader(GitConfigService gitConfigService, CacheManager cacheManager) {
+  public CommandLoader(GitCommandsService gitConfigService, CacheManager cacheManager) {
     this.gitConfigService = gitConfigService;
     cache = Objects.requireNonNull(cacheManager.getCache("commands"));
 

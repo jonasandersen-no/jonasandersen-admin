@@ -1,7 +1,5 @@
 package no.jonasandersen.admin.github;
 
-import static org.assertj.core.api.Assertions.*;
-
 import java.io.IOException;
 import no.jonasandersen.admin.ModuleTest;
 import org.junit.jupiter.api.Disabled;
@@ -12,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Disabled
 class CommandLoaderTest {
 
-  @Autowired GitConfigService gitConfigService;
+  @Autowired
+  GitCommandsService gitConfigService;
 
   @Autowired CommandLoader commandLoader;
 

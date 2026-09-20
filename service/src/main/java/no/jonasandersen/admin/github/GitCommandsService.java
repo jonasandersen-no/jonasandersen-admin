@@ -7,22 +7,19 @@ import java.util.List;
 import org.eclipse.jgit.api.Git;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GitConfigService {
+public class GitCommandsService {
 
-  private static final Logger log = LoggerFactory.getLogger(GitConfigService.class);
+  private static final Logger log = LoggerFactory.getLogger(GitCommandsService.class);
   private Git git;
   private final File localDir = new File("/tmp/jonasandersen-no/commands");
   private final CacheManager cacheManager;
 
-  public GitConfigService(CacheManager cacheManager) {
+  public GitCommandsService(CacheManager cacheManager) {
     this.cacheManager = cacheManager;
   }
 
