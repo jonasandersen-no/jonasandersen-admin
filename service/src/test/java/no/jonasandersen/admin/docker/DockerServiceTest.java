@@ -1,22 +1,22 @@
 package no.jonasandersen.admin.docker;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import no.jonasandersen.admin.ssh.CommandExecutor;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class DockerServiceTest {
 
-  private static final boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().contains("win");
+  private static final boolean IS_WINDOWS =
+      System.getProperty("os.name").toLowerCase().contains("win");
+  private static final Logger log = LoggerFactory.getLogger(DockerServiceTest.class);
 
   @Test
   void run() throws Exception {
-    File directory = new GitRepoCloner().init(true);
+    File directory = new GitRepoCloner().init(false);
 
     List<File> directoriesWithCompose = new ArrayList<>();
     findComposeDirectories(directoriesWithCompose, directory);
@@ -25,29 +25,39 @@ class DockerServiceTest {
       System.out.println("Processing: " + file.getName());
 
       // Configure OS-specific command
-      ProcessBuilder pb = IS_WINDOWS
-          ? new ProcessBuilder("cmd.exe", "/c", "dir")
-          : new ProcessBuilder("ls", "-la");
+      ProcessBuilder pb =
+          IS_WINDOWS
+              ? new ProcessBuilder("cmd.exe", "/c", "dir")
+              : new ProcessBuilder("docker", "compose", "pull");
 
       pb.directory(file.getAbsoluteFile());
+      pb.inheritIO();
 
+      Thread shutdownHook = null;
       int exitCode;
       try (Process process = pb.start()) {
 
-        // Read output stream to prevent process buffering deadlocks
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-          String line;
-          while ((line = reader.readLine()) != null) {
-            System.out.println(line);
-          }
-        }
+        shutdownHook =
+            new Thread(
+                () -> {
+                  if (process.isAlive()) {
+                    System.out.println("Terminating lingering process for: " + file.getName());
+                    process.destroyForcibly();
+                  }
+                });
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
 
         exitCode = process.waitFor();
+        if (exitCode != 0) {
+          System.err.println("Command failed with exit code: " + exitCode);
+        }
+      } finally {
+        if (shutdownHook != null ){
+          Runtime.getRuntime().removeShutdownHook(shutdownHook);
+        }
       }
-      if (exitCode != 0) {
-        System.err.println("Command failed with exit code: " + exitCode);
-      }
-    }  }
+    }
+  }
 
   private static void findComposeDirectories(List<File> filesToFind, File directory) {
     File[] children = directory.listFiles();
@@ -60,10 +70,13 @@ class DockerServiceTest {
 
       if (file.isDirectory()) {
         File[] subFiles = file.listFiles();
-        if (subFiles != null && Arrays.stream(subFiles).anyMatch(f -> f.getName().endsWith(".yaml") || f.getName().endsWith(".yml"))) {
+        if (subFiles != null
+            && Arrays.stream(subFiles)
+                .anyMatch(f -> f.getName().endsWith(".yaml") || f.getName().endsWith(".yml"))) {
           filesToFind.add(file);
         }
         findComposeDirectories(filesToFind, file);
       }
     }
-  }}
+  }
+}
