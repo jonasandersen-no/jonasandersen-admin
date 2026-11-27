@@ -30,14 +30,6 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.thymeleaf.extras</groupId>
-      <artifactId>thymeleaf-extras-springsecurity6</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
     <dependency>
@@ -55,6 +47,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-webauthn</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
@@ -220,10 +216,116 @@
       <groupId>no.jonasandersen.admin</groupId>
       <artifactId>api-contract</artifactId>
     </dependency>
+
+
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <version>0.2.13</version>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <id>npx typescript fetch</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>${project.basedir}</workingDirectory>
+              <executable>npx</executable>
+              <arguments>
+                <argument>openapi-typescript</argument>
+                <argument>src/main/api/api.yaml</argument>
+                <argument>--output</argument>
+                <argument>${project.basedir}/src/main/vueapp/src/generated/api.ts</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm build the vue app</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>${project.basedir}/src/main/vueapp</workingDirectory>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>build</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Copy the vuejs dist folder into Spring Boot target static
+      folder.
+     Make sure npm run build has been executed-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Copy my VueJS app into my Spring Boot target static
+              folder
+            </id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/classes/static</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/main/vueapp/dist</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>7.27.0</version>
+        <executions>
+          <execution>
+            <id>Java</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <generatorName>spring</generatorName>
+              <inputSpec>${project.basedir}/src/main/api/api.yaml</inputSpec>
+              <output>${project.build.directory}/generated-sources/openapi</output>
+              <configOptions>
+                <interfaceOnly>true</interfaceOnly>
+                <useSpringBoot4>true</useSpringBoot4>
+                <useJackson3>true</useJackson3>
+                <apiPackage>no.jonasandersen.admin.generated.api</apiPackage>
+                <modelPackage>no.jonasandersen.admin.generated.model</modelPackage>
+                <configPackage>no.jonasandersen.admin.generated.configuration</configPackage>
+                <basePackage>no.jonasandersen.admin.generated</basePackage>
+              </configOptions>
+              <generateApis>true</generateApis>
+              <generateModels>true</generateModels>
+              <generateSupportingFiles>true</generateSupportingFiles>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

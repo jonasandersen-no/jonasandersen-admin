@@ -1,0 +1,11 @@
+type: object
+title: UserResponse
+properties:
+  username:
+    type: string
+  roles:
+    type: array
+    items:
+      type: string
+required: [ username, roles ]
+additionalProperties: false

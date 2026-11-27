@@ -1,0 +1,43 @@
+openapi: "3.0.0"
+info:
+  version: 0.1.0
+  title: Vue Demo API
+  description: API for the Vue demo project
+servers:
+  - url: http://localhost:8080/api
+tags:
+  - name: "Ping"
+    description: "For server status"
+  - name: "User"
+    description: "Users"
+
+paths:
+  /ping:
+    get:
+      tags: [ Ping ]
+      description: |
+        Returns a lifecheck result.
+      operationId: getPing
+      responses:
+        '200':
+          description: Lifecheck data.
+          content:
+            application/json:
+              schema:
+                $ref: ping-response.yaml
+  /me:
+    get:
+      tags: [ User ]
+      description: Returns a User object with user info
+      operationId: me
+      responses:
+        '200':
+          description: Check user data
+          content:
+            application/json:
+              schema:
+                $ref: user-response.yaml
+components:
+  schemas: { }
+  examples: { }
+  parameters: { }

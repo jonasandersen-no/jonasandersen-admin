@@ -3,6 +3,7 @@ package no.jonasandersen.admin.infrastructure;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import no.jonasandersen.admin.domain.Feature;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,12 +15,16 @@ public record AdminProperties(
     Map<Feature, Boolean> features,
     @Valid Actuator actuator,
     @Valid Discord discord,
-    @Valid Minecraft minecraft) {
+    @Valid Minecraft minecraft,
+    @Valid WebAuthn webauthn) {
 
   public AdminProperties {
 
     if (features == null) {
       features = new EnumMap<>(Feature.class);
+    }
+    if (webauthn == null) {
+      webauthn = new WebAuthn("localhost", "jonasandersen-admin", List.of("http://localhost:5173"));
     }
   }
 
@@ -34,4 +39,8 @@ public record AdminProperties(
 
     public record Andersen(String username, String password, String hostname) {}
   }
+
+  @Valid
+  public record WebAuthn(
+      @NotNull String rpId, @NotNull String rpName, @NotNull List<String> allowedOrigins) {}
 }
