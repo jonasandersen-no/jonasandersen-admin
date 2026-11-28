@@ -4,7 +4,7 @@
   <parent>
     <groupId>no.jonasandersen.admin</groupId>
     <artifactId>jonasandersen-admin-parent</artifactId>
-    <version>91-SNAPSHOT</version>
+    <version>92-SNAPSHOT</version>
   </parent>
 
   <artifactId>service</artifactId>
@@ -232,6 +232,22 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.7.0</version>
         <executions>
+          <execution>
+            <id>npm install vue dependencies</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>${project.basedir}/src/main/vueapp</workingDirectory>
+              <executable>npm</executable>
+              <arguments>
+                <argument>install</argument>
+                <argument>--no-audit</argument>
+                <argument>--no-fund</argument>
+              </arguments>
+            </configuration>
+          </execution>
           <execution>
             <id>npx typescript fetch</id>
             <phase>generate-sources</phase>
